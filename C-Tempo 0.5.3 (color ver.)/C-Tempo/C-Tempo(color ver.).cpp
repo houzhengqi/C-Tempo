@@ -6,7 +6,7 @@
 #include <chrono>
 #include <conio.h>
 #include <fstream>
-#define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?1:0)
+#define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?true:false)
 #define MV SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos)
 #pragma comment(lib,"winmm.lib")
 #pragma GCC optimize(2)
@@ -264,7 +264,7 @@ void Print_Move(int a1,int a2,int m){
     else if(sc<960000) sc=4;
     else if(sc<1000000) sc=5;
     else sc=6;
-    if(Dt.f[a1]&&SC[sc]=="AP"){
+    if(Dt.f[a1]&&SC[sc]=="AP"&&lk[a1]!=0){
     	color(14,0);
 		if(!save[a1]&&New[a1]) color(6,0);
 	}
@@ -1078,7 +1078,7 @@ int main(){
 	}
 	while(K(' ')||K(VK_RETURN));
 	pos=(COORD){0,0};
-	if(!Music) kick(999,11,true);
+	if(Music) kick(999,11,true);
 	int Chs=0;
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,1);
@@ -1089,6 +1089,7 @@ int main(){
 			kick(999,5,true);
 			Print_Move(nxt,Chs,0);
 			Chs=nxt;
+			Sleep(100);
 		}
 		if(K('W')||K(VK_UP)){
 			kick(999,5,true);

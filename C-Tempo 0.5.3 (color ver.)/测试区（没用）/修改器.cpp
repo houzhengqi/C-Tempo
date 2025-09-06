@@ -3,7 +3,7 @@
 #define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?1:0)
 #define MV SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos)
 using namespace std;
-string SC[10]={" F "," C "," B "," A "," S "," V ","AP "};
+string SC[10]={"  F  ","  C  ","  B  ","  A  ","  S  ","  V  "," AP  "};
 struct GameData{
 	bool f[114];
 	double sc[114];
@@ -32,16 +32,16 @@ void color(int ForgC,int BackC) {
 	return;
 }
 int main(){
-	SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
+	//SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
 	loadData(&Dt,"data.dat");
-	for(int i=0;i<12;i++){
+	for(int i=0;i<20;i++){
 		if(POS.x==0&&POS.y==i) color(0,15);
-		printf("%.2lf%%",Dt.acc[i]*100);
+		printf("%.2lf%%  ",Dt.acc[i]*100);
 		color(15,0);
 		cout<<" ";
 	}
 	cout<<endl;
-	for(int i=0;i<12;i++){
+	for(int i=0;i<20;i++){
 		int sc=round(Dt.sc[i]);
 	    if(sc<720000) sc=0;
 	    else if(sc<820000) sc=1;
@@ -50,10 +50,10 @@ int main(){
 	    else if(sc<960000) sc=4;
 	    else if(sc<1000000) sc=5;
 	    else sc=6;
-		cout<<(Dt.f[i]?SC[sc]:"new")<<" ";
+		cout<<(Dt.f[i]?SC[sc]:"  new  ")<<" ";
 	}
 	cout<<endl;
-	for(int i=0;i<12;i++){
+	for(int i=0;i<20;i++){
 		if(POS.x==2&&POS.y==i) color(0,15);
 		printf("%.7d",(int)Dt.sc[i]);
 		color(15,0);
@@ -64,18 +64,17 @@ int main(){
 		&&!K(VK_NUMPAD0)&&!K(VK_NUMPAD1)&&!K(VK_NUMPAD2)&&!K(VK_NUMPAD3)&&!K(VK_NUMPAD4)
 		&&!K(VK_NUMPAD5)&&!K(VK_NUMPAD6)&&!K(VK_NUMPAD7)&&!K(VK_NUMPAD8)&&!K(VK_NUMPAD9)
 		&&!K('0')&&!K('1')&&!K('2')&&!K('3')&&!K('4')
-		&&!K('5')&&!K('6')&&!K('7')&&!K('8')&&!K('9')&&!K(VK_RETURN));
+		&&!K('5')&&!K('6')&&!K('7')&&!K('8')&&!K('9'));
 		COORD pos={0,0};MV;
 		cout<<endl<<"                                                                                                                                                                                                                                                                                                                                                                                       ";
 		MV;
-		if(K('D')||K(VK_RIGHT)) POS.y=min(11,POS.y+1);
+		if(K('D')||K(VK_RIGHT)) POS.y=min(19,POS.y+1);
 		if(K('A')||K(VK_LEFT)) POS.y=max(0,POS.y-1);
 		if(K('W')||K(VK_UP)) POS.x=max(0,POS.x-1);
 		if(K('S')||K(VK_DOWN)) POS.x=min(2,POS.x+1);
-		if(K(VK_RETURN)) break;
-		for(int i=0;i<12;i++){
+		for(int i=0;i<20;i++){
 			if(POS.x==0&&POS.y==i) color(0,15);
-			printf("%.2lf%%",Dt.acc[i]*100);
+			printf("%.2lf%%  ",Dt.acc[i]*100);
 			if(K(VK_NUMPAD0)||K(VK_NUMPAD1)||K(VK_NUMPAD2)||K(VK_NUMPAD3)||K(VK_NUMPAD4)
 			||K(VK_NUMPAD5)||K(VK_NUMPAD6)||K(VK_NUMPAD7)||K(VK_NUMPAD8)||K(VK_NUMPAD9)
 			||K('0')||K('1')||K('2')||K('3')||K('4')
@@ -92,7 +91,7 @@ int main(){
 			cout<<" ";
 		}
 		cout<<endl;
-		for(int i=0;i<12;i++){
+		for(int i=0;i<20;i++){
 			int sc=round(Dt.sc[i]);
 		    if(sc<720000) sc=0;
 		    else if(sc<820000) sc=1;
@@ -102,12 +101,12 @@ int main(){
 		    else if(sc<1000000) sc=5;
 		    else sc=6;
 			if(POS.x==1&&POS.y==i) color(0,15);
-			cout<<(Dt.f[i]?SC[sc]:"new");
+			cout<<(Dt.f[i]?SC[sc]:"  new  ");
 			color(15,0);
 			cout<<" ";
 		}
 		cout<<endl;
-		for(int i=0;i<12;i++){
+		for(int i=0;i<20;i++){
 			if(POS.x==2&&POS.y==i) color(0,15);
 			printf("%.7d",(int)Dt.sc[i]);
 			if(K(VK_NUMPAD0)||K(VK_NUMPAD1)||K(VK_NUMPAD2)||K(VK_NUMPAD3)||K(VK_NUMPAD4)
@@ -125,12 +124,12 @@ int main(){
 			color(15,0);
 			cout<<" ";
 		}
+		saveData(&Dt,"data.dat");
 		while(K('A')||K('D')||K('W')||K('S')||K(VK_LEFT)||K(VK_RIGHT)
 		||K(VK_NUMPAD0)||K(VK_NUMPAD1)||K(VK_NUMPAD2)||K(VK_NUMPAD3)||K(VK_NUMPAD4)
 		||K(VK_NUMPAD5)||K(VK_NUMPAD6)||K(VK_NUMPAD7)||K(VK_NUMPAD8)||K(VK_NUMPAD9)
 		||K('0')||K('1')||K('2')||K('3')||K('4')
-		||K('5')||K('6')||K('7')||K('8')||K('9')||K(VK_RETURN));
+		||K('5')||K('6')||K('7')||K('8')||K('9'));
 	}
-	saveData(&Dt,"data.dat");
 	return 0;
 }
