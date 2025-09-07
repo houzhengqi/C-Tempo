@@ -185,38 +185,38 @@ void Main_List_Print(int Chs){
 	pos=(COORD){0,(SHORT)(Chs*2)};MV;
 	return;
 }
-void Print_Move(int a1,int a2,int m){
+void Print_Move(int Chs,int Chs2,int lock){
     color(15,0);
     COORD pos;
-    if(a1==a2&&!m){
-        pos=(COORD){20,(SHORT)(1+2*a2)};MV;
+    if(Chs==Chs2&&!lock){
+        pos=(COORD){20,(SHORT)(1+2*Chs2)};MV;
         color(12,0);
         cout<<"locked ";
         return;
     }
-    if(!m){
-        pos=(COORD){0,(SHORT)(2*a2)};MV;
-        cout<<"-------------------------                   \n"<<Name[a2];
-        for(int j=1;j<=20-Name[a2].size();j++) cout<<" ";
-        cout<<(lk[a2]==0?"\blocked  ":"Lv.");
-        if(lk[a2]) printf("%.2d    ",Lv[a2]);
+    if(!lock){
+        pos=(COORD){0,(SHORT)(2*Chs2)};MV;
+        cout<<"-------------------------                   \n"<<Name[Chs2];
+        for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
+        cout<<(lk[Chs2]==0?"\blocked  ":"Lv.");
+        if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
         cout<<"\n-------------------------                  ";
-        pos=(COORD){0,(SHORT)(2*a1)};MV;
+        pos=(COORD){0,(SHORT)(2*Chs)};MV;
         color(14,0);
-        cout<<"-------------------------                      \n"<<Name[a1]<<"<";
-        for(int j=1;j<=19-Name[a1].size();j++) cout<<" ";
-        cout<<(lk[a1]==0?"locked ":" Lv.");
-        if(lk[a1]) printf("%.2d    ",Lv[a1]);
+        cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
+        for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
+        cout<<(lk[Chs]==0?"locked ":" Lv.");
+        if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
         cout<<"\n-------------------------                   ";
     }
     for(int i=0;i<=21;i++){
         pos=(COORD){26,(SHORT)(ls+i)};MV;
         cout<<"                      ";
     }
-    pos=(COORD){26,(SHORT)(2*max(0,a1-6))};MV;
-    if(bk) ls=2*max(0,a1-6)-(a1>=7?(a1==7?2:4):0);
-    else ls=2*max(0,a1-6);
-    if(a1+6>MusicSum){
+    pos=(COORD){26,(SHORT)(2*max(0,Chs-6))};MV;
+    if(bk) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
+    else ls=2*max(0,Chs-6);
+    if(Chs+6>MusicSum){
     	if(!bk){
 		    pos=(COORD){26,(SHORT)(2*MusicSum-28)};MV;
 		}
@@ -256,7 +256,7 @@ void Print_Move(int a1,int a2,int m){
     pos=(COORD){26,(SHORT)(ls+21)};MV;
     cout<<"  C 清除存档";
     pos=(COORD){26,(SHORT)(ls+14)};MV;
-    int sc=round(Dt.sc[a1]);
+    int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
     else if(sc<820000) sc=1;
     else if(sc<880000) sc=2;
@@ -264,16 +264,16 @@ void Print_Move(int a1,int a2,int m){
     else if(sc<960000) sc=4;
     else if(sc<1000000) sc=5;
     else sc=6;
-    if(Dt.f[a1]&&SC[sc]=="AP"&&lk[a1]!=0){
+    if(Dt.f[Chs]&&SC[sc]=="AP"&&lk[Chs]!=0){
     	color(14,0);
-		if(!save[a1]&&New[a1]) color(6,0);
+		if(!save[Chs]&&New[Chs]) color(6,0);
 	}
-	else if(!save[a1]&&New[a1]) color(8,0);
-    if(lk[a1]!=0) printf("  %.07d ",(int)round(Dt.sc[a1]));
-    if(lk[a1]!=0){
-    	cout<<" "<<(Dt.f[a1]?SC[sc]:"new")<<"   ";
+	else if(!save[Chs]&&New[Chs]) color(8,0);
+    if(lk[Chs]!=0) printf("  %.07d ",(int)round(Dt.sc[Chs]));
+    if(lk[Chs]!=0){
+    	cout<<" "<<(Dt.f[Chs]?SC[sc]:"new")<<"   ";
 		pos=(COORD){26,(SHORT)(ls+15)};MV;
-	    string acc="  ACC "+to_string((int)(Dt.acc[a1]*10000))+"%";
+	    string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
 	    if(acc=="  ACC 0%") acc="  ACC 000%";
 	    acc.insert(acc.size()-3,".");
 	    cout<<acc<<"    ";
@@ -296,8 +296,13 @@ void Print_Move(int a1,int a2,int m){
 	    //color(8,0);
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
+	    if(Dt.sc[Chs]!=0){
+	    	pos=(COORD){26,(SHORT)(ls+19)};MV;
+	    	color(11,0);
+	    	cout<<"  666，这个入是桂";
+		}
 	}
-    pos=(COORD){0,(SHORT)(2*min(MusicSum,a1+6))};MV;
+    pos=(COORD){0,(SHORT)(2*min(MusicSum,Chs+6))};MV;
     return;
 }
 void Speed(int n){
