@@ -209,7 +209,7 @@ void Print_Move(int Chs,int Chs2,int lock){
         if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
         cout<<"\n-------------------------                   ";
     }
-    for(int i=0;i<=21;i++){
+    for(int i=0;i<=25;i++){
         pos=(COORD){26,(SHORT)(ls+i)};MV;
         cout<<"                      ";
     }
@@ -253,7 +253,7 @@ void Print_Move(int Chs,int Chs2,int lock){
     cout<<"  E 开启/关闭自动保存";
     pos=(COORD){26,(SHORT)(ls+13)};MV;
     cout<<"  F 关闭边框(不可调回)";
-    pos=(COORD){26,(SHORT)(ls+21)};MV;
+    pos=(COORD){26,(SHORT)(ls+19)};MV;
     cout<<"  C 清除存档";
     pos=(COORD){26,(SHORT)(ls+14)};MV;
     int sc=round(Dt.sc[Chs]);
@@ -297,8 +297,8 @@ void Print_Move(int Chs,int Chs2,int lock){
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
 	    if(Dt.sc[Chs]!=0){
-	    	pos=(COORD){26,(SHORT)(ls+19)};MV;
-	    	color(11,0);
+	    	pos=(COORD){26,(SHORT)(ls+25)};MV;
+	    	color(4,0);
 	    	cout<<"  666，这个入是桂";
 		}
 	}
@@ -500,46 +500,68 @@ int Play(int Chs){
 	cout<<"前奏...";
 	memset(msic,0,sizeof msic);
 	memset(MTsum,0,sizeof MTsum);
-	if(Chs==0) freopen("0.txt","r",stdin);
+	ifstream in;
+	if(Chs==0){
+		return 0;
+		in.open("0.txt");
+		if(Music){
+			mciSendString("open ..\\music\\4.mp3 alias 0",NULL,0,NULL);
+			mciSendString("play 0",NULL,0,NULL);
+		}
+	}
 	if(Chs==1){
-		freopen("1.txt","r",stdin);
+		in.open("1.txt");
 		if(Music){
 			mciSendString("open ..\\music\\1.mp3 alias 1",NULL,0,NULL);
 			mciSendString("play 1",NULL,0,NULL);
 		}
 	}
 	if(Chs==2){
-		freopen("2.txt","r",stdin);
+		in.open("2.txt");
 		if(Music){
 			mciSendString("open ..\\music\\2.mp3 alias 2",NULL,0,NULL);
 			mciSendString("play 2",NULL,0,NULL);
 		}
 	}
-	if(Chs==3) freopen("3.txt","r",stdin);
-	if(Chs==4) freopen("4.txt","r",stdin);
+	if(Chs==3){
+		return 0;
+		in.open("3.txt");
+		if(Music){
+			mciSendString("open ..\\music\\3.mp3 alias 3",NULL,0,NULL);
+			mciSendString("play 3",NULL,0,NULL);
+		}
+	}
+	if(Chs==4){
+		return 0;
+		in.open("4.txt");
+		if(Music){
+			mciSendString("open ..\\music\\4.mp3 alias 4",NULL,0,NULL);
+			mciSendString("play 4",NULL,0,NULL);
+		}
+	}
 	if(Chs==5){
-		freopen("5.txt","r",stdin);
+		in.open("5.txt");
 		if(Music){
 			mciSendString("open ..\\music\\5.mp3 alias 5",NULL,0,NULL);
 			mciSendString("play 5",NULL,0,NULL);
 		}
 	}
 	if(Chs==6){
-		freopen("6.txt","r",stdin);
+		in.open("6.txt");
 		if(Music){
 			mciSendString("open ..\\music\\6.mp3 alias 6",NULL,0,NULL);
 			mciSendString("play 6",NULL,0,NULL);
 		}
 	}
 	if(Chs==7){
-		freopen("7.txt","r",stdin);
+		in.open("7.txt");
 		if(Music){
 			mciSendString("open ..\\music\\7.mp3 alias 7",NULL,0,NULL);
 			mciSendString("play 7",NULL,0,NULL);
 		}
 	}
 	if(Chs==8){
-		freopen("8.txt","r",stdin);
+		in.open("8.txt");
 		if(Music){
 		    mciSendString("open ..\\music\\8.mp3 alias 8",NULL,0,NULL);
 			mciSendString("play 8",NULL,0,NULL);
@@ -548,20 +570,21 @@ int Play(int Chs){
 	setvol(vol*20);
 	Sleep(pre[Chs]);
 	int Sum=0,x=0,y=0,TOT=0;
-	scanf("%d",&Sum);
+	in>>Sum;
 	while(1){
-		scanf("%d",&x);
+		in>>x;
 		if(!x) break;
-		scanf("%d",&y);
+		in>>y;
 		MTsum[x]+=y;
 		TOT+=y;
 		for(int i=MTsum[x]-y+1;i<=MTsum[x];i++){
-			scanf("%d%d%d%d",&msic[x][i].drc,&msic[x][i].pl,&msic[x][i].cl,&msic[x][i].len);
+			in>>msic[x][i].drc>>msic[x][i].pl>>msic[x][i].cl>>msic[x][i].len;
 			msic[x][i].can=1-(msic[x][i].cl!=2);msic[x][i].gt=0;
 			if(msic[x][i].cl==3)
 				for(int j=1;j<=msic[x][i].len;j++){
 					msic[x+j][++MTsum[x+j]]=msic[x][i];
-					msic[x+j][MTsum[x+j]].can=1;msic[x+j][MTsum[x+j]].cl=-j;
+					msic[x+j][MTsum[x+j]].can=1;
+					msic[x+j][MTsum[x+j]].cl=-j;
 					msic[x+j][MTsum[x+j]].len=i;
 				}
 		}
@@ -1080,6 +1103,7 @@ int main(){
 			cout<<"  音效 : "<<(Music?"ON ":"OFF");
 			while(K('Q'));
 		}
+		if(GetFocus()==GetConsoleWindow()) cout<<1;
 	}
 	while(K(' ')||K(VK_RETURN));
 	pos=(COORD){0,0};
