@@ -1160,6 +1160,10 @@ int main(){
 			Print_Move(Chs,Chs,1);
 		}
 		if(K('F')){
+			if(!bk){
+				MessageBox(NULL,"已经没有边框了~","提示",MB_OK);
+				continue;
+			}
 			bk=false;
 			MusicSum=12;
 			Chs=0;
