@@ -32,9 +32,9 @@ bool lk[114]={false,true,true,false,false,true,true,true,true};
 double spd[114]={0,12700,7421,0,0,13700,13000,8850,10700};
 int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
-bool autoplay=0,ky[20],SAVE=true,Music=true,bk=true,save[114],New[114],refresh;
-long long product=1,sum,scoresum;
-int vol=30,skip=1,ls=1,combo=0,MTsum[1145],MusicSum=20;
+bool autoplay,ky[20],SAVE=true,Music=true,bk=true,save[114],New[114],refresh;
+long long scoresum;
+int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -174,7 +174,7 @@ void Main_List_Print(int Chs){
 		if(i==0){
 			pos=(COORD){20,1};MV;
 		}
-		cout<<(lk[i]==0?(Chs==i?"locked":"\blocked"):"Lv.");
+		cout<<(!lk[i]?(Chs==i?"locked":"\blocked"):"Lv.");
 		if(lk[i]) printf("%.2d ",Lv[i]);
 		cout<<endl;
 		if(Chs==i+1||Chs==i) color(14,0);
@@ -185,7 +185,7 @@ void Main_List_Print(int Chs){
 	pos=(COORD){0,(SHORT)(Chs*2)};MV;
 	return;
 }
-void Print_Move(int Chs,int Chs2,int lock){
+void Print_Move(int Chs,int Chs2,bool lock){
     color(15,0);
     COORD pos;
     if(Chs==Chs2&&!lock){
@@ -198,14 +198,14 @@ void Print_Move(int Chs,int Chs2,int lock){
         pos=(COORD){0,(SHORT)(2*Chs2)};MV;
         cout<<"-------------------------                   \n"<<Name[Chs2];
         for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
-        cout<<(lk[Chs2]==0?"\blocked  ":"Lv.");
+        cout<<(!lk[Chs2]?"\blocked ":"Lv.");
         if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
         cout<<"\n-------------------------                  ";
         pos=(COORD){0,(SHORT)(2*Chs)};MV;
         color(14,0);
         cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
         for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
-        cout<<(lk[Chs]==0?"locked ":" Lv.");
+        cout<<(!lk[Chs]?"locked ":" Lv.");
         if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
         cout<<"\n-------------------------                   ";
     }
@@ -213,19 +213,14 @@ void Print_Move(int Chs,int Chs2,int lock){
         pos=(COORD){26,(SHORT)(ls+i)};MV;
         cout<<"                      ";
     }
-    pos=(COORD){26,(SHORT)(2*max(0,Chs-6))};MV;
     if(bk) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
     else ls=2*max(0,Chs-6);
     if(Chs+6>MusicSum){
-    	if(!bk){
-		    pos=(COORD){26,(SHORT)(2*MusicSum-28)};MV;
-		}
-    	else{
-    		pos=(COORD){26,(SHORT)(2*MusicSum-25)};MV;
-		}
+		pos=(COORD){26,(SHORT)(2*MusicSum-25)};MV;
     	if(bk) ls=2*MusicSum-28;
-    	else ls=2*MusicSum-24;
+    	else ls=0;
 	}
+    pos=(COORD){26,(SHORT)(2*max(0,Chs-6))};MV;
     color(15,0);
     pos=(COORD){26,(SHORT)ls};MV;
     cout<<"  AUTOPLAY : "<<(autoplay?"ON":"OFF");
@@ -958,14 +953,15 @@ int Play(int Chs){
 		Dt.f[Chs]=1;
     	saveData(&Dt,"Data.dat");
     	save[Chs]=true;
+    	New[Chs]=false;
 	}
-	else if(!SAVE&&!autoplay){
+	else if(!SAVE){
 		Dt.sc[Chs]=max(score,Dt.sc[Chs]);
 		Dt.acc[Chs]=max(pfct*1.0/TOT,Dt.acc[Chs]);
 		Dt.f[Chs]=1;
 		New[Chs]=true;
 	}
-	if(autoplay)  mxcmb=0,pfct=0,score=0;
+	if(autoplay) mxcmb=0,pfct=0,score=0;
     color(15,0);
 	if(!bk) setsize(60,20);
 	else setsize_(57,17);
@@ -1085,43 +1081,41 @@ int main(){
 			cout<<"  ÒôÐ§ : "<<(Music?"ON ":"OFF");
 			while(K('Q'));
 		}
-		if(GetFocus()==GetConsoleWindow()) cout<<1;
 	}
 	while(K(' ')||K(VK_RETURN));
 	pos=(COORD){0,0};
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	Main_List_Print(Chs);
-	Print_Move(Chs,Chs,1);
+	Print_Move(Chs,Chs,true);
 	while(1){
 		int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
 		while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R'));
 		if(K('S')||K(VK_DOWN)){
 			kick(999,5,true);
-			Print_Move(nxt,Chs,0);
+			Print_Move(nxt,Chs,false);
 			Chs=nxt;
-			Sleep(100);
 		}
 		if(K('W')||K(VK_UP)){
 			kick(999,5,true);
 			MV;
-			Print_Move(lst,Chs,0);
+			Print_Move(lst,Chs,false);
 			Chs=lst;
 		}
 		if(K('M')){
 			kick(999,5,true);
 			autoplay^=1;
-			Print_Move(Chs,Chs,1);
+			Print_Move(Chs,Chs,true);
 		}
 		if(K('Q')){
 			Music^=1;
 			if(Music) kick(999,5,true);
-			Print_Move(Chs,Chs,1);
+			Print_Move(Chs,Chs,true);
 		}
 		if(K('E')){
 			kick(999,5,true);
 			SAVE^=1;
-			Print_Move(Chs,Chs,1);
+			Print_Move(Chs,Chs,true);
 		}
 		if(K('C')){
 			kick(999,5,true);
@@ -1139,7 +1133,7 @@ int main(){
 			}
 			kick(999,11,true);
 			Main_List_Print(Chs);
-			Print_Move(Chs,Chs,1);
+			Print_Move(Chs,Chs,true);
 		}
 		if(K('F')){
 			if(!bk){
@@ -1148,18 +1142,19 @@ int main(){
 			}
 			bk=false;
 			MusicSum=12;
-			Chs=0;
+			ls=0;
+			Chs=min(11,Chs);
 			Main_List_Print(Chs);
-			Print_Move(Chs,Chs,1);
+			Print_Move(Chs,Chs-1,false);
+			Print_Move(Chs,Chs-1,true);
 		}
 		if(K('R')){
 			saveData(&Dt,"data.dat");
 			memset(&save,true,sizeof save);
 			memset(&New,false,sizeof New);
-			Print_Move(Chs,Chs,1);
 		}
 		if(K(' ')||K(VK_RETURN)){
-			if(lk[Chs]==0) Print_Move(Chs,Chs,0);
+			if(lk[Chs]==0) Print_Move(Chs,Chs,false);
 			else{
 				while(K(' ')||K(VK_RETURN));
 				kick(999,12,true);
@@ -1167,12 +1162,7 @@ int main(){
 				setvol(vol*20);
 				kick(999,12,true);
 				int f=Play(Chs);
-				while(f==1){
-					f=Play(Chs);
-					loadData(&Dt,"data.dat");
-				}
-				Main_List_Print(Chs);
-				Print_Move(Chs,Chs,1);
+				while(f==1) f=Play(Chs);
 			}
 		}
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R'));
