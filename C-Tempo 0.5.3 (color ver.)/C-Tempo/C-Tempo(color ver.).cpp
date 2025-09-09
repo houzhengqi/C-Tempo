@@ -32,9 +32,9 @@ bool lk[114]={false,true,true,false,false,true,true,true,true};
 double spd[114]={0,12700,7421,0,0,13700,13000,8850,10700};
 int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
-bool autoplay=0,ky[20],SAVE=true,Music=true,bk=true,save[114],New[114];
-long long product=1,x,sum=0,scoresum=0;
-int vol=30,skip=1,ls=1,vname=0,combo=0,MTsum[1145],MusicSum=20;
+bool autoplay=0,ky[20],SAVE=true,Music=true,bk=true,save[114],New[114],refresh;
+long long product=1,sum,scoresum;
+int vol=30,skip=1,ls=1,combo=0,MTsum[1145],MusicSum=20;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -466,30 +466,12 @@ void getSystemName(){
 	NTPROC proc=(NTPROC)GetProcAddress(hinst,"RtlGetNtVersionNumbers");
 	proc(&dwMajor,&dwMinor,&dwBuildNumber);
 	auto sharedUserData=(BYTE*)0x7FFE0000;
-    if((int)*(ULONG*)(sharedUserData+0x260)>=22000){
-		vname=7;
-		return;
-	}
-	if(dwMajor==6&&dwMinor==3) cout<<"不支持当前版本系统\n",system("pause"),exit(0);
+    if((int)*(ULONG*)(sharedUserData+0x260)>=22000) return;
 	if(dwMajor==10&&dwMinor==0){
-		vname=10;
+		refresh=true;
 		return;
 	}
-	OSVERSIONINFOEX osvi;
-    osvi.dwOSVersionInfoSize=sizeof(OSVERSIONINFOEX);
-    if(GetVersionEx((OSVERSIONINFO*)&osvi)&&(osvi.dwMajorVersion==10)&&(osvi.dwMinorVersion==0&&osvi.dwBuildNumber>=22000)) vname=11;
-	SYSTEM_INFO info;
-	GetSystemInfo(&info);
-	OSVERSIONINFOEX os;
-	os.dwOSVersionInfoSize=sizeof(OSVERSIONINFOEX);
-	#pragma warning(disable:4996)
-	if(GetVersionEx((OSVERSIONINFO*)&os)){
-		if(os.dwMajorVersion==6&&os.dwMinorVersion==1&&os.wProductType==VER_NT_WORKSTATION) vname=7;
-		else if(os.dwMajorVersion==6&&os.dwMinorVersion==0&&os.wProductType==VER_NT_WORKSTATION) vname=10;
-		else if(os.dwMajorVersion==5&&os.dwMinorVersion==1) vname=7;
-		else cout<<"不支持当前版本系统\n",system("pause"),exit(0);
-	}
-	else cout<<"不支持当前版本系统\n",system("pause"),exit(0);
+	else return;
 	return;
 }
 int Play(int Chs){
@@ -951,7 +933,7 @@ int Play(int Chs){
 		if(int(t+0.1)!=int(t)||t==2)flsh=1;
 		else flsh=0;
 		color(15,0);
-		if(vname==10){
+		if(refresh){
 			pos=(COORD){18,3};MV;
 			cout<<" ";
 			pos=(COORD){18,4};MV;
