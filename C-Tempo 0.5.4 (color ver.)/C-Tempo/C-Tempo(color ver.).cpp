@@ -174,7 +174,7 @@ void Main_List_Print(int Chs){
 		if(i==0){
 			pos=(COORD){20,1};MV;
 		}
-		cout<<(!lk[i]?(Chs==i?"locked":"\blocked"):"Lv.");
+		cout<<(!lk[i]?"\blocked":"Lv.");
 		if(lk[i]) printf("%.2d ",Lv[i]);
 		cout<<endl;
 		if(Chs==i+1||Chs==i) color(14,0);
@@ -194,21 +194,19 @@ void Print_Move(int Chs,int Chs2,bool lock){
         cout<<"locked ";
         return;
     }
-    if(!lock){
-        pos=(COORD){0,(SHORT)(2*Chs2)};MV;
-        cout<<"-------------------------                   \n"<<Name[Chs2];
-        for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
-        cout<<(!lk[Chs2]?"\blocked ":"Lv.");
-        if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
-        cout<<"\n-------------------------                  ";
-        pos=(COORD){0,(SHORT)(2*Chs)};MV;
-        color(14,0);
-        cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
-        for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
-        cout<<(!lk[Chs]?"locked ":" Lv.");
-        if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
-        cout<<"\n-------------------------                   ";
-    }
+    pos=(COORD){0,(SHORT)(2*Chs2)};MV;
+    cout<<"-------------------------                   \n"<<Name[Chs2];
+    for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
+    cout<<(!lk[Chs2]?"\blocked ":"Lv.");
+    if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
+    cout<<"\n-------------------------                  ";
+    pos=(COORD){0,(SHORT)(2*Chs)};MV;
+    color(14,0);
+    cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
+    for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
+    cout<<(!lk[Chs]?"locked ":" Lv.");
+    if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
+    cout<<"\n-------------------------                   ";
     for(int i=0;i<=25;i++){
         pos=(COORD){26,(SHORT)(ls+i)};MV;
         cout<<"                      ";
@@ -1145,8 +1143,7 @@ int main(){
 			ls=0;
 			Chs=min(11,Chs);
 			Main_List_Print(Chs);
-			Print_Move(Chs,Chs-1,false);
-			Print_Move(Chs,Chs-1,true);
+			Print_Move(Chs,Chs,true);
 		}
 		if(K('R')){
 			saveData(&Dt,"data.dat");
