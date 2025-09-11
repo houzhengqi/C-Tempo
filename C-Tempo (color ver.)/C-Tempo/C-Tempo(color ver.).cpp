@@ -6,8 +6,7 @@
 #include <chrono>
 #include <conio.h>
 #include <fstream>
-#define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?true:false)&&GetForegroundWindow()==GetConsoleWindow()
-#define MV SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos)
+//#define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?true:false)&&GetForegroundWindow()==GetConsoleWindow()
 #pragma comment(lib,"winmm.lib")
 #pragma GCC optimize(2)
 using namespace std;
@@ -19,9 +18,6 @@ struct GameData{
 struct MsicTime{
 	int drc,pl,cl,len,can,gt;
 }msic[1145][33];
-struct Player{
-	int score,acc,miss,pf,mxcb;
-};
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI",SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude"};
@@ -45,6 +41,25 @@ string grd[5][7]={"FFFF"," CCC","BBB "," AA "," SSS","V  V","  PAP",
 				  "FFFF","C   ","BBB ","AAAA"," SS ","V  V","PAPAP",
 				  "F   ","C   ","B  B","A  A","   S","V  V","  A  ",
 				  "F   "," CCC","BBB ","A  A","SSS "," VV ","  P  "};
+bool isConsoleFocused(){
+	GUITHREADINFO guiInfo;
+    guiInfo.cbSize=sizeof(GUITHREADINFO);
+    bool ans=false;
+	if(GetGUIThreadInfo(0,&guiInfo)) ans=guiInfo.hwndFocus==GetConsoleWindow();
+	return ans;
+}
+bool K(int VK){
+	return (isConsoleFocused()?(GetAsyncKeyState(VK)&0x8000)?true:false:false);
+}
+POINT getpos(){
+	POINT pos;
+	GetCursorPos(&pos);
+	return pos;
+}
+void move(int x,int y){
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),{(SHORT)x,(SHORT)y});
+	return;
+}
 void setvol(int vol){
 	char c[11451];
 	sprintf(c,"setaudio 1 volume to %d",vol);
@@ -71,35 +86,34 @@ void color(int ForgC,int BackC) {
 	return;
 }
 void Vol_(bool V){
-	COORD pos=(COORD){0,0};MV;
+	move(0,0);
 	if(V) vol=min(10,vol+1);
 	else vol=max(0,vol-1);
 	for(int i=0;i<vol;i++) cout<<" \n";
 	color(0,11);
 	for(int i=0;i<=10-vol;i++) cout<<" \n";
 	color(15,0);
-	pos=(COORD){0,12};MV;
+	move(0,12);
 	cout<<(10-vol)*10<<"    ";
 	return;
 }
 void Vol(bool V){
-    COORD pos;
 	if(V){
 		vol=min(50,vol+1);
-		pos=(COORD){(SHORT)(vol+1),2};MV;
+		move(vol+1,2);
 		color(0,11);
 		cout<<" ";
 	}
 	else{
 		vol=max(0,vol-1);
-		pos=(COORD){(SHORT)(vol+2),2};MV;
+		move(vol+2,2);
 		color(15,0);
 		cout<<" ";
 	}
 	color(15,0);
-	pos=(COORD){55,2};MV;
+	move(55,2);
 	cout<<vol*2<<"%  ";
-	pos=(COORD){60,2};MV;
+	move(60,2);
 	cout<<"音量";
 	return;
 }
@@ -121,17 +135,17 @@ void setsize_(int col,int row){
     SetConsoleWindowInfo(hConsole,TRUE,&windowSize);
 	return;
 }
-void saveData(const GameData* data,const char* filename){
+void saveData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"wb");
     if(file==NULL) return;
-    fwrite(data,sizeof(GameData),1,file);
+    fwrite(data,sizeof data,1,file);
     fclose(file);
     return;
 }
 void loadData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"rb");
     if(file==NULL) return;
-    fread(data,sizeof(GameData),1,file);
+    fread(data,sizeof data,1,file);
     fclose(file);
     return;
 }
@@ -159,8 +173,6 @@ double Rks(){
 void Main_List_Print(int Chs){
 	if(!bk) setsize(48,26);
 	else setsize_(45,26);
-    COORD pos;
-	system("cls");
 	if(Chs==0) color(14,0);
 	else color(15,0);
 	cout<<"-------------------------"<<endl;
@@ -171,9 +183,7 @@ void Main_List_Print(int Chs){
 		cout<<Name[i];
 		if(Chs==i) cout<<"<";
 		for(int j=1;j<=20-Name[i].size();j++) cout<<" ";
-		if(i==0){
-			pos=(COORD){20,1};MV;
-		}
+		if(i==0) move(20,1);
 		cout<<(!lk[i]?"\blocked":"Lv.");
 		if(lk[i]) printf("%.2d ",Lv[i]);
 		cout<<endl;
@@ -182,25 +192,24 @@ void Main_List_Print(int Chs){
 		cout<<"-------------------------"<<endl;
 	}
 	color(15,0);
-	pos=(COORD){0,(SHORT)(Chs*2)};MV;
+	move(0,Chs*2);
 	return;
 }
 void Print_Move(int Chs,int Chs2,bool lock){
     color(15,0);
-    COORD pos;
     if(Chs==Chs2&&!lock){
-        pos=(COORD){20,(SHORT)(1+2*Chs2)};MV;
+        move(20,1+2*Chs2);
         color(12,0);
         cout<<"locked ";
         return;
     }
-    pos=(COORD){0,(SHORT)(2*Chs2)};MV;
+    move(0,2*Chs2);
     cout<<"-------------------------                   \n"<<Name[Chs2];
     for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
     cout<<(!lk[Chs2]?"\blocked ":"Lv.");
     if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
     cout<<"\n-------------------------                  ";
-    pos=(COORD){0,(SHORT)(2*Chs)};MV;
+    move(0,2*Chs);
     color(14,0);
     cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
     for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
@@ -208,47 +217,47 @@ void Print_Move(int Chs,int Chs2,bool lock){
     if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
     cout<<"\n-------------------------                   ";
     for(int i=0;i<=25;i++){
-        pos=(COORD){26,(SHORT)(ls+i)};MV;
+        move(26,ls+i);
         cout<<"                      ";
     }
     if(bk) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
     else ls=2*max(0,Chs-6);
     if(Chs+6>MusicSum){
-		pos=(COORD){26,(SHORT)(2*MusicSum-25)};MV;
+		move(26,2*MusicSum-25);
     	if(bk) ls=2*MusicSum-28;
     	else ls=0;
 	}
-    pos=(COORD){26,(SHORT)(2*max(0,Chs-6))};MV;
+	move(26,2*max(0,Chs-6));
     color(15,0);
-    pos=(COORD){26,(SHORT)ls};MV;
+	move(26,ls);
     cout<<"  AUTOPLAY : "<<(autoplay?"ON":"OFF");
-    pos=(COORD){26,(SHORT)(ls+1)};MV;
+    move(26,ls+1);
     cout<<"  MUSIC : "<<(Music?"ON":"OFF");
-    pos=(COORD){26,(SHORT)(ls+2)};MV;
+    move(26,ls+2);
     cout<<"  SAVE : "<<(SAVE?"ON":"OFF");
-    pos=(COORD){26,(SHORT)(ls+3)};MV;
+    move(26,ls+3);
     cout<<"  BK : "<<(bk?"ON":"OFF");
-    pos=(COORD){26,(SHORT)(ls+5)};MV;
+    move(26,ls+5);
     cout<<"  R 保存缓存(搭配SAVE)";
-    pos=(COORD){26,(SHORT)(ls+6)};MV;
+    move(26,ls+6);
     cout<<"  W,S,A,D 控制方向";
-    pos=(COORD){26,(SHORT)(ls+7)};MV;
+    move(26,ls+7);
     cout<<"  上下左右键 控制方向";
-    pos=(COORD){26,(SHORT)(ls+8)};MV;
+    move(26,ls+8);
     cout<<"  空格/回车 选择";
-    pos=(COORD){26,(SHORT)(ls+9)};MV;
+    move(26,ls+9);
     cout<<"  M 切换演示/练习";
-    pos=(COORD){26,(SHORT)(ls+10)};MV;
+    move(26,ls+10);
     cout<<"  ESC退出";
-    pos=(COORD){26,(SHORT)(ls+11)};MV;
+    move(26,ls+11);
     cout<<"  Q 开启/关闭音效";
-    pos=(COORD){26,(SHORT)(ls+12)};MV;
+    move(26,ls+12);
     cout<<"  E 开启/关闭自动保存";
-    pos=(COORD){26,(SHORT)(ls+13)};MV;
+    move(26,ls+13);
     cout<<"  F 关闭边框(不可调回)";
-    pos=(COORD){26,(SHORT)(ls+19)};MV;
+    move(26,ls+19);
     cout<<"  C 清除存档";
-    pos=(COORD){26,(SHORT)(ls+14)};MV;
+    move(26,ls+14);
     int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
     else if(sc<820000) sc=1;
@@ -265,37 +274,35 @@ void Print_Move(int Chs,int Chs2,bool lock){
     if(lk[Chs]!=0) printf("  %.07d ",(int)round(Dt.sc[Chs]));
     if(lk[Chs]!=0){
     	cout<<" "<<(Dt.f[Chs]?SC[sc]:"new")<<"   ";
-		pos=(COORD){26,(SHORT)(ls+15)};MV;
+		move(26,ls+15);
 	    string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
 	    if(acc=="  ACC 0%") acc="  ACC 000%";
 	    acc.insert(acc.size()-3,".");
 	    cout<<acc<<"    ";
 	    color(15,0);
-	    pos=(COORD){26,(SHORT)(ls+16)};MV;
+	    move(26,ls+16);
 	    printf("  RKS %.2lf ",Rks());
-	    pos=(COORD){26,(SHORT)(ls+17)};MV;
+	    move(26,ls+17);
 		color(7,0);
-		//color(8,0);
 	    cout<<"  tips:"<<tips[rand()%10];
 	}
     else{
     	cout<<"  0000000 null"       ;
-		pos=(COORD){26,(SHORT)(ls+15)};MV;
+		move(26,ls+15);
 	    cout<<"  ACC null ";
 	    color(15,0);
-	    pos=(COORD){26,(SHORT)(ls+16)};MV;
+	    move(26,ls+16);
 	    printf("  RKS %.2lf ",Rks());
-	    pos=(COORD){26,(SHORT)(ls+17)};MV;
-	    //color(8,0);
+	    move(26,ls+17);
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
 	    if(Dt.sc[Chs]!=0){
-	    	pos=(COORD){26,(SHORT)(ls+25)};MV;
+	    	move(26,ls+25);
 	    	color(4,0);
 	    	cout<<"  666，这个入是桂";
 		}
 	}
-    pos=(COORD){0,(SHORT)(2*min(MusicSum,Chs+6))};MV;
+    move(0,2*min(MusicSum,Chs+6));
     return;
 }
 void Speed(int n){
@@ -341,12 +348,12 @@ void Start(){
 	return;
 }
 void Print(string s,int x,int y){
-	COORD pos=(COORD){(SHORT)x,(SHORT)y};MV;
+ move(x,y);
 	srand(time(0));
 	for(int i=0;i<s.size();i++){
 		color(8,0);
 		for(int i=1;i<=5;i++){
-			if(K(' ')||K(VK_RETURN)) skip=0;
+			if(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON)) skip=0;
 			char t=rand()%94+33;
 			cout<<t<<"\b";
 			Sleep(skip*10);
@@ -359,19 +366,18 @@ void Print(string s,int x,int y){
 void PrintBig(int n,int m){
 	srand(time(0));
 	color(8,0);
-	COORD pos;
 	for(int i=1;i<10;i++){
 		int t=rand()%10;
 		for(int j=1;j<=5;j++){
-			if(K(' ')||K(VK_RETURN)) skip=0;
-			pos=(COORD){(SHORT)(5*m),(SHORT)j};MV;
+			if(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON)) skip=0;
+			move(5*m,j);
 			cout<<Big[j-1][t];
 		}
 		Sleep(skip*15);
 	}
 	color(15,0);
 	for(int j=1;j<=5;j++){
-		pos=(COORD){(SHORT)(5*m),(SHORT)j};MV;
+		move(5*m,j);
 		cout<<Big[j-1][n];
 	}
 	return;
@@ -389,10 +395,10 @@ void PrintGrd(int sc){
 		if(sc==6) color(6,0);
 		else color(8,0);
 		for(int j=1;j<=5;j++){
-			COORD pos=(COORD){45,(SHORT)k};MV;
+			move(45,k);
 			char t=rand()%94+33;
 			for(int i=0;i<grd[k-1][sc].size();i++){
-				if(K(' ')||K(VK_RETURN)) skip=0;
+				if(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON)) skip=0;
 				if(grd[k-1][sc][i]==' ') cout<<" ";
 				else cout<<t;
 			}
@@ -400,7 +406,7 @@ void PrintGrd(int sc){
 		}
 		if(sc==6) color(14,0);
 		else color(15,0);
-		COORD pos=(COORD){45,(SHORT)k};MV;
+		move(45,k);
 		cout<<grd[k-1][sc];
 		Sleep(skip*1);
 	}
@@ -408,33 +414,31 @@ void PrintGrd(int sc){
 }
 void Vol_UI(){
 	color(15,0);
-	system("cls");
 	if(!bk) setsize(66,5);
 	else setsize_(66,2);
-	COORD pos=(COORD){2,1};MV;
+	move(2,1);
 	for(int i=0;i<50;i++) cout<<"-";
 	cout<<"\n [";
 	color(0,11);
 	for(int i=1;i<=vol;i++) cout<<" ";
 	color(15,0);
-	pos=(COORD){52,2};MV;
+	move(52,2);
 	cout<<"]  "<<vol*2<<"%";
-	pos=(COORD){60,2};MV;
+	move(60,2);
 	cout<<"音量\n  ";
 	for(int i=0;i<50;i++) cout<<"-";
-	int ab=0;
+	int key=0;
 	while(1){
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('A')||K(VK_LEFT) && vol>0) Vol(false);
 		else if(K('D')||K(VK_RIGHT) && vol<50) Vol(true);
 		else if(K(VK_RETURN)||K(VK_SPACE)) break;
-		int ab=0;
 		while(K('D')||K('A')||K(VK_RETURN)||K(VK_SPACE)||K(VK_LEFT)||K(VK_RIGHT)){
-			if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(ab<214515) ab++;
-			if(ab>=214514){
-				if((K('A')||K(VK_LEFT)) && vol>0) Vol(false);
-				else if((K('D')||K(VK_RIGHT)) && vol<50) Vol(true);
-				else ab=0;
+			if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(key<11451) key++;
+			if(key>=11451){
+				if((K('A')||K(VK_LEFT))&&vol>0) Vol(false);
+				else if((K('D')||K(VK_RIGHT))&&vol<50) Vol(true);
+				else key=0;
 				Sleep(30);
 			}
 		}
@@ -442,10 +446,10 @@ void Vol_UI(){
 	setvol(vol*20);
 	return;
 }
-void kick(double t,int n,bool UI){
+void kick(double t,int n,bool ui){
 	static int t_=0;
 	if(t_==(int)(t)||!Music) return;
-	if(!UI) t_=round(t);
+	if(!ui) t_=round(t);
 	PlaySound(NULL,NULL,SND_PURGE);
 	char name[114];
 	sprintf(name,"..\\music\\Tap%d",n);
@@ -471,7 +475,6 @@ int Play(int Chs){
     if(!bk) setsize(23,17);
     else setsize_(20,14);
 	color(15,0);
-	system("cls");
 	cout<<"前奏...";
 	memset(msic,0,sizeof msic);
 	memset(MTsum,0,sizeof MTsum);
@@ -616,15 +619,15 @@ int Play(int Chs){
 			system("cls");
 			Stop();
 			color(15,0);
-			COORD pos={9,6};MV;
+			move(9,6);
 			cout<<"返回";
-			pos={9,8};MV;
+			move(9,8);
 			cout<<"重开";
-			pos={9,7};MV;
+			move(9,7);
 			color(0,15);
 			cout<<"继续";
 			color(15,0);
-			pos=(COORD){9,9};MV;
+			move(9,9);
 			cout<<"音量";
 			int D=2;
 			while(K(' ')||K(VK_RETURN));
@@ -669,19 +672,19 @@ int Play(int Chs){
 				}
 				color(15,0);
 				if(D==1) color(0,15);
-				pos=(COORD){9,6};MV;
+				move(9,6);
 				cout<<"返回";
 				color(15,0);
 				if(D==3) color(0,15);
-				pos=(COORD){9,8};MV;
+				move(9,8);
 				cout<<"重开";
 				color(15,0);
 				if(D==2) color(0,15);
-				pos=(COORD){9,7};MV;
+				move(9,7);
 				cout<<"继续";
 				color(15,0);
 				if(D==4) color(0,15);
-				pos=(COORD){9,9};MV;
+				move(9,9);
 				cout<<"音量";
 				while(K('W')||K(VK_UP)||K('S')||K(VK_DOWN)||K('A')||K('D')||K(VK_LEFT)||K(VK_RIGHT));
 			}
@@ -705,7 +708,7 @@ int Play(int Chs){
 			cout<<"\n   A S D F G H J K\n\n\n空格/回车 暂停\nESC 退出";
 		}
 		color(15,0);
-		COORD pos={2,0};MV;  
+		move(2,0);
 		for(int i=9;i<=16;i++){
 			color(15,0);
 			cout<<" ";
@@ -715,7 +718,7 @@ int Play(int Chs){
 		}
 		memset(ky,0,sizeof ky);
 		color(15,0);
-		pos=(COORD){3,1};MV;
+		move(3,1);
 		if(flsh) cout<<"               ";
 		int j=1;
 		while(msic[int(t-1)][j].drc!=2) j++;
@@ -725,20 +728,20 @@ int Play(int Chs){
 				if(msic[int(t-1)][j].drc!=2) continue;
 				int i=msic[int(t-1)][j].pl-8;
 				if(!msic[int(t-1)][j].gt||msic[int(t-1)][j].gt==-1){
-					pos=(COORD){(SHORT)(i*2+1),1};MV;
+					move(i*2+1,1);
 					msic[int(t-1)][j].gt=-1;
 					if(msic[int(t-1)][j].cl<0) msic[int(t-1)+msic[int(t-1)][j].cl][msic[int(t-1)][j].len].gt=-1;
 					cout<<"x";
 					combo=0;
 				}
 			}
-		pos=(COORD){3,2};MV;
+		move(3,2);
     	color(15,0);
 		if(flsh) cout<<"---------------";
 		for(int j=1;j<=MTsum[int(t)];j++){
 			if(msic[int(t)][j].drc!=2) continue;
 			int i=msic[int(t)][j].pl-8;
-			pos=(COORD){(SHORT)(i*2+1),2};MV;
+			move(i*2+1,2);
 			if(K(btm[i+8])&&msic[int(t)][j].gt!=-1||autoplay){
 				if(msic[int(t)][j].can||msic[int(t)][j].gt||autoplay){
 					color(14,0);
@@ -773,12 +776,12 @@ int Play(int Chs){
 			}
 		}
 		for(int k=7;k>=1;k--){
-			pos=(COORD){3,(SHORT)(10-k)};MV;
+			move(3,10-k);
     		if(flsh) cout<<"               ";
 			for(int j=1;j<=MTsum[int(t+k)];j++){
 				if(msic[int(t+k)][j].drc!=1) continue;
 				int i=msic[int(t+k)][j].pl;
-				pos=(COORD){(SHORT)(2*i+1),(SHORT)(10-k)};MV;
+				move(2*i+1,10-k);
 				int cl=msic[int(t+k)][j].cl;
 				if(cl==1){
 					color(11,0);
@@ -810,7 +813,7 @@ int Play(int Chs){
 			for(int j=1;j<=MTsum[int(t+8-k)];j++){
 				if(msic[int(t+8-k)][j].drc!=2) continue;
 				int i=msic[int(t+8-k)][j].pl-8;
-				pos=(COORD){(SHORT)(2*i+1),(SHORT)(10-k)};MV;
+				move(2*i+1,10-k);
 				int cl=msic[int(t+8-k)][j].cl; 
 				if(cl==1){
 					color(11,0);
@@ -841,12 +844,12 @@ int Play(int Chs){
 			}
 		}
 		color(15,0);
-		pos=(COORD){3,10};MV; 
+		move(3,10);
 		if(flsh) cout<<"---------------";
 		for(int j=1;j<=MTsum[int(t)];j++){
 			if(msic[int(t)][j].drc!=1) continue;
 			int i=msic[int(t)][j].pl;
-			pos=(COORD){(SHORT)(i*2+1),10};MV;
+			move(i*2+1,10);
 			if(K(btm[i])&&msic[int(t)][j].gt!=-1||autoplay){
 				if(msic[int(t)][j].can||msic[int(t)][j].gt||autoplay){
 					color(14,0);
@@ -880,7 +883,7 @@ int Play(int Chs){
 				cout<<"v";
 			}
 		}
-		pos=(COORD){3,11};MV;
+		move(3,11);
 		if(flsh) cout<<"               ";
 		color(12,0);
 		if(!autoplay)
@@ -888,23 +891,17 @@ int Play(int Chs){
 				if(msic[int(t-1)][j].drc!=1) continue;
 				int i=msic[int(t-1)][j].pl;
 				if(!msic[int(t-1)][j].gt||msic[int(t-1)][j].gt==-1){
-					pos=(COORD){(SHORT)(i*2+1),11};MV;
+					move(i*2+1,11);
 					msic[int(t-1)][j].gt=-1;
 					if(msic[int(t-1)][j].cl<0) msic[int(t-1)+msic[int(t-1)][j].cl][msic[int(t-1)][j].len].gt=-1;
 					cout<<"x";
 					combo=0;
 				}
 			}
-		else
-			for(int j=1;j<=MTsum[int(t)];j++){
-		        if(!msic[int(t)][j].gt){
-		            pfct++;
-		            msic[int(t)][j].gt=1;
-		        }
-		    }
+		else for(int j=1;j<=MTsum[int(t)];j++) if(!msic[int(t)][j].gt) pfct++,msic[int(t)][j].gt=1;
 		mxcmb=max(mxcmb,combo);
 		color(15,0);
-		pos=(COORD){2,12};MV;  
+		move(2,12);
 		for(int i=1;i<=8;i++){
 			color(15,0);
 			cout<<" ";
@@ -912,13 +909,13 @@ int Play(int Chs){
 			else color(15,0);
 			cout<<btm[i];
 		}
-		pos=(COORD){0,13};MV;
+		move(0,13);
 		color(15,0);
 		if(combo>=3) cout<<combo<<"     \n"<<(autoplay?"AUTOPLAY":"combo");
 		else cout<<"            \n                     ";
 		if(ot){
 			int out=round(score);
-			pos=(COORD){12,13};MV;
+			move(12,13);
 			printf("%.07d",out);
 			ot=0;
 		}
@@ -927,24 +924,23 @@ int Play(int Chs){
 		else flsh=0;
 		color(15,0);
 		if(refresh){
-			pos=(COORD){18,3};MV;
+			move(18,3);
 			cout<<" ";
-			pos=(COORD){18,4};MV;
+			move(18,4);
 			cout<<" ";
-			pos=(COORD){18,5};MV;
+			move(18,5);
 			cout<<" ";
-			pos=(COORD){18,6};MV;
+			move(18,6);
 			cout<<" ";
-			pos=(COORD){18,7};MV;
+			move(18,7);
 			cout<<" ";
-			pos=(COORD){18,8};MV;
+			move(18,8);
 			cout<<" ";
-			pos=(COORD){18,9};MV;
+			move(18,9);
 			cout<<" ";
 		}
     }
     end();
-	//||
     if(!autoplay&&SAVE){
     	Dt.sc[Chs]=max(score,Dt.sc[Chs]);
 		Dt.acc[Chs]=max(pfct*1.0/TOT,Dt.acc[Chs]);
@@ -963,7 +959,7 @@ int Play(int Chs){
     color(15,0);
 	if(!bk) setsize(60,20);
 	else setsize_(57,17);
-    COORD pos=(COORD){37,0};MV;
+    move(37,0);
     cout<<"Click to Skip";
     skip=1;
     int u=score;
@@ -992,18 +988,18 @@ int Play(int Chs){
 	Print(acc,40,7);
 	PrintGrd(score);
 	scoresum+=score;
-	pos=(COORD){37,0};MV;
+	move(37,0);
     cout<<"             ";
     int D=0;
 	while(1){
 		while(K('A')||K(VK_LEFT)||K('D')||K(VK_RIGHT)||K(' ')||K(VK_RETURN));
 		color(15,0);
 		if(D==0) color(0,15);
-		pos={20,10};MV;
+		move(20,10);
 		cout<<"返回";
 		color(15,0);
 		if(D==1) color(0,15);
-		pos={35,10};MV;
+		move(35,10);
 		cout<<"重开";
 		color(15,0);
 		while(!K('A')&&!K(VK_LEFT)&&!K('D')&&!K(VK_RIGHT)&&!K(' ')&&!K(VK_RETURN));
@@ -1018,11 +1014,6 @@ int Play(int Chs){
 		if(K(' ')||K(VK_RETURN)){
 			while(K(' ')||K(VK_RETURN));
 			if(Music) mciSendString("close LO",NULL,0,NULL);
-			if(D==1){
-				kick(999,14,true);
-				Vol_UI();
-				kick(999,14,true);
-			}
 			return D;
 		}
 	}
@@ -1047,13 +1038,17 @@ void help(){
 	return;
 }
 int main(){
+	DWORD mode;
+	GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&mode);
+    mode&=~ENABLE_QUICK_EDIT_MODE;
+    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),mode);
 	srand(time(NULL));
 	getSystemName();
 	system("title C-Tempo");
     if(!bk) setsize(70,21);
     else setsize_(68,18);
     showcursor(false);
-	SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
+    SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
 	/*
 	垃圾桶
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
@@ -1066,22 +1061,21 @@ int main(){
 	cout<<"             CCCC           T   EEEEE  M   M  P       OOO \n";
 	cout<<"\n\n\n\n\n\n\n\n\n\n                           Click to Play";
 	loadData(&Dt,"data.dat");
-    COORD pos;
     color(8,0);
-    pos=(COORD){57,19};MV;
+    move(57,19);
 	cout<<"按下\"Q\"键禁音";
-    pos=(COORD){55,18};MV;
+    move(55,18);
 	cout<<"  音效 : "<<(Music?"ON ":"OFF");
-	while(!K(' ')&&!K(VK_RETURN)){
+	while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
 		if(K('Q')){
 			Music^=1;
-			pos=(COORD){55,18};MV;
+			if(Music) kick(999,5,true);
+			move(55,18);
 			cout<<"  音效 : "<<(Music?"ON ":"OFF");
 			while(K('Q'));
 		}
 	}
-	while(K(' ')||K(VK_RETURN));
-	pos=(COORD){0,0};
+	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	Main_List_Print(Chs);
@@ -1096,7 +1090,7 @@ int main(){
 		}
 		if(K('W')||K(VK_UP)){
 			kick(999,5,true);
-			MV;
+			move(0,0);
 			Print_Move(lst,Chs,false);
 			Chs=lst;
 		}
@@ -1118,16 +1112,22 @@ int main(){
 		if(K('C')){
 			kick(999,5,true);
 			while(1){
+				kick(999,5,true);
 				system("cls");
-				pos=(COORD){13,12};MV;
+				move(13,12);
 				cout<<"确定清除存档吗？(Y/N)";
-				char c=getch();
-				if(c=='y'||c=='Y'){
-					memset(&Dt,0,sizeof(Dt));
-					saveData(&Dt,"data.dat");
-					break;
+				while(1){
+					bool key=K('Y');
+					if(key){
+						memset(&Dt,0,sizeof(Dt));
+						saveData(&Dt,"data.dat");
+						break;
+					}
+					if(K('N')) break;
 				}
-				if(c=='n'||c=='N') break;
+				kick(999,11,true);
+				Main_List_Print(Chs);
+				Print_Move(Chs,Chs,true);
 			}
 			kick(999,11,true);
 			Main_List_Print(Chs);
@@ -1154,12 +1154,13 @@ int main(){
 			if(lk[Chs]==0) Print_Move(Chs,Chs,false);
 			else{
 				while(K(' ')||K(VK_RETURN));
-				kick(999,12,true);
-				Vol_UI();
-				setvol(vol*20);
-				kick(999,12,true);
-				int f=Play(Chs);
-				while(f==1) f=Play(Chs);
+				int f=1;
+				while(f==1){
+					kick(999,12,true);
+					Vol_UI();
+					kick(999,12,true);
+					f=Play(Chs);
+				}
 			}
 		}
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R'));
