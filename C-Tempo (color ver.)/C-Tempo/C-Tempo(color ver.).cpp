@@ -1155,7 +1155,7 @@ int main(){
 			else{
 				while(K(' ')||K(VK_RETURN));
 				int f=1;
-				while(f==1){
+				while(f){
 					kick(999,12,true);
 					Vol_UI();
 					kick(999,12,true);
