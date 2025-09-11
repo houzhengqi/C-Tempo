@@ -195,9 +195,9 @@ void Main_List_Print(int Chs){
 	move(0,Chs*2);
 	return;
 }
-void Print_Move(int Chs1,int Chs2,bool lock){
+void Print_Move(int Chs,int Chs2,bool lock){
     color(15,0);
-    if(Chs1==Chs2&&!lock){
+    if(Chs==Chs2&&!lock){
         move(20,1+2*Chs2);
         color(12,0);
         cout<<"locked ";
@@ -209,25 +209,25 @@ void Print_Move(int Chs1,int Chs2,bool lock){
     cout<<(!lk[Chs2]?"\blocked ":"Lv.");
     if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
     cout<<"\n-------------------------                  ";
-    move(0,2*Chs1);
+    move(0,2*Chs);
     color(14,0);
-    cout<<"-------------------------                      \n"<<Name[Chs1]<<"<";
-    for(int j=1;j<=19-Name[Chs1].size();j++) cout<<" ";
-    cout<<(!lk[Chs1]?"locked ":" Lv.");
-    if(lk[Chs1]) printf("%.2d    ",Lv[Chs1]);
+    cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
+    for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
+    cout<<(!lk[Chs]?"locked ":" Lv.");
+    if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
     cout<<"\n-------------------------                   ";
     for(int i=0;i<=25;i++){
         move(26,ls+i);
         cout<<"                      ";
     }
-    if(bk) ls=2*max(0,Chs1-6)-(Chs1>=7?(Chs1==7?2:4):0);
-    else ls=2*max(0,Chs1-6);
-    if(Chs1+6>MusicSum){
+    if(bk) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
+    else ls=2*max(0,Chs-6);
+    if(Chs+6>MusicSum){
 		move(26,2*MusicSum-25);
     	if(bk) ls=2*MusicSum-28;
     	else ls=0;
 	}
-	move(26,2*max(0,Chs1-6));
+	move(26,2*max(0,Chs-6));
     color(15,0);
 	move(26,ls);
     cout<<"  AUTOPLAY : "<<(autoplay?"ON":"OFF");
@@ -258,7 +258,7 @@ void Print_Move(int Chs1,int Chs2,bool lock){
     move(26,ls+19);
     cout<<"  C 清除存档";
     move(26,ls+14);
-    int sc=round(Dt.sc[Chs1]);
+    int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
     else if(sc<820000) sc=1;
     else if(sc<880000) sc=2;
@@ -266,16 +266,16 @@ void Print_Move(int Chs1,int Chs2,bool lock){
     else if(sc<960000) sc=4;
     else if(sc<1000000) sc=5;
     else sc=6;
-    if(Dt.f[Chs1]&&SC[sc]=="AP"&&lk[Chs1]!=0){
+    if(Dt.f[Chs]&&SC[sc]=="AP"&&lk[Chs]!=0){
     	color(14,0);
-		if(!save[Chs1]&&New[Chs1]) color(6,0);
+		if(!save[Chs]&&New[Chs]) color(6,0);
 	}
-	else if(!save[Chs1]&&New[Chs1]) color(8,0);
-    if(lk[Chs1]!=0){
-    	printf("  %.07d ",(int)round(Dt.sc[Chs1]));
-    	cout<<" "<<(Dt.f[Chs1]?SC[sc]:"new")<<"   ";
+	else if(!save[Chs]&&New[Chs]) color(8,0);
+    if(lk[Chs]!=0) printf("  %.07d ",(int)round(Dt.sc[Chs]));
+    if(lk[Chs]!=0){
+    	cout<<" "<<(Dt.f[Chs]?SC[sc]:"new")<<"   ";
 		move(26,ls+15);
-	    string acc="  ACC "+to_string((int)(Dt.acc[Chs1]*10000))+"%";
+	    string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
 	    if(acc=="  ACC 0%") acc="  ACC 000%";
 	    acc.insert(acc.size()-3,".");
 	    cout<<acc<<"    ";
@@ -296,13 +296,13 @@ void Print_Move(int Chs1,int Chs2,bool lock){
 	    move(26,ls+17);
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
-	    if(Dt.sc[Chs1]!=0){
+	    if(Dt.sc[Chs]!=0){
 	    	move(26,ls+25);
 	    	color(4,0);
 	    	cout<<"  666，这个入是桂";
 		}
 	}
-    move(0,2*min(MusicSum,Chs1+6));
+    move(0,2*min(MusicSum,Chs+6));
     return;
 }
 void Speed(int n){
@@ -428,7 +428,7 @@ void Vol_UI(){
 	cout<<"音量\n  ";
 	for(int i=0;i<50;i++) cout<<"-";
 	int key=0;
-	while(true){
+	while(1){
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('A')||K(VK_LEFT) && vol>0) Vol(false);
 		else if(K('D')||K(VK_RIGHT) && vol<50) Vol(true);
@@ -549,7 +549,7 @@ int Play(int Chs){
 	Sleep(pre[Chs]);
 	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
-	while(true){
+	while(1){
 		in>>x;
 		if(!x) break;
 		in>>y;
@@ -582,7 +582,7 @@ int Play(int Chs){
 	cout<<"  ------------------\n";
 	cout<<"\n   A S D F G H J K\n\n\n空格/回车 暂停\nESC 退出";
     combo=0;
-    int flsh=0; 
+    int flsh=0;
     using namespace std::chrono;
     using clock=steady_clock;
     auto cycle_duration=microseconds((int)spd[Chs]);
@@ -631,7 +631,7 @@ int Play(int Chs){
 			cout<<"音量";
 			int D=2;
 			while(K(' ')||K(VK_RETURN));
-			while(true){
+			while(1){
 				auto now=clock::now();
                 auto remaining=next_cycle-now;
                 next_cycle+=cycle_duration;
@@ -814,7 +814,7 @@ int Play(int Chs){
 				if(msic[int(t+8-k)][j].drc!=2) continue;
 				int i=msic[int(t+8-k)][j].pl-8;
 				move(2*i+1,10-k);
-				int cl=msic[int(t+8-k)][j].cl; 
+				int cl=msic[int(t+8-k)][j].cl;
 				if(cl==1){
 					color(11,0);
 					cout<<"↑";
@@ -991,7 +991,7 @@ int Play(int Chs){
 	move(37,0);
     cout<<"             ";
     int D=0;
-	while(true){
+	while(1){
 		while(K('A')||K(VK_LEFT)||K('D')||K(VK_RIGHT)||K(' ')||K(VK_RETURN));
 		color(15,0);
 		if(D==0) color(0,15);
@@ -1043,12 +1043,12 @@ int main(){
     mode&=~ENABLE_QUICK_EDIT_MODE;
     SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),mode);
 	srand(time(NULL));
+	getSystemName();
 	system("title C-Tempo");
     if(!bk) setsize(70,21);
     else setsize_(68,18);
     showcursor(false);
     SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
-    getSystemName();
 	/*
 	垃圾桶
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
@@ -1078,12 +1078,12 @@ int main(){
 	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
 	if(Music) kick(999,11,true);
 	int Chs=0;
-	string caidan="\0";
+	string caidan;
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
-	while(true){
+	while(1){
 		int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
-		while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('N'));
+		while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('S')||K(VK_DOWN)){
 			kick(999,5,true);
 			Print_Move(nxt,Chs,false);
@@ -1156,6 +1156,8 @@ int main(){
 					kick(999,12,true);
 					f=Play(Chs);
 				}
+				Main_List_Print(Chs);
+				Print_Move(Chs,Chs,true);
 			}
 		}
 		if(K('B')) caidan.push_back('b');
@@ -1166,7 +1168,7 @@ int main(){
 		if(K(VK_DOWN)) caidan.push_back('d');
 		if(caidan.find("uuddlrlrbaba")!=string::npos){
 			caidan.clear();
-			if(MessageBox(NULL," 以下为彩蛋内容。\n 极少数人群有可能在强光刺激下引发光敏性癫痫，\n 如果感到不适，请立即退出！\n 确定继续吗？","警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
+			if(MessageBox(NULL,"  以下为彩蛋内容\n  极少数人群会在强光刺激下诱发光敏性癫痫\п 如果感到不适请立即退出！\n  确定继续吗？"," 警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
 			while(true){
 				if(K(VK_ESCAPE)) break;
 				char clor1,clor2;
@@ -1232,11 +1234,8 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
-		if(K('N')){
-			char key='\0';
-			while(key!='n'&&key!='N') key=getch();
-		}
-		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('N'));
+		if(K('N')) FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
 	}
 	return 0;
 }
