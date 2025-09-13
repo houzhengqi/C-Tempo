@@ -123,8 +123,9 @@ void showcursor(bool visible){
     return;
 }
 void setsize(int col,int row){
-	char cmd[11451];
-	sprintf(cmd,"mode con cols=%d lines=%d",col,row);
+	char cmd[1145];
+	//sprintf(cmd,"mode con cols=%d lines=%d",col,row);
+	sprintf(cmd,"mode %d,%d",col,row);
 	system(cmd);
 	return;
 }
@@ -167,7 +168,7 @@ double Rks(){
     double sum=0;
     int ans=0;
     for(int i=0;i<MusicSum;i++) ans+=!lk[i];
-    for(int i=MusicSum-1;i>=MusicSum-3;i--) sum+=d[i];
+    for(int i=0;i>=MusicSum;i--) sum+=d[i];
     return sum/ans;
 }
 void Main_List_Print(int Chs){
