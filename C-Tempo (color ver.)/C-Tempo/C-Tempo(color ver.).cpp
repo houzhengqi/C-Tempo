@@ -41,6 +41,15 @@ string grd[5][7]={"FFFF"," CCC","BBB "," AA "," SSS","V  V","  PAP",
 				  "FFFF","C   ","BBB ","AAAA"," SS ","V  V","PAPAP",
 				  "F   ","C   ","B  B","A  A","   S","V  V","  A  ",
 				  "F   "," CCC","BBB ","A  A","SSS "," VV ","  P  "};
+void clrscr(){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
+    DWORD size=csbi.dwSize.X*csbi.dwSize.Y,num=0;
+    COORD pos={0,0};
+    FillConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE),' ',size,pos,&num);
+    FillConsoleOutputAttribute(GetStdHandle(STD_OUTPUT_HANDLE),csbi.wAttributes,size,pos,&num);
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
 bool isConsoleFocused(){
 	GUITHREADINFO guiInfo;
     guiInfo.cbSize=sizeof(GUITHREADINFO);
@@ -50,11 +59,6 @@ bool isConsoleFocused(){
 }
 bool K(int VK){
 	return (isConsoleFocused()?(GetAsyncKeyState(VK)&0x8000)?true:false:false);
-}
-POINT getpos(){
-	POINT pos;
-	GetCursorPos(&pos);
-	return pos;
 }
 void move(int x,int y){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),{(SHORT)x,(SHORT)y});
@@ -134,6 +138,7 @@ void setsize(int col,int row){
 }
 void setsize_(int col,int row){
 	system("cls");
+	//clrscr();
 	HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
     SMALL_RECT windowSize={0,0,(SHORT)(col+2),(SHORT)(row+2)};
     SetConsoleWindowInfo(hConsole,TRUE,&windowSize);
@@ -573,6 +578,7 @@ int Play(int Chs){
 	}
 	int tm=0;
     system("cls");
+    //clrscr();
 	color(15,0);
 	cout<<"   Q W E R T Y U I\n\n";
 	cout<<"  ------------------\n";
@@ -621,6 +627,7 @@ int Play(int Chs){
 			is_paused=true;
             pause_start=clock::now();
 			system("cls");
+			//clrscr();
 			Stop();
 			color(15,0);
 			move(9,6);
@@ -698,6 +705,7 @@ int Play(int Chs){
             is_paused=false;
             Start();
 			system("cls");
+			//clrscr();
 			color(15,0);
 			cout<<"   Q W E R T Y U I\n\n";
 			cout<<"  ------------------\n";
@@ -1023,28 +1031,9 @@ int Play(int Chs){
 	}
 	return -1;
 }
-void help(){
-	system("echo 123>help.txt");
-	ofstream out("help.txt");
-	out.seekp(0);
-	out<<"R 保存缓存(搭配SAVE使用)\n";
-	out<<"W,S,A,D 控制方向\n";
-	out<<"上下左右键 控制方向\n";
-	out<<"空格/回车 选择\n";
-	out<<"M 切换演示/练习\n";
-	out<<"ESC退出\n";
-	out<<"Q 开启/关闭音效\n";
-	out<<"E 开启/关闭自动保存\n";
-	out<<"F 关闭边框(不可调回)";
-	out.close();
-	system("notepad help.txt");
-	system("del help.txt");
-	return;
-}
 int main(){
-	DWORD mode;
-	GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&mode);
-    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),mode&~ENABLE_QUICK_EDIT_MODE);
+	SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),GetWindowLongPtr(GetConsoleWindow(),GWL_STYLE)|ENABLE_EXTENDED_FLAGS);
+    SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
 	srand(time(NULL));
 	getSystemName();
 	system("title C-Tempo");
@@ -1055,7 +1044,6 @@ int main(){
 	/*
 	垃圾桶
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
-    SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
     */
 	color(15,0);
 	cout<<"\n\n             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
@@ -1070,7 +1058,9 @@ int main(){
 	cout<<"按下\"Q\"键禁音";
     move(55,18);
 	cout<<"  音效 : "<<(Music?"ON ":"OFF");
-	while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
+	while(!K(' ')&&!K(VK_RETURN)
+	/*&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)*/
+	){
 		if(K('Q')){
 			Music^=1;
 			if(Music) kick(999,5,true);
@@ -1079,7 +1069,9 @@ int main(){
 			while(K('Q'));
 		}
 	}
-	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
+	while(K(' ')||K(VK_RETURN)
+	/*||K(VK_RBUTTON)||K(VK_LBUTTON)*/
+	);
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	string caidan;
@@ -1117,6 +1109,7 @@ int main(){
 		if(K('C')){
 			kick(999,5,true);
 			system("cls");
+			//clrscr();
 			move(13,12);
 			cout<<"确定清除存档吗？(Y/N)";
 			while(true){
@@ -1229,6 +1222,7 @@ int main(){
 				//sprintf(cmd,"color %c%c",clor1,clor2);
 				//system(cmd);
 				system("cls");
+				//clrscr();
 				move(7,12);
 				cout<<"恭喜你发现了彩蛋，可以截个图炫耀一下";
 				sprintf(cmd,"color %c%c",clor1,clor2);
