@@ -82,7 +82,8 @@ void setvol(int vol){
 }
 void color(int ForgC,int BackC) {
 	WORD wColor=((BackC&0x0F)<<4)+(ForgC&0x0F);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor);//FOREGROUND_INTENSITY
+	//COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE
 	return;
 }
 void Vol_(bool V){
@@ -1161,12 +1162,13 @@ int main(){
 				Print_Move(Chs,Chs,true);
 			}
 		}
-		if(K('B')) caidan.push_back('b');
-		if(K('A')) caidan.push_back('a');
-		if(K(VK_LEFT)) caidan.push_back('l');
-		if(K(VK_RIGHT)) caidan.push_back('r');
-		if(K(VK_UP)) caidan.push_back('u');
-		if(K(VK_DOWN)) caidan.push_back('d');
+		else if(K('B')) caidan.push_back('b');
+		else if(K('A')) caidan.push_back('a');
+		else if(K(VK_LEFT)) caidan.push_back('l');
+		else if(K(VK_RIGHT)) caidan.push_back('r');
+		else if(K(VK_UP)) caidan.push_back('u');
+		else if(K(VK_DOWN)) caidan.push_back('d');
+		else caidan.clear();
 		if(caidan.find("uuddlrlrbaba")!=string::npos){
 			caidan.clear();
 			if(MessageBox(NULL,"  以下为彩蛋内容\n  极少数人群会在强光刺激下诱发光敏性癫痫\n 如果感到不适请立即退出！\n  确定继续吗？"," 警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
@@ -1177,22 +1179,22 @@ int main(){
 				if(c1>9){
 					switch(c1){
 						case 10:
-							clor1='A';
+							clor1='a';
 							break;
 						case 11:
-							clor1='B';
+							clor1='b';
 							break;
 						case 12:
-							clor1='C';
+							clor1='c';
 							break;
 						case 13:
-							clor1='D';
+							clor1='d';
 							break;
 						case 14:
-							clor1='E';
+							clor1='e';
 							break;
 						case 15:
-							clor1='F';
+							clor1='f';
 							break;
 					}
 				}
@@ -1200,29 +1202,30 @@ int main(){
 				if(c2>9){
 					switch(c2){
 						case 10:
-							clor2='A';
+							clor2='a';
 							break;
 						case 11:
-							clor2='B';
+							clor2='b';
 							break;
 						case 12:
-							clor2='C';
+							clor2='c';
 							break;
 						case 13:
-							clor2='D';
+							clor2='d';
 							break;
 						case 14:
-							clor2='E';
+							clor2='e';
 							break;
 						case 15:
-							clor2='F';
+							clor2='f';
 							break;
 					}
 				}
 				else clor2=c2+'0';
 				char cmd[1145];
-				sprintf(cmd,"color %c%c",clor1,clor2);
-				system(cmd);
+				color(rand()%256,rand()%256);
+				//sprintf(cmd,"color %c%c",clor1,clor2);
+				//system(cmd);
 				system("cls");
 				move(7,12);
 				cout<<"恭喜你发现了彩蛋，可以截个图炫耀一下";
@@ -1235,7 +1238,7 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
-		if(K('N')) FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
 	}
 	return 0;
