@@ -92,18 +92,6 @@ void color(int ForgC,int BackC) {
 	);
 	return;
 }
-void Vol_(bool V){
-	move(0,0);
-	if(V) vol=min(10,vol+1);
-	else vol=max(0,vol-1);
-	for(int i=0;i<vol;i++) cout<<" \n";
-	color(0,11);
-	for(int i=0;i<=10-vol;i++) cout<<" \n";
-	color(15,0);
-	move(0,12);
-	cout<<(10-vol)*10<<"    ";
-	return;
-}
 void Vol(bool V){
 	if(V){
 		vol=min(50,vol+1);
