@@ -1044,8 +1044,7 @@ void help(){
 int main(){
 	DWORD mode;
 	GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),&mode);
-    mode&=~ENABLE_QUICK_EDIT_MODE;
-    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),mode);
+    SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),mode&~ENABLE_QUICK_EDIT_MODE);
 	srand(time(NULL));
 	getSystemName();
 	system("title C-Tempo");
