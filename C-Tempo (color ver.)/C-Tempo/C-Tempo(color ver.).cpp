@@ -82,8 +82,10 @@ void setvol(int vol){
 }
 void color(int ForgC,int BackC) {
 	WORD wColor=((BackC&0x0F)<<4)+(ForgC&0x0F);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor);//FOREGROUND_INTENSITY
-	//COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor
+	//|FOREGROUND_INTENSITY // 差别不大
+	//|COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE //测试文字宽度
+	);
 	return;
 }
 void Vol_(bool V){
@@ -1056,6 +1058,7 @@ int main(){
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
     */
+	color(15,0);
 	cout<<"\n\n             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
 	cout<<"            C               T   E      M M M  P   P  O   O\n";
 	cout<<"            C      -----    T   EEEEE  M M M  PPPP   O   O\n";
