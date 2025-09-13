@@ -432,7 +432,7 @@ void Vol_UI(){
 	cout<<"ÒôÁ¿\n  ";
 	for(int i=0;i<50;i++) cout<<"-";
 	int key=0;
-	while(1){
+	while(true){
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('A')||K(VK_LEFT) && vol>0) Vol(false);
 		else if(K('D')||K(VK_RIGHT) && vol<50) Vol(true);
@@ -553,7 +553,7 @@ int Play(int Chs){
 	Sleep(pre[Chs]);
 	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
-	while(1){
+	while(true){
 		in>>x;
 		if(!x) break;
 		in>>y;
@@ -635,7 +635,7 @@ int Play(int Chs){
 			cout<<"ÒôÁ¿";
 			int D=2;
 			while(K(' ')||K(VK_RETURN));
-			while(1){
+			while(true){
 				auto now=clock::now();
                 auto remaining=next_cycle-now;
                 next_cycle+=cycle_duration;
@@ -995,7 +995,7 @@ int Play(int Chs){
 	move(37,0);
     cout<<"             ";
     int D=0;
-	while(1){
+	while(true){
 		while(K('A')||K(VK_LEFT)||K('D')||K(VK_RIGHT)||K(' ')||K(VK_RETURN));
 		color(15,0);
 		if(D==0) color(0,15);
@@ -1085,7 +1085,7 @@ int main(){
 	string caidan;
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
-	while(1){
+	while(true){
 		int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
 		while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('S')||K(VK_DOWN)){
