@@ -4,8 +4,12 @@
 #include <windows.h>
 #include <algorithm>
 #include <chrono>
-#include <conio.h>
 #include <fstream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <mmsystem.h>
 #pragma comment(lib,"winmm.lib")
 #pragma GCC optimize(2)
 using namespace std;
@@ -432,7 +436,7 @@ void kick(double t,int n,bool ui){
 	PlaySound(NULL,NULL,SND_PURGE);
 	char name[114];
 	sprintf(name,"..\\music\\Tap%d",n);
-	PlaySound(TEXT(name),NULL,SND_ASYNC|SND_FILENAME|SND_NOSTOP|SND_NODEFAULT);
+	PlaySound(name,NULL,SND_ASYNC|SND_FILENAME|SND_NOSTOP|SND_NODEFAULT);
 	return;
 }
 void getSystemName(){
