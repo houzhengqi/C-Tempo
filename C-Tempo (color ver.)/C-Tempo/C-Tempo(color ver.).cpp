@@ -1049,17 +1049,17 @@ int main(){
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
 		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
-	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
-	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
+	    	MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
+	    	if(MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
 				memset(&Dt,0,sizeof Dt);
 				saveData(&Dt,"data.dat");
 				MessageBox(GetConsoleWindow()," 操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 			else{
-				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！"," 清空存档",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
+				MessageBox(GetConsoleWindow(),"  你不要也得给我要！！！"," 清空存档",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
 				memset(&Dt,0,sizeof Dt);
 				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow()," 操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
+				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 		}
 	}
@@ -1148,7 +1148,7 @@ int main(){
 		else caidan.clear();
 		if(caidan.find("uuddlrlrbaba")!=string::npos){
 			caidan.clear();
-			if(MessageBox(GetConsoleWindow()," 以下为彩蛋内容\n 极少数人群会在强光刺激下诱发光敏性癫痫\n 如果感到不适请立即退出！\n 确定继续吗？"," 警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
+			if(MessageBox(GetConsoleWindow(),"  以下为彩蛋内容\n  极少数人群会在强光刺激下诱发光敏性癫痫\n  如果感到不适请立即退出！\n  确定继续吗？"," 警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
 			while(true){
 				if(K(VK_ESCAPE)) break;
 				char clor1,clor2;
