@@ -478,7 +478,6 @@ int Play(int Chs){
 	memset(MTsum,0,sizeof MTsum);
 	ifstream in;
 	if(Chs==0){
-		return 0;
 		in.open("0.txt");
 		if(Music){
 			mciSendString("open ..\\music\\4.mp3 alias 0",NULL,0,NULL);
@@ -500,7 +499,6 @@ int Play(int Chs){
 		}
 	}
 	if(Chs==3){
-		return 0;
 		in.open("3.txt");
 		if(Music){
 			mciSendString("open ..\\music\\3.mp3 alias 3",NULL,0,NULL);
