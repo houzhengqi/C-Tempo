@@ -300,24 +300,6 @@ void Print_Move(int Chs,int Chs2,bool lock){
 	    move(26,ls+17);
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
-	    if(Dt.sc[Chs]!=0||Dt.sc[Chs]!=0||Dt.f[Chs]!=0){
-	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONEXCLAMATION);
-	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION)==IDOK){
-	    		memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
-			}
-			else{
-				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！","清空存档",MB_OK);
-				memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
-			}
-		}
 	}
     move(0,2*min(MusicSum,Chs+6));
     return;
@@ -1060,6 +1042,26 @@ int main(){
 		}
 	}
 	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
+	for(int i=0;i<MusicSum;i++){
+		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
+	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONEXCLAMATION);
+	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION)==IDOK){
+	    		memset(&save,true,sizeof save);
+				memset(&New,false,sizeof New);
+				memset(&Dt,0,sizeof Dt);
+				saveData(&Dt,"data.dat");
+				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
+			}
+			else{
+				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！","清空存档",MB_OK);
+				memset(&save,true,sizeof save);
+				memset(&New,false,sizeof New);
+				memset(&Dt,0,sizeof Dt);
+				saveData(&Dt,"data.dat");
+				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
+			}
+		}
+	}
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	string caidan;
