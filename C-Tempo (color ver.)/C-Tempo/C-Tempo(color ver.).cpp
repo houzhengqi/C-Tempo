@@ -1059,9 +1059,7 @@ int main(){
 	cout<<"°´ÏÂ\"Q\"¼ü½ûÒô";
     move(55,18);
 	cout<<"  ÒôĞ§ : "<<(Music?"ON ":"OFF");
-	while(!K(' ')&&!K(VK_RETURN)
-	/*&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)*/
-	){
+	while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
 		if(K('Q')){
 			Music^=1;
 			if(Music) kick(999,5,true);
@@ -1070,9 +1068,7 @@ int main(){
 			while(K('Q'));
 		}
 	}
-	while(K(' ')||K(VK_RETURN)
-	/*||K(VK_RBUTTON)||K(VK_LBUTTON)*/
-	);
+	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	string caidan;
