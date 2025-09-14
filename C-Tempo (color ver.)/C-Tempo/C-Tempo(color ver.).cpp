@@ -1042,31 +1042,31 @@ int main(){
 		}
 	}
 	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
-	for(int i=0;i<MusicSum;i++){
-		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
-	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONEXCLAMATION);
-	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION)==IDOK){
-	    		memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
-			}
-			else{
-				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！","清空存档",MB_OK);
-				memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK);
-			}
-		}
-	}
 	if(Music) kick(999,11,true);
 	int Chs=0;
 	string caidan;
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
+	for(int i=0;i<MusicSum;i++){
+		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
+	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
+	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
+	    		memset(&save,true,sizeof save);
+				memset(&New,false,sizeof New);
+				memset(&Dt,0,sizeof Dt);
+				saveData(&Dt,"data.dat");
+				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
+			}
+			else{
+				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！","清空存档",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
+				memset(&save,true,sizeof save);
+				memset(&New,false,sizeof New);
+				memset(&Dt,0,sizeof Dt);
+				saveData(&Dt,"data.dat");
+				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
+			}
+		}
+	}
 	while(true){
 		int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
 		while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT));
