@@ -6,7 +6,6 @@
 #include <chrono>
 #include <conio.h>
 #include <fstream>
-//#define K(VK_NONAME) ((GetAsyncKeyState(VK_NONAME)&0x8000)?true:false)&&GetForegroundWindow()==GetConsoleWindow()
 #pragma comment(lib,"winmm.lib")
 #pragma GCC optimize(2)
 using namespace std;
