@@ -135,6 +135,7 @@ void setsize_(int col,int row){
 void saveData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"wb");
     if(file==NULL){
+    	system("cd.>nul");
 		system("fsutil file createnew data.dat 0");
 		saveData(data,filename);
 		return;
@@ -146,6 +147,7 @@ void saveData(GameData* data,const char* filename){
 void loadData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"rb");
     if(file==NULL){
+    	system("cd.>nul");
     	system("fsutil file createnew data.dat 0");
 		loadData(data,filename);
 		return;
