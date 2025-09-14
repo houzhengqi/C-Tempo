@@ -184,23 +184,14 @@ double Rks(){
 void Main_List_Print(int Chs){
 	if(!border) setsize(48,26);
 	else setsize_(45,26);
-	if(Chs==0) color(14,0);
-	else color(15,0);
-	cout<<"-------------------------"<<endl;
 	color(15,0);
+	cout<<"-------------------------"<<endl;
 	for(int i=0;i<MusicSum;i++){
-		if(Chs==i) color(14,0);
-		else color(15,0);
 		cout<<Name[i];
-		if(Chs==i) cout<<"<";
-		for(int j=1;j<=20-Name[i].size();j++) cout<<" ";
-		if(i==0) move(20,1);
+		for(int j=1;j<=20-Name[i].size();j++) cout<<' ';
 		cout<<(!lk[i]?"\blocked":"Lv.");
 		if(lk[i]) printf("%.2d ",Lv[i]);
-		cout<<endl;
-		if(Chs==i+1||Chs==i) color(14,0);
-		else color(15,0);
-		cout<<"-------------------------"<<endl;
+		cout<<endl<<"-------------------------"<<endl;
 	}
 	color(15,0);
 	move(0,Chs*2);
@@ -222,8 +213,8 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<"\n-------------------------                  ";
     move(0,2*Chs);
     color(14,0);
-    cout<<"-------------------------                      \n"<<Name[Chs]<<"<";
-    for(int j=1;j<=19-Name[Chs].size();j++) cout<<" ";
+    cout<<"-------------------------                      \n"<<Name[Chs]<<'<';
+    for(int j=1;j<=19-Name[Chs].size();j++) cout<<' ';
     cout<<(!lk[Chs]?"locked ":" Lv.");
     if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
     cout<<"\n-------------------------                   ";
