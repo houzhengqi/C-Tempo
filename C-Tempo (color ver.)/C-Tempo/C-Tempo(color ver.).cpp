@@ -345,7 +345,7 @@ void Print(string s,int x,int y){
 		for(int i=1;i<=5;i++){
 			if(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON)) skip=0;
 			char t=rand()%94+33;
-			cout<<t<<"\b";
+			cout<<t<<'\b';
 			Sleep(skip*10);
 		}
 		color(15,0);
@@ -389,7 +389,7 @@ void PrintGrd(int sc){
 			char t=rand()%94+33;
 			for(int i=0;i<grd[k-1][sc].size();i++){
 				if(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON)) skip=0;
-				if(grd[k-1][sc][i]==' ') cout<<" ";
+				if(grd[k-1][sc][i]==' ') cout<<' ';
 				else cout<<t;
 			}
 			Sleep(skip*1);
@@ -407,16 +407,16 @@ void Vol_UI(){
 	if(!bk) setsize(66,5);
 	else setsize_(66,2);
 	move(2,1);
-	for(int i=0;i<50;i++) cout<<"-";
+	for(int i=0;i<50;i++) cout<<'-';
 	cout<<"\n [";
 	color(0,11);
-	for(int i=1;i<=vol;i++) cout<<" ";
+	for(int i=1;i<=vol;i++) cout<<' ';
 	color(15,0);
 	move(52,2);
-	cout<<"]  "<<vol*2<<"%";
+	cout<<"]  "<<vol*2<<'%';
 	move(60,2);
 	cout<<"ÒôÁ¿\n  ";
-	for(int i=0;i<50;i++) cout<<"-";
+	for(int i=0;i<50;i++) cout<<'-';
 	int key=0;
 	while(true){
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
@@ -782,11 +782,11 @@ int Play(int Chs){
 				}
 				else if(cl==2){
 					color(14,0);
-					cout<<".";
+					cout<<'.';
 				}
 				else if(cl==3){
 					color(11,0);
-					cout<<"X";
+					cout<<'X';
 				}
 				else if(cl<0){
 					if(msic[int(t+k)+msic[int(t+k)][j].cl][msic[int(t+k)][j].len].gt==-1){
@@ -794,7 +794,7 @@ int Play(int Chs){
 						msic[int(t+k)][j].gt=-1;
 					}
 					else color(0,11);
-					cout<<" ";
+					cout<<' ';
 					color(15,0);
 				}
 				if(k<=2&&!K(btm[i])) msic[int(t+k)][j].can=1;
@@ -814,11 +814,11 @@ int Play(int Chs){
 				}
 				else if(cl==2){
 					color(14,0);
-					cout<<".";
+					cout<<'.';
 				}
 				else if(cl==3){
 					color(11,0);
-					cout<<"X";
+					cout<<'X';
 				}
 				else if(cl<0){
 					if(msic[int(t+8-k)+msic[int(t+8-k)][j].cl][msic[int(t+8-k)][j].len].gt==-1){
@@ -826,7 +826,7 @@ int Play(int Chs){
 						msic[int(t+8-k)][j].gt=-1;
 					}
 					else color(0,11);
-					cout<<" ";
+					cout<<' ';
 					color(15,0);
 				}
 				if(k>=6&&!K(btm[i+8])) msic[int(t+8-k)][j].can=1;
@@ -846,7 +846,7 @@ int Play(int Chs){
 			if(K(btm[i])&&msic[int(t)][j].gt!=-1||autoplay){
 				if(msic[int(t)][j].can||msic[int(t)][j].gt||autoplay){
 					color(14,0);
-					cout<<"O";
+					cout<<'O';
 					int Tap;
 					if(msic[int(t)][j].cl==1) Tap=14;
 					if(msic[int(t)][j].cl==2) Tap=3;
@@ -867,13 +867,13 @@ int Play(int Chs){
 				}
 				else{
 					color(15,0);
-					cout<<"v";
+					cout<<'v';
 				}
 			}
 			else {
 				msic[int(t)][j].can=1;
 				color(15,0);
-				cout<<"v";
+				cout<<'v';
 			}
 		}
 		move(3,11);
@@ -887,11 +887,17 @@ int Play(int Chs){
 					move(i*2+1,11);
 					msic[int(t-1)][j].gt=-1;
 					if(msic[int(t-1)][j].cl<0) msic[int(t-1)+msic[int(t-1)][j].cl][msic[int(t-1)][j].len].gt=-1;
-					cout<<"x";
+					cout<<'x';
 					combo=0;
 				}
 			}
-		else for(int j=1;j<=MTsum[int(t)];j++) if(!msic[int(t)][j].gt) pfct++,msic[int(t)][j].gt=1;
+		else
+			for(int j=1;j<=MTsum[int(t)];j++){
+				if(!msic[int(t)][j].gt){
+					pfct++;
+					msic[int(t)][j].gt=1;
+				}
+			}
 		mxcmb=max(mxcmb,combo);
 		color(15,0);
 		move(2,12);
@@ -918,19 +924,19 @@ int Play(int Chs){
 		color(15,0);
 		if(refresh){
 			move(18,3);
-			cout<<" ";
+			cout<<' ';
 			move(18,4);
-			cout<<" ";
+			cout<<' ';
 			move(18,5);
-			cout<<" ";
+			cout<<' ';
 			move(18,6);
-			cout<<" ";
+			cout<<' ';
 			move(18,7);
-			cout<<" ";
+			cout<<' ';
 			move(18,8);
-			cout<<" ";
+			cout<<' ';
 			move(18,9);
-			cout<<" ";
+			cout<<' ';
 		}
     }
     end();
@@ -964,7 +970,7 @@ int Play(int Chs){
 	string mxcb="MaxCombo "+to_string(mxcmb);
 	string pf="Perfect "+to_string(pfct);
 	string miss="Miss "+to_string(TOT-pfct);
-	string acc="ACC "+to_string(pfct*10000/TOT)+"%";
+	string acc="ACC "+to_string(pfct*10000/TOT)+' ';
 	acc.insert(acc.size()-3,".");
 	if(Music){
 		if(Rks()>=20) mciSendString("open ..\\music\\d.mp3 alias LO",NULL,0,NULL);
