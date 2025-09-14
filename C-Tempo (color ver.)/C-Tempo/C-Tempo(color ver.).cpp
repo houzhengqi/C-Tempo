@@ -1024,6 +1024,8 @@ int main(){
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
     */
 	color(15,0);
+	system("cls");
+	//clrscr();
 	cout<<"\n\n             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
 	cout<<"            C               T   E      M M M  P   P  O   O\n";
 	cout<<"            C      -----    T   EEEEE  M M M  PPPP   O   O\n";
