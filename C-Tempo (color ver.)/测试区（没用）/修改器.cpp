@@ -65,9 +65,9 @@ int main(){
 		&&!K(VK_NUMPAD5)&&!K(VK_NUMPAD6)&&!K(VK_NUMPAD7)&&!K(VK_NUMPAD8)&&!K(VK_NUMPAD9)
 		&&!K('0')&&!K('1')&&!K('2')&&!K('3')&&!K('4')
 		&&!K('5')&&!K('6')&&!K('7')&&!K('8')&&!K('9'));
-		COORD pos={0,0};MV;
-		cout<<endl<<"                                                                                                                                                                                                                                                                                                                                                                                       ";
-		MV;
+		a:
+		color(15,0);
+		system("cls");
 		if(K('D')||K(VK_RIGHT)) POS.y=min(19,POS.y+1);
 		if(K('A')||K(VK_LEFT)) POS.y=max(0,POS.y-1);
 		if(K('W')||K(VK_UP)) POS.x=max(0,POS.x-1);
@@ -85,6 +85,7 @@ int main(){
 					cin>>cnt;
 					Dt.acc[i]=fmin((double)cnt/100,1.0);
 					Dt.f[i]=true;
+					goto a;
 				}
 			}
 			color(15,0);
@@ -119,17 +120,21 @@ int main(){
 					cin>>cnt;
 					Dt.sc[i]=min(1000000,cnt);
 					Dt.f[i]=true;
+					goto a;
 				}
 			}
 			color(15,0);
 			cout<<" ";
 		}
 		saveData(&Dt,"data.dat");
+		
 		while(K('A')||K('D')||K('W')||K('S')||K(VK_LEFT)||K(VK_RIGHT)
 		||K(VK_NUMPAD0)||K(VK_NUMPAD1)||K(VK_NUMPAD2)||K(VK_NUMPAD3)||K(VK_NUMPAD4)
 		||K(VK_NUMPAD5)||K(VK_NUMPAD6)||K(VK_NUMPAD7)||K(VK_NUMPAD8)||K(VK_NUMPAD9)
 		||K('0')||K('1')||K('2')||K('3')||K('4')
 		||K('5')||K('6')||K('7')||K('8')||K('9'));
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+		
 	}
 	return 0;
 }

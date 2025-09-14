@@ -293,7 +293,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
 	    move(26,ls+17);
 	    color(7,0);
 	    cout<<"  tips:"<<tips[rand()%10];
-	    if(Dt.sc[Chs]!=0){
+	    if(Dt.sc[Chs]!=0||Dt.sc[Chs]!=0||Dt.f[Chs]!=0){
 	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONEXCLAMATION);
 	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION)==IDOK){
 	    		memset(&save,true,sizeof save);
@@ -1233,8 +1233,8 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
-		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
+		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	}
 	return 0;
 }
