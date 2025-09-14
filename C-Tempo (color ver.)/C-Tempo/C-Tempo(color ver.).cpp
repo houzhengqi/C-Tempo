@@ -142,6 +142,8 @@ void saveData(GameData* data,const char* filename){
 		saveData(data,filename);
 		return;
 	}
+	memset(&save,true,sizeof save);
+	memset(&New,false,sizeof New);
     fwrite(data,sizeof data,1,file);
     fclose(file);
     return;
@@ -1057,16 +1059,12 @@ int main(){
 		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
 	    	MessageBox(GetConsoleWindow()," 你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
 	    	if(MessageBox(GetConsoleWindow()," 你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
-	    		memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
 				memset(&Dt,0,sizeof Dt);
 				saveData(&Dt,"data.dat");
 				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 			else{
 				MessageBox(GetConsoleWindow()," 你不要也得给我要！！！","清空存档",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
-				memset(&save,true,sizeof save);
-				memset(&New,false,sizeof New);
 				memset(&Dt,0,sizeof Dt);
 				saveData(&Dt,"data.dat");
 				MessageBox(GetConsoleWindow(),"操作成功完成！","清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
@@ -1111,8 +1109,6 @@ int main(){
 			while(true){
 				bool key=K('Y');
 				if(key){
-					memset(&save,true,sizeof save);
-					memset(&New,false,sizeof New);
 					memset(&Dt,0,sizeof Dt);
 					saveData(&Dt,"data.dat");
 					break;
@@ -1135,11 +1131,7 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
-		if(K('R')){
-			saveData(&Dt,"data.dat");
-			memset(&save,true,sizeof save);
-			memset(&New,false,sizeof New);
-		}
+		if(K('R')) saveData(&Dt,"data.dat");
 		if(K(' ')||K(VK_RETURN)){
 			if(lk[Chs]==0) Print_Move(Chs,Chs,false);
 			else{
