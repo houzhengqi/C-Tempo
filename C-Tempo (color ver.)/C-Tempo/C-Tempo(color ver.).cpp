@@ -315,26 +315,6 @@ void Print_Move(int Chs,int Chs2,bool lock){
     move(0,2*min(MusicSum,Chs+6));
     return;
 }
-void Speed(int n){
-	char c[11451];
-	sprintf(c,"set 1 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"set 2 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	//sprintf(c,"set 3 speed %d",n);
-	//mciSendString(c,NULL,0,NULL);
-	//sprintf(c,"set 4 speed %d",n);
-	//mciSendString(c,NULL,0,NULL);
-	sprintf(c,"set 5 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"set 6 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"set 7 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"set 8 speed %d",n);
-	mciSendString(c,NULL,0,NULL);
-	return;
-}
 void Stop(){
 	mciSendString("pause 1",NULL,0,NULL);
     mciSendString("pause 2",NULL,0,NULL);
