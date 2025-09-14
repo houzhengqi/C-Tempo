@@ -691,7 +691,7 @@ int Play(int Chs){
 		move(2,0);
 		for(int i=9;i<=16;i++){
 			color(15,0);
-			cout<<" ";
+			cout<<' ';
 			if(K(btm[i])||autoplay&&ky[i]) color(0,15);
 			else color(15,0);
 			cout<<btm[i];
@@ -711,7 +711,7 @@ int Play(int Chs){
 					move(i*2+1,1);
 					msic[int(t-1)][j].gt=-1;
 					if(msic[int(t-1)][j].cl<0) msic[int(t-1)+msic[int(t-1)][j].cl][msic[int(t-1)][j].len].gt=-1;
-					cout<<"x";
+					cout<<'x';
 					combo=0;
 				}
 			}
@@ -725,7 +725,7 @@ int Play(int Chs){
 			if(K(btm[i+8])&&msic[int(t)][j].gt!=-1||autoplay){
 				if(msic[int(t)][j].can||msic[int(t)][j].gt||autoplay){
 					color(14,0);
-					cout<<"O";
+					cout<<'O';
 					int Tap;
 					if(msic[int(t)][j].cl==1) Tap=14;
 					if(msic[int(t)][j].cl==2) Tap=3;
@@ -746,13 +746,13 @@ int Play(int Chs){
 				}
 				else{
 					color(15,0);
-					cout<<"^";
+					cout<<'^';
 				}
 			}
 			else{
 				msic[int(t)][j].can=1;
 				color(15,0);
-				cout<<"^";
+				cout<<'^';
 			}
 		}
 		for(int k=7;k>=1;k--){
@@ -890,7 +890,7 @@ int Play(int Chs){
 		move(2,12);
 		for(int i=1;i<=8;i++){
 			color(15,0);
-			cout<<" ";
+			cout<<' ';
 			if(K(btm[i])||autoplay&&ky[i]) color(0,15);
 			else color(15,0);
 			cout<<btm[i];
