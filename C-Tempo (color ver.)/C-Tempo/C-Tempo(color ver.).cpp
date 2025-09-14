@@ -52,6 +52,7 @@ void clrscr(){
     FillConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE),' ',size,pos,&num);
     FillConsoleOutputAttribute(GetStdHandle(STD_OUTPUT_HANDLE),csbi.wAttributes,size,pos,&num);
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+	return;
 }
 bool isConsoleFocused(){
 	GUITHREADINFO guiInfo;
