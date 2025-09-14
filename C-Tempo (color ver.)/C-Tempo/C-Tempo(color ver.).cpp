@@ -31,7 +31,7 @@ bool lk[114]={false,true,true,false,false,true,true,true,true};
 double spd[114]={0,12700,7421,0,0,13700,13000,8850,10700};
 int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
-bool autoplay,ky[20],SAVE=true,Music=true,bk=true,save[114],New[114],refresh;
+bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
@@ -179,7 +179,7 @@ double Rks(){
     return sum/ans;
 }
 void Main_List_Print(int Chs){
-	if(!bk) setsize(48,26);
+	if(!border) setsize(48,26);
 	else setsize_(45,26);
 	if(Chs==0) color(14,0);
 	else color(15,0);
@@ -228,11 +228,11 @@ void Print_Move(int Chs,int Chs2,bool lock){
         move(26,ls+i);
         cout<<"                      ";
     }
-    if(bk) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
+    if(border) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
     else ls=2*max(0,Chs-6);
     if(Chs+6>MusicSum){
 		move(26,2*MusicSum-25);
-    	if(bk) ls=2*MusicSum-28;
+    	if(border) ls=2*MusicSum-28;
     	else ls=0;
 	}
 	move(26,2*max(0,Chs-6));
@@ -244,7 +244,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     move(26,ls+2);
     cout<<"  SAVE : "<<(SAVE?"ON":"OFF");
     move(26,ls+3);
-    cout<<"  BK : "<<(bk?"ON":"OFF");
+    cout<<"  BORDER : "<<(border?"ON":"OFF");
     move(26,ls+5);
     cout<<"  R 保存缓存(搭配SAVE)";
     move(26,ls+6);
@@ -397,7 +397,7 @@ void PrintGrd(int sc){
 }
 void Vol_UI(){
 	color(15,0);
-	if(!bk) setsize(66,5);
+	if(!border) setsize(66,5);
 	else setsize_(66,2);
 	move(2,1);
 	for(int i=0;i<50;i++) cout<<'-';
@@ -455,7 +455,7 @@ void getSystemName(){
 	return;
 }
 int Play(int Chs){
-    if(!bk) setsize(23,17);
+    if(!border) setsize(23,17);
     else setsize_(20,14);
 	color(15,0);
 	cout<<"前奏...";
@@ -648,7 +648,7 @@ int Play(int Chs){
 						kick(999,1,true);
 						Vol_UI();
 						kick(999,12,true);
-						if(!bk) setsize(23,17);
+						if(!border) setsize(23,17);
 						else setsize_(20,14);
 						break;
 					}
@@ -947,7 +947,7 @@ int Play(int Chs){
 	}
 	if(autoplay) mxcmb=0,pfct=0,score=0;
     color(15,0);
-	if(!bk) setsize(60,20);
+	if(!border) setsize(60,20);
 	else setsize_(57,17);
     move(37,0);
     cout<<"Click to Skip";
@@ -1015,7 +1015,7 @@ int main(){
 	srand(time(NULL));
 	getSystemName();
 	system("title C-Tempo");
-    if(!bk) setsize(70,21);
+    if(!border) setsize(70,21);
     else setsize_(68,18);
     showcursor(false);
     SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
@@ -1124,11 +1124,11 @@ int main(){
 			Print_Move(Chs,Chs,true);
 		}
 		if(K('F')){
-			if(!bk){
+			if(!border){
 				MessageBox(GetConsoleWindow(),"已经没有边框了~","提示",MB_OK);
 				continue;
 			}
-			bk=false;
+			border=false;
 			MusicSum=12;
 			ls=0;
 			Chs=min(11,Chs);
