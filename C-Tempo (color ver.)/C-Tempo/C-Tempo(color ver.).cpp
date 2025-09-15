@@ -1090,8 +1090,9 @@ int main(){
 			else{
 				while(K(' ')||K(VK_RETURN));
 				int f=1;
-				//spd[Chs]=spd[Chs]*10/(speed*10);
-				//pre[Chs]=pre[Chs]*10/(speed*10);
+				//定义一个double的speed
+				//spd[Chs]=spd[Chs]/speed;
+				//pre[Chs]=pre[Chs]/speed;
 				while(f){
 					kick(999,12,true);
 					Vol_UI();
