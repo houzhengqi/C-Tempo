@@ -34,7 +34,7 @@ int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
-double speed=1.1;
+double speed=1.0;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
