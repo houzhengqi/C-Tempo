@@ -490,7 +490,6 @@ int Play(int Chs){
 				}
 		}
 	}
-	int tm=0;
     system("cls");
     //clrscr();
 	color(15,0);
