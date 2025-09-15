@@ -332,11 +332,11 @@ void PrintBig(int n,int m){
 }
 void PrintGrd(int sc){
 	srand(time(0));
-	if(sc<720000) sc=0;
-	else if(sc<820000) sc=1;
-	else if(sc<880000) sc=2;
-	else if(sc<920000) sc=3;
-	else if(sc<960000) sc=4;
+	if(sc<100000) sc=0;
+	else if(sc<300000) sc=1;
+	else if(sc<500000) sc=2;
+	else if(sc<700000) sc=3;
+	else if(sc<900000) sc=4;
 	else if(sc<1000000) sc=5;
 	else sc=6;
 	for(int k=5;k>=1;k--){
@@ -465,7 +465,7 @@ int Play(int Chs){
 	}
 	if(Music){
 		mciSendString("play music",NULL,0,NULL);
-		setSpeed(speed);
+		//setSpeed(speed);
 		setvol(vol*20);
 		Sleep(pre[Chs]);
 	}
@@ -1091,7 +1091,8 @@ int main(){
 			else{
 				while(K(' ')||K(VK_RETURN));
 				int f=1;
-				spd[Chs]=(speed<1?spd[Chs]/speed+2200:(speed==1?spd[Chs]:spd[Chs]*speed-4100));
+				//spd[Chs]=(speed<1?spd[Chs]/speed:(speed==1?spd[Chs]:spd[Chs]*speed));
+				//pre[Chs]=(speed<1?pre[Chs]/speed:(speed==1?pre[Chs]:pre[Chs]*speed));
 				while(f){
 					kick(999,12,true);
 					Vol_UI();
