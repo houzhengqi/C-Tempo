@@ -89,9 +89,8 @@ void setSpeed(double speed){
 	mciSendString(cmd,NULL,0,NULL);
 	return;
 }
-void color(int ForgC,int BackC) {
-	WORD wColor=((BackC&0x0F)<<4)+(ForgC&0x0F);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),wColor
+void color(int ForgC,int BackC){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F)
 	//|FOREGROUND_INTENSITY // 差别不大
 	//|COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE //测试文字宽度
 	);
