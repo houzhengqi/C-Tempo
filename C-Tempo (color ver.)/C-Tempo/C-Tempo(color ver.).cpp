@@ -1112,7 +1112,6 @@ int main(){
 		else caidan.clear();
 		if(caidan.find("uuddlrlrbaba")!=string::npos){
 			caidan.clear();
-			if(MessageBox(GetConsoleWindow(),"  以下为彩蛋内容\n  极少数人群会在强光刺激下诱发光敏性癫痫\n  如果感到不适请立即退出！\n  确定继续吗？"," 警告",MB_ICONWARNING|MB_YESNO|MB_SYSTEMMODAL)==IDNO) continue;
 			while(true){
 				if(K(VK_ESCAPE)) break;
 				char clor1,clor2;
