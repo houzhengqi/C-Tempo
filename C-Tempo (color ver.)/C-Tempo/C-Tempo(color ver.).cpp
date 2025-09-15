@@ -1010,7 +1010,7 @@ int main(){
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
-		if(Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0){
+		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]){
 	    	MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
 	    	if(MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
 				memset(&Dt,0,sizeof Dt);
