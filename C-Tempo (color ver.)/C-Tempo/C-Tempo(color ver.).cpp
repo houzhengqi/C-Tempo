@@ -479,7 +479,8 @@ int Play(int Chs){
 		TOT+=y;
 		for(int i=MTsum[x]-y+1;i<=MTsum[x];i++){
 			in>>msic[x][i].drc>>msic[x][i].pl>>msic[x][i].cl>>msic[x][i].len;
-			msic[x][i].can=1-(msic[x][i].cl!=2);msic[x][i].gt=0;
+			msic[x][i].can=1-(msic[x][i].cl!=2);
+			msic[x][i].gt=0;
 			if(msic[x][i].cl==3)
 				for(int j=1;j<=msic[x][i].len;j++){
 					msic[x+j][++MTsum[x+j]]=msic[x][i];
