@@ -34,7 +34,6 @@ int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
-double speed=1.0;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -1091,8 +1090,8 @@ int main(){
 			else{
 				while(K(' ')||K(VK_RETURN));
 				int f=1;
-				//spd[Chs]=(speed<1?spd[Chs]/speed:(speed==1?spd[Chs]:spd[Chs]*speed));
-				//pre[Chs]=(speed<1?pre[Chs]/speed:(speed==1?pre[Chs]:pre[Chs]*speed));
+				//spd[Chs]=spd[Chs]*10/(speed*10);
+				//pre[Chs]=pre[Chs]*10/(speed*10);
 				while(f){
 					kick(999,12,true);
 					Vol_UI();
