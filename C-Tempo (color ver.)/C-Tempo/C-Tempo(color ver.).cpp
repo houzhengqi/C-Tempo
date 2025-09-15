@@ -862,7 +862,7 @@ int Play(int Chs){
 			ot=0;
 		}
 		color(15,0);
-		if(int(t+0.1)!=int(t)||t==2)flsh=1;
+		if(int(t+0.1)!=int(t)||t==2) flsh=1;
 		else flsh=0;
 		color(15,0);
 		if(refresh){
