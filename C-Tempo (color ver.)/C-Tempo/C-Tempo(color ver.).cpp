@@ -34,6 +34,7 @@ int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
+double speed=1.1;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -69,23 +70,23 @@ void move(int x,int y){
 	return;
 }
 void setvol(int vol){
-	char c[11451];
-	sprintf(c,"setaudio 1 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"setaudio 2 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
-	//sprintf(c,"setaudio 3 volume to %d",vol);
-	//mciSendString(c,NULL,0,NULL);
-	//sprintf(c,"setaudio 4 volume to %d",vol);
-	//mciSendString(c,NULL,0,NULL);
-	sprintf(c,"setaudio 5 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"setaudio 6 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"setaudio 7 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
-	sprintf(c,"setaudio 8 volume to %d",vol);
-	mciSendString(c,NULL,0,NULL);
+	char cmd[114];
+	sprintf(cmd,"setaudio music volume to %d",vol);
+	mciSendString(cmd,NULL,0,NULL);
+	return;
+}
+void Stop(){
+	mciSendString("pause music",NULL,0,NULL);
+    return;
+}
+void Start(){
+	mciSendString("resume music",NULL,0,NULL);
+	return;
+}
+void setSpeed(double speed){
+	char cmd[114];
+	sprintf(cmd,"set music speed %d",(int)(speed*1000));
+	mciSendString(cmd,NULL,0,NULL);
 	return;
 }
 void color(int ForgC,int BackC) {
@@ -161,14 +162,7 @@ void loadData(GameData* data,const char* filename){
     return;
 }
 void end(){
-	mciSendString("close 1",NULL,0,NULL);
-    mciSendString("close 2",NULL,0,NULL);
-//    mciSendString("close 3",NULL,0,NULL);
-//    mciSendString("close 4",NULL,0,NULL);
-    mciSendString("close 5",NULL,0,NULL);
-    mciSendString("close 6",NULL,0,NULL);
-    mciSendString("close 7",NULL,0,NULL);
-    mciSendString("close 8",NULL,0,NULL);
+	mciSendString("close music",NULL,0,NULL);
 	return;
 }
 double Rks(){
@@ -285,7 +279,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
 	    move(26,ls+16);
 	    printf("  RKS %.2lf ",Rks());
 	    move(26,ls+17);
-		color(7,0);
+		color(8,0);
 	    cout<<"  tips:"<<tips[rand()%10];
 	}
     else{
@@ -296,33 +290,11 @@ void Print_Move(int Chs,int Chs2,bool lock){
 	    move(26,ls+16);
 	    printf("  RKS %.2lf ",Rks());
 	    move(26,ls+17);
-	    color(7,0);
+	    color(8,0);
 	    cout<<"  tips:"<<tips[rand()%10];
 	}
     move(0,2*min(MusicSum,Chs+6));
     return;
-}
-void Stop(){
-	mciSendString("pause 1",NULL,0,NULL);
-    mciSendString("pause 2",NULL,0,NULL);
-//    mciSendString("pause 3",NULL,0,NULL);
-//    mciSendString("pause 4",NULL,0,NULL);
-    mciSendString("pause 5",NULL,0,NULL);
-    mciSendString("pause 6",NULL,0,NULL);
-    mciSendString("pause 7",NULL,0,NULL);
-    mciSendString("pause 8",NULL,0,NULL);
-    return;
-}
-void Start(){
-	mciSendString("resume 1",NULL,0,NULL);
-    mciSendString("resume 2",NULL,0,NULL);
-//    mciSendString("resume 3",NULL 0,NULL);
-//    mciSendString("resume 4",NULL,0,NULL);
-    mciSendString("resume 5",NULL,0,NULL);
-    mciSendString("resume 6",NULL,0,NULL);
-    mciSendString("resume 7",NULL,0,NULL);
-    mciSendString("resume 8",NULL,0,NULL);
-	return;
 }
 void Print(string s,int x,int y){
  move(x,y);
@@ -458,70 +430,46 @@ int Play(int Chs){
 	ifstream in;
 	if(Chs==0){
 		in.open("0.txt");
-		if(Music){
-			mciSendString("open ..\\music\\4.mp3 alias 0",NULL,0,NULL);
-			mciSendString("play 0",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\0.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==1){
 		in.open("1.txt");
-		if(Music){
-			mciSendString("open ..\\music\\1.mp3 alias 1",NULL,0,NULL);
-			mciSendString("play 1",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\1.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==2){
 		in.open("2.txt");
-		if(Music){
-			mciSendString("open ..\\music\\2.mp3 alias 2",NULL,0,NULL);
-			mciSendString("play 2",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\2.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==3){
 		in.open("3.txt");
-		if(Music){
-			mciSendString("open ..\\music\\3.mp3 alias 3",NULL,0,NULL);
-			mciSendString("play 3",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\3.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==4){
-		return 0;
 		in.open("4.txt");
-		if(Music){
-			mciSendString("open ..\\music\\4.mp3 alias 4",NULL,0,NULL);
-			mciSendString("play 4",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\4.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==5){
 		in.open("5.txt");
-		if(Music){
-			mciSendString("open ..\\music\\5.mp3 alias 5",NULL,0,NULL);
-			mciSendString("play 5",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\5.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==6){
 		in.open("6.txt");
-		if(Music){
-			mciSendString("open ..\\music\\6.mp3 alias 6",NULL,0,NULL);
-			mciSendString("play 6",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\6.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==7){
 		in.open("7.txt");
-		if(Music){
-			mciSendString("open ..\\music\\7.mp3 alias 7",NULL,0,NULL);
-			mciSendString("play 7",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\7.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==8){
 		in.open("8.txt");
-		if(Music){
-		    mciSendString("open ..\\music\\8.mp3 alias 8",NULL,0,NULL);
-			mciSendString("play 8",NULL,0,NULL);
-		}
+		if(Music) mciSendString("open ..\\music\\8.mp3 alias music",NULL,0,NULL);
 	}
-	setvol(vol*20);
-	Sleep(pre[Chs]);
+	if(Music){
+		mciSendString("play music",NULL,0,NULL);
+		setSpeed(speed);
+		setvol(vol*20);
+		Sleep(pre[Chs]);
+	}
 	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
 	while(true){
@@ -585,7 +533,6 @@ int Play(int Chs){
             next_cycle+=cycle_duration;
             continue;
         }
-		SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),ENABLE_MOUSE_INPUT|ENABLE_EXTENDED_FLAGS);
 		score=(0.9*pfct/TOT+0.1*mxcmb/TOT)*1000000;
 		if(K(' ')||K(VK_RETURN)){
 			Stop();
@@ -749,8 +696,14 @@ int Play(int Chs){
 			}
 			else{
 				msic[int(t)][j].can=1;
-				color(15,0);
-				cout<<'^';
+				if(!msic[int(t-1)][j].gt||msic[int(t-1)][j].gt==-1){
+					color(4,0);
+					cout<<'v';
+				}
+				else{
+					color(3,0);
+					cout<<'O';
+				}
 			}
 		}
 		for(int k=7;k>=1;k--){
@@ -857,8 +810,14 @@ int Play(int Chs){
 			}
 			else {
 				msic[int(t)][j].can=1;
-				color(15,0);
-				cout<<'v';
+				if(!msic[int(t-1)][j].gt||msic[int(t-1)][j].gt==-1){
+					color(4,0);
+					cout<<'v';
+				}
+				else{
+					color(3,0);
+					cout<<'O';
+				}
 			}
 		}
 		move(3,11);
@@ -997,7 +956,11 @@ int Play(int Chs){
 		}
 		if(K(' ')||K(VK_RETURN)){
 			while(K(' ')||K(VK_RETURN));
-			if(Music) mciSendString("close LO",NULL,0,NULL);
+			kick(999,11,true);
+			if(Music){
+				mciSendString("close LO",NULL,0,NULL);
+				kick(999,11,true);
+			}
 			return D;
 		}
 	}
@@ -1129,6 +1092,7 @@ int main(){
 			else{
 				while(K(' ')||K(VK_RETURN));
 				int f=1;
+				spd[Chs]=(speed<1?spd[Chs]/speed+2200:(speed==1?spd[Chs]:spd[Chs]*speed-4100));
 				while(f){
 					kick(999,12,true);
 					Vol_UI();
