@@ -998,7 +998,6 @@ int main(){
 	srand(time(NULL));
 	getSystemName();
 	if(!IsRunAsAdmin()) RestartAsAdministrator();
-	SetWindowTextW(GetConsoleWindow(),L"");
 	SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
     if(!border) setsize(70,21);
     else setsize_(68,18);
