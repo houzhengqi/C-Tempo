@@ -1011,12 +1011,14 @@ int main(){
 	color(15,0);
 	system("cls");
 	//clrscr();
-	cout<<"\n\n             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
+	cout<<"\n\n";
+	cout<<"             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
 	cout<<"            C               T   E      M M M  P   P  O   O\n";
 	cout<<"            C      -----    T   EEEEE  M M M  PPPP   O   O\n";
 	cout<<"            C               T   E      M   M  P      O   O\n";
 	cout<<"             CCCC           T   EEEEE  M   M  P       OOO \n";
-	cout<<"\n\n\n\n\n\n\n\n\n\n                           Click to Play";
+	cout<<"\n\n\n\n\n\n\n\n\n\n";
+	cout<<"                           Click to Play";
 	loadData(&Dt,"data.dat");
     color(8,0);
     move(57,19);
