@@ -1161,22 +1161,24 @@ int main(){
 				if(c1>9){
 					switch(c1){
 						case 10:
-							clor1='a';
+							clor1='A';
 							break;
 						case 11:
-							clor1='b';
+							clor1='B';
 							break;
 						case 12:
-							clor1='c';
+							clor1='C';
 							break;
 						case 13:
-							clor1='d';
+							clor1='D';
 							break;
 						case 14:
-							clor1='e';
+							clor1='E';
 							break;
 						case 15:
-							clor1='f';
+							clor1='F';
+							break;
+						default:
 							break;
 					}
 				}
@@ -1184,22 +1186,24 @@ int main(){
 				if(c2>9){
 					switch(c2){
 						case 10:
-							clor2='a';
+							clor2='A';
 							break;
 						case 11:
-							clor2='b';
+							clor2='B';
 							break;
 						case 12:
-							clor2='c';
+							clor2='C';
 							break;
 						case 13:
-							clor2='d';
+							clor2='D';
 							break;
 						case 14:
-							clor2='e';
+							clor2='E';
 							break;
 						case 15:
-							clor2='f';
+							clor2='F';
+							break;
+						default:
 							break;
 					}
 				}
@@ -1212,7 +1216,6 @@ int main(){
 				//clrscr();
 				move(7,12);
 				cout<<"恭喜你发现了彩蛋，可以截个图炫耀一下";
-				sprintf(cmd,"color %c%c",clor1,clor2);
 				move(0,0);
 				cout<<"按ESC退出";
 				Sleep(100);
