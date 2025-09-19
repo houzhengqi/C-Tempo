@@ -31,7 +31,7 @@ string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh    
                   "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ",
 				  "不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true};
-double spd[114]={0,12700,7421,0,0,13700,13000,8850,10700};
+double spd[114]={0,12700,7421,0,0,13700,13000,8850,10700,12700};
 int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
@@ -465,6 +465,10 @@ int Play(int Chs){
 		in.open("8.txt");
 		if(Music) mciSendString("open ..\\music\\8.mp3 alias music",NULL,0,NULL);
 	}
+	if(Chs==9){
+		in.open("9.txt");
+		if(Music);
+	}
 	if(Music){
 		mciSendString("play music",NULL,0,NULL);
 		//setSpeed(speed);
@@ -519,18 +523,16 @@ int Play(int Chs){
         auto offset=duration_cast<nanoseconds>(now-next_cycle).count();
         next_cycle+=cycle_duration;
         auto remaining=next_cycle-clock::now();
-        if(remaining>microseconds(500)) std::this_thread::sleep_for(remaining-microseconds(400));
+        if(remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
         while(clock::now()<next_cycle);
         clock::time_point pause_start;
 	    microseconds total_pause_duration=microseconds(0);
 	    bool is_paused=false;
-		if (is_paused){
+		if(is_paused){
             auto now=clock::now();
             auto remaining=next_cycle-now;
-            if (remaining>microseconds(500)){
-                this_thread::sleep_for(remaining-microseconds(400));
-            }
-            while (clock::now()<next_cycle);
+            if (remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
+            while(clock::now()<next_cycle);
             next_cycle+=cycle_duration;
             continue;
         }
@@ -702,8 +704,8 @@ int Play(int Chs){
 					cout<<'v';
 				}
 				else{
-					color(3,0);
-					cout<<'O';
+					color(5,0);
+					cout<<'v';
 				}
 			}
 		}
@@ -816,8 +818,8 @@ int Play(int Chs){
 					cout<<'v';
 				}
 				else{
-					color(3,0);
-					cout<<'O';
+					color(5,0);
+					cout<<'v';
 				}
 			}
 		}
@@ -1130,16 +1132,14 @@ int main(){
 			if(lk[Chs]==0) Print_Move(Chs,Chs,false);
 			else{
 				while(K(' ')||K(VK_RETURN));
-				int f=1;
+				kick(999,12,true);
+				Vol_UI();
+				kick(999,12,true);
+				int f=Play(Chs);
 				//定义一个double的speed
 				//spd[Chs]=spd[Chs]/speed;
 				//pre[Chs]=pre[Chs]/speed;
-				while(f){
-					kick(999,12,true);
-					Vol_UI();
-					kick(999,12,true);
-					f=Play(Chs);
-				}
+				while(f) f=Play(Chs);
 				Main_List_Print(Chs);
 				Print_Move(Chs,Chs,true);
 			}
