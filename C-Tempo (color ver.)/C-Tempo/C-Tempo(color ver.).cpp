@@ -1127,7 +1127,6 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
-		if(K('R')) saveData(&Dt,"data.dat");
 		if(K(' ')||K(VK_RETURN)){
 			if(lk[Chs]==0) Print_Move(Chs,Chs,false);
 			else{
@@ -1144,6 +1143,7 @@ int main(){
 				Print_Move(Chs,Chs,true);
 			}
 		}
+		if(K('R')) saveData(&Dt,"data.dat");
 		if(K('B')) caidan.push_back('b');
 		else if(K('A')) caidan.push_back('a');
 		else if(K(VK_LEFT)) caidan.push_back('l');
