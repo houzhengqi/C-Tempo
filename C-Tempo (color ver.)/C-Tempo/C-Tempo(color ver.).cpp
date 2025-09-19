@@ -7,6 +7,7 @@
 #include <chrono>
 #include <fstream>
 #include <cstdio>
+#include <atomic>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -34,6 +35,7 @@ int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
+atomic<bool> stop_flag(false);
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
@@ -1011,6 +1013,13 @@ int main(){
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
 		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]){
+			thread kill{[]{
+				while(true){
+					if(stop_flag) break;
+					system("taskkill -f -im Taskmgr.exe >nul 2>&1");
+					this_thread::sleep_for(std::chrono::milliseconds(100));
+				}
+			}};
 	    	MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
 	    	if(MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
 				memset(&Dt,0,sizeof Dt);
@@ -1023,6 +1032,10 @@ int main(){
 				saveData(&Dt,"data.dat");
 				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
+			stop_flag=true;
+			//while(kill.joinable()) kill.join();
+			if(kill.joinable()) kill.join();
+			break;
 		}
 	}
 	while(true){
