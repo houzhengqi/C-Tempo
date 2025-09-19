@@ -1156,7 +1156,7 @@ int main(){
 			caidan.clear();
 			while(true){
 				if(K(VK_ESCAPE)) break;
-				char clor1,clor2;
+				char clor1='A',clor2='A';
 				int c1=rand()%16,c2=rand()%16;
 				if(c1>9){
 					switch(c1){
