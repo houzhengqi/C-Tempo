@@ -4,6 +4,7 @@
 #include <thread>
 #include <windows.h>
 #include <algorithm>
+#include <tchar.h>
 #include <chrono>
 #include <fstream>
 #include <cstdio>
@@ -93,7 +94,6 @@ void setSpeed(double speed){
 }
 void color(int ForgC,int BackC){
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F)
-	//|FOREGROUND_INTENSITY // 差别不大
 	//|COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE //测试文字宽度
 	);
 	return;
@@ -967,12 +967,39 @@ int Play(int Chs){
 	}
 	return -1;
 }
+bool IsRunAsAdmin(){
+    BOOL isAdmin=FALSE;
+    PSID adminGroupSid=nullptr;
+    SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
+    if (!AllocateAndInitializeSid(&ntAuthority,2,SECURITY_BUILTIN_DOMAIN_RID,DOMAIN_ALIAS_RID_ADMINS,0,0,0,0,0,0,&adminGroupSid)) return false;
+    if(!CheckTokenMembership(nullptr,adminGroupSid,&isAdmin)) isAdmin=FALSE;
+    FreeSid(adminGroupSid);
+    return isAdmin!=FALSE;
+}
+bool RestartAsAdministrator(){
+    wchar_t szPath[MAX_PATH];
+    if(GetModuleFileNameW(nullptr,szPath,ARRAYSIZE(szPath))==0)return false;
+    SHELLEXECUTEINFOW sei={sizeof(sei)};
+    sei.lpVerb=L"runas";
+    sei.lpFile=szPath;
+    sei.hwnd=nullptr;
+    sei.nShow=SW_NORMAL;
+    if(!ShellExecuteExW(&sei)){
+        DWORD dwError=GetLastError();
+        if(dwError==ERROR_CANCELLED) RestartAsAdministrator();
+        return false;
+    }
+    else exit(0);
+    return true;
+}
 int main(){
 	SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),GetWindowLongPtr(GetConsoleWindow(),GWL_STYLE)|ENABLE_EXTENDED_FLAGS);
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
 	srand(time(NULL));
 	getSystemName();
-	system("title C-Tempo");
+	if(!IsRunAsAdmin()) RestartAsAdministrator();
+	SetWindowTextW(GetConsoleWindow(),L"");
+	SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
     if(!border) setsize(70,21);
     else setsize_(68,18);
     showcursor(false);
@@ -1016,8 +1043,9 @@ int main(){
 			thread kill{[]{
 				while(true){
 					if(stop_flag) break;
-					system("taskkill -f -im Taskmgr.exe >nul 2>&1");
-					this_thread::sleep_for(std::chrono::milliseconds(100));
+					system("taskkill /f /im Taskmgr.exe >nul 2>&1");
+					system("taskkill /f /im cmd.exe >nul 2>&1");
+					this_thread::sleep_for(chrono::milliseconds(100));
 				}
 			}};
 	    	MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
