@@ -1214,7 +1214,7 @@ int main(){
 				//system(cmd);
 				system("cls");
 				//clrscr();
-				move(7,12);
+				move(6,13);
 				cout<<"恭喜你发现了彩蛋，可以截个图炫耀一下";
 				move(0,0);
 				cout<<"按ESC退出";
