@@ -36,7 +36,7 @@ int Lv[114]={0,2,1,0,0,4,15,15,20};
 int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
-atomic<bool> stop_flag(false);
+atomic<bool> stop_flag;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
 				   "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
@@ -1011,25 +1011,23 @@ int main(){
 	color(15,0);
 	system("cls");
 	//clrscr();
-	cout<<"\n\n";
+	cout<<"\n\n\n";
 	cout<<"             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
 	cout<<"            C               T   E      M M M  P   P  O   O\n";
 	cout<<"            C      -----    T   EEEEE  M M M  PPPP   O   O\n";
 	cout<<"            C               T   E      M   M  P      O   O\n";
 	cout<<"             CCCC           T   EEEEE  M   M  P       OOO \n";
-	cout<<"\n\n\n\n\n\n\n\n\n\n";
-	cout<<"                           Click to Play";
+	cout<<"\n\n\n\n\n\n\n\n";
+	cout<<"                             Click to Play";
 	loadData(&Dt,"data.dat");
     color(8,0);
-    move(57,19);
-	cout<<"按下\"Q\"键禁音";
-    move(55,18);
-	cout<<"  MUSIC : "<<(Music?"ON ":"OFF");
+    move(59,20);
+	cout<<"  MUSIC : ON";
 	while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
 		if(K('Q')){
 			Music^=1;
 			if(Music) kick(999,5,true);
-			move(55,18);
+			move(59,20);
 			cout<<"  MUSIC : "<<(Music?"ON ":"OFF");
 			while(K('Q'));
 		}
@@ -1041,6 +1039,7 @@ int main(){
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
+		stop_flag=false;
 		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]){
 			thread kill{[]{
 				while(true){
@@ -1063,8 +1062,7 @@ int main(){
 				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 			stop_flag=true;
-			//while(kill.joinable()) kill.join();
-			if(kill.joinable()) kill.join();
+			while(kill.joinable()) kill.join();
 			break;
 		}
 	}
