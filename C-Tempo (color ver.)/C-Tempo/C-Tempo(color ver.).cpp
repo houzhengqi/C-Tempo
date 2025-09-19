@@ -1136,6 +1136,7 @@ int main(){
 				kick(999,12,true);
 				int f=Play(Chs);
 				//定义一个double的speed
+				//这里有BUG
 				//spd[Chs]=spd[Chs]/speed;
 				//pre[Chs]=pre[Chs]/speed;
 				while(f) f=Play(Chs);
