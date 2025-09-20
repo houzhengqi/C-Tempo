@@ -188,7 +188,6 @@ void Main_List_Print(int Chs){
 		if(lk[i]) printf("%.2d ",Lv[i]);
 		cout<<endl<<"-------------------------"<<endl;
 	}
-	color(15,0);
 	move(0,Chs*2);
 	return;
 }
