@@ -379,8 +379,8 @@ void Vol_UI(){
 	int key=0;
 	while(true){
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
-		if(K('A')||K(VK_LEFT) && vol>0) Vol(false);
-		else if(K('D')||K(VK_RIGHT) && vol<50) Vol(true);
+		if(K('A')||K(VK_LEFT)&&vol>0) Vol(false);
+		else if(K('D')||K(VK_RIGHT)&&vol<50) Vol(true);
 		else if(K(VK_RETURN)||K(VK_SPACE)) break;
 		while(K('D')||K('A')||K(VK_RETURN)||K(VK_SPACE)||K(VK_LEFT)||K(VK_RIGHT)){
 			if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(key<11451) key++;
