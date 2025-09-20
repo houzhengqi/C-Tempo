@@ -30,8 +30,7 @@ double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI",SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude"};
 string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ",
-                  "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ",
-				  "不要当播放器使!"};
+                  "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true};
 int spd[114]={0,12700,7421,0,0,13700,13000,8850,10700,12700};
 int Lv[114]={0,2,1,0,0,4,15,15,20};
