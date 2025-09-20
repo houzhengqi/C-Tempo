@@ -537,7 +537,7 @@ int Play(int Chs){
             continue;
         }
 		score=(0.9*pfct/TOT+0.1*mxcmb/TOT)*1000000;
-		if(K(' ')||K(VK_RETURN)){
+		if(K(' ')||K(VK_RETURN)||!isConsoleFocused()){
 			Stop();
 			kick(999,11,true);
 			is_paused=true;
