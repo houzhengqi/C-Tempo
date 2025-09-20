@@ -975,7 +975,7 @@ bool IsRunAsAdmin(){
 }
 bool RestartAsAdministrator(){
     wchar_t szPath[MAX_PATH];
-    if(GetModuleFileNameW(nullptr,szPath,ARRAYSIZE(szPath))==0)return false;
+    if(GetModuleFileNameW(nullptr,szPath,ARRAYSIZE(szPath))==0) return false;
     SHELLEXECUTEINFOW sei={sizeof(sei)};
     sei.lpVerb=L"runas";
     sei.lpFile=szPath;
@@ -992,6 +992,7 @@ bool RestartAsAdministrator(){
 int main(){
 	SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),GetWindowLongPtr(GetConsoleWindow(),GWL_STYLE)|ENABLE_EXTENDED_FLAGS);
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
+    SetWindowPos(GetConsoleWindow(),NULL,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_FRAMECHANGED);
 	srand(time(NULL));
 	getSystemName();
 	if(!IsRunAsAdmin()) RestartAsAdministrator();
@@ -999,10 +1000,10 @@ int main(){
     if(!border) setsize(70,21);
     else setsize_(68,18);
     showcursor(false);
-    SetWindowLong(GetConsoleWindow(),GWL_STYLE,GetWindowLong(GetConsoleWindow(),GWL_STYLE)&~WS_MAXIMIZEBOX);
 	/*
 	À¬»øÍ°
-    SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION);
+    SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_CAPTION&~WS_BORDER&~WS_THICKFRAME);
+    SetWindowLongPtrA(GetConsoleWindow(),GWL_EXSTYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_EXSTYLE)|WS_EX_TRANSPARENT);
     */
 	color(15,0);
 	system("cls");
