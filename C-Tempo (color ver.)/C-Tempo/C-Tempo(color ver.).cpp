@@ -412,12 +412,10 @@ void getSystemName(){
 	NTPROC proc=(NTPROC)GetProcAddress(hinst,"RtlGetNtVersionNumbers");
 	proc(&dwMajor,&dwMinor,&dwBuildNumber);
 	auto sharedUserData=(BYTE*)0x7FFE0000;
+	//判断win11的，看自己电脑情况加。
+	//如果游戏界面旁边闪的话，就加上.
     //if((int)*(ULONG*)(sharedUserData+0x260)>=22000) return;
-	if(dwMajor==10&&dwMinor==0){
-		refresh=true;
-		return;
-	}
-	else return;
+	if(dwMajor==10&&dwMinor==0) refresh=true;
 	return;
 }
 int Play(int Chs){
