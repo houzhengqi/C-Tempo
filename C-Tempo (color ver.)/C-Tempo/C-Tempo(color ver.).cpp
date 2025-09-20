@@ -4,11 +4,13 @@
 #include <thread>
 #include <windows.h>
 #include <algorithm>
-#include <tchar.h>
 #include <chrono>
 #include <fstream>
 #include <cstdio>
 #include <atomic>
+#include <shellapi.h>
+#include <ctime>
+#include <sstream>
 #include <cstdlib>
 #include <cstring>
 #include <string>
@@ -142,24 +144,24 @@ void setsize_(int col,int row){
 void saveData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"wb");
     if(file==NULL){
-		system("fsutil file createnew data.dat 0 >nul");
+		system("fsutil file createnew data.dat 0 >nul 2>&1");
 		saveData(data,filename);
 		return;
 	}
 	memset(&save,true,sizeof save);
 	memset(&New,false,sizeof New);
-    fwrite(data,sizeof data,1,file);
+    fwrite(data,sizeof(GameData),1,file);
     fclose(file);
     return;
 }
 void loadData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"rb");
     if(file==NULL){
-    	system("fsutil file createnew data.dat 0 >nul");
+    	system("fsutil file createnew data.dat 0 >nul 2>&1");
 		loadData(data,filename);
 		return;
     }
-    fread(data,sizeof data,1,file);
+    fread(data,sizeof(GameData),1,file);
     fclose(file);
     return;
 }
@@ -174,7 +176,7 @@ double Rks(){
     double sum=0;
     int ans=0;
     for(int i=0;i<MusicSum;i++) ans+=!lk[i];
-    for(int i=0;i>=MusicSum;i--) sum+=d[i];
+    for(int i=MusicSum-1;i>=0;i--) sum+=d[i];
     return sum/ans;
 }
 void Main_List_Print(int Chs){
