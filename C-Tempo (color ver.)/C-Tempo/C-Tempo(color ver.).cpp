@@ -170,14 +170,10 @@ void end(){
 	return;
 }
 double Rks(){
-    double d[114];
-    for(int i=0;i<MusicSum;i++) d[i]=Dt.acc[i]*Lv[i];
-    sort(d,d+MusicSum);
-    double sum=0;
-    int ans=0;
-    for(int i=0;i<MusicSum;i++) ans+=!lk[i];
-    for(int i=MusicSum-1;i>=0;i--) sum+=d[i];
-    return sum/ans;
+    double d[114],ans=0;
+    for(int i=0;i<=MusicSum;i++) d[i]=Dt.acc[i]*Lv[i];
+    for(int i=0;i<=MusicSum;i++) ans+=d[i];
+    return ans/MusicSum;
 }
 void Main_List_Print(int Chs){
 	if(!border) setsize(48,26);
@@ -466,6 +462,7 @@ int Play(int Chs){
 		if(Music) mciSendString("open ..\\music\\8.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==9){
+		//新手教程（实验）
 		in.open("9.txt");
 		if(Music);
 	}
@@ -537,7 +534,7 @@ int Play(int Chs){
             continue;
         }
 		score=(0.9*pfct/TOT+0.1*mxcmb/TOT)*1000000;
-		if(K(' ')||K(VK_RETURN)||!isConsoleFocused()){
+		if(K(' ')||K(VK_RETURN)||K(VK_ESCAPE)||!isConsoleFocused()&&!autoplay){
 			Stop();
 			kick(999,11,true);
 			is_paused=true;
@@ -557,7 +554,7 @@ int Play(int Chs){
 			move(9,9);
 			cout<<"音量";
 			int D=2;
-			while(K(' ')||K(VK_RETURN));
+			while(K(' ')||K(VK_RETURN)||K(VK_ESCAPE));
 			while(true){
 				auto now=clock::now();
                 auto remaining=next_cycle-now;
@@ -920,9 +917,9 @@ int Play(int Chs){
 	string acc="ACC "+to_string(pfct*10000/TOT)+' ';
 	acc.insert(acc.size()-3,".");
 	if(Music){
-		if(Rks()>=20) mciSendString("open ..\\music\\d.mp3 alias LO",NULL,0,NULL);
-		else if(Rks()>=15) mciSendString("open ..\\music\\c.mp3 alias LO",NULL,0,NULL);
-		else if(Rks()>=10) mciSendString("open ..\\music\\b.mp3 alias LO",NULL,0,NULL);
+		if(Rks()>=2.85) mciSendString("open ..\\music\\d.mp3 alias LO",NULL,0,NULL);
+		else if(Rks()>=1.9) mciSendString("open ..\\music\\c.mp3 alias LO",NULL,0,NULL);
+		else if(Rks()>=0.95) mciSendString("open ..\\music\\b.mp3 alias LO",NULL,0,NULL);
 		else mciSendString("open ..\\music\\a.mp3 alias LO",NULL,0,NULL);
 		mciSendString("play LO repeat",NULL,0,NULL);
 	}
