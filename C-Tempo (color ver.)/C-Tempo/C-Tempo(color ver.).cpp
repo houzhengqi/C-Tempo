@@ -66,7 +66,7 @@ bool isConsoleFocused(){
 	return ans;
 }
 bool K(int VK){
-	return (isConsoleFocused()?((GetAsyncKeyState(VK)&0x8000)?true:false):false);
+	return (isConsoleFocused()?GetAsyncKeyState(VK)&0x8000:false);
 }
 void move(int x,int y){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){(SHORT)x,(SHORT)y});
