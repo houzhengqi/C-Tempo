@@ -967,7 +967,7 @@ int Play(int Chs){
 bool IsRunAsAdmin(){
     BOOL isAdmin=FALSE;
     PSID adminGroupSid=nullptr;
-    SID_IDENTIFIER_AUTHORITY ntAuthority = SECURITY_NT_AUTHORITY;
+    SID_IDENTIFIER_AUTHORITY ntAuthority=SECURITY_NT_AUTHORITY;
     if (!AllocateAndInitializeSid(&ntAuthority,2,SECURITY_BUILTIN_DOMAIN_RID,DOMAIN_ALIAS_RID_ADMINS,0,0,0,0,0,0,&adminGroupSid)) return false;
     if(!CheckTokenMembership(nullptr,adminGroupSid,&isAdmin)) isAdmin=FALSE;
     FreeSid(adminGroupSid);
