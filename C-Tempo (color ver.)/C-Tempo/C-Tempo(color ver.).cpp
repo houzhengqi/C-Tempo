@@ -3,7 +3,6 @@
 #include <cmath>
 #include <thread>
 #include <windows.h>
-#include <algorithm>
 #include <chrono>
 #include <fstream>
 #include <cstdio>
