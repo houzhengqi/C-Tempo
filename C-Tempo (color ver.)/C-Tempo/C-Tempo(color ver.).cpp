@@ -131,6 +131,7 @@ void setsize(int col,int row){
 	return;
 }
 void setsize_(int col,int row){
+	color(15,0);
 	system("cls");
 	//clrscr();
 	HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
