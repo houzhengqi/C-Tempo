@@ -31,9 +31,11 @@ string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION
 string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ",
                   "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true};
-int spd[114]={0,12700,7421,0,0,13700,13000,8850,10700,12700};
+int spd[114];
+//{0,12700,7421,0,0,13700,13000,8850,10700,12700,0}
 int Lv[114]={0,2,1,0,0,4,15,15,20};
-int pre[114]={0,2600,5300,0,0,400,7900,1300,4300};
+int pre[114];
+//{0,2600,5300,0,0,400,7900,1300,4300,0,0}
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 atomic<bool> stop_flag;
@@ -475,6 +477,8 @@ int Play(int Chs){
 		Sleep(pre[Chs]);
 	}
 	int Sum=0,x=0,y=0,TOT=0;
+	in>>spd[Chs];
+	in>>pre[Chs];
 	in>>Sum;
 	while(true){
 		in>>x;
