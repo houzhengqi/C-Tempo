@@ -1071,7 +1071,7 @@ int main(){
 				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 			stop_flag=true;
-			while(kill.joinable()) kill.join();
+			while(kill.joinable()) if(kill.joinable()) kill.join();
 			break;
 		}
 	}
