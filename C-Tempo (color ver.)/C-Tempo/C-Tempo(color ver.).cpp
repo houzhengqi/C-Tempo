@@ -464,6 +464,10 @@ int Play(int Chs){
 		in.open("9.txt");
 		if(Music);
 	}
+	if(Chs==10){
+		in.open("10.txt");
+		if(Music);
+	}
 	if(Music){
 		mciSendString("play music",NULL,0,NULL);
 		//setSpeed(speed);
@@ -1130,12 +1134,11 @@ int main(){
 				kick(999,12,true);
 				Vol_UI();
 				kick(999,12,true);
-				int f=Play(Chs);
 				//定义一个double的speed
 				//这里有BUG
 				//spd[Chs]=spd[Chs]/speed;
 				//pre[Chs]=pre[Chs]/speed;
-				while(f) f=Play(Chs);
+				while(Play(Chs));
 				Main_List_Print(Chs);
 				Print_Move(Chs,Chs,true);
 			}
@@ -1219,6 +1222,11 @@ int main(){
 			color(15,0);
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
+		}
+		if(caidan.find("ududbaba")!=string::npos){
+			caidan.clear();
+			MessageBox(GetConsoleWindow(),"准备好报废你的手指了吗！！！","提示",MB_OK);
+			while(Play(10));
 		}
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
 		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
