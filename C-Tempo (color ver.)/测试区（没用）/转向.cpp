@@ -6,11 +6,11 @@ int main(){
 	while(1){
 		cin>>n>>m;
 		if(n==0) return 0;
-		cout<<n+64<<" "<<m<<endl;
+		cout<<n<<" "<<m<<endl;
 		for(int i=1;i<=m;i++){
 			int a,b,c,d;
 			cin>>a>>b>>c>>d;
-			cout<<2<<" "<<b+8<<" "<<c<<" "<<d<<endl;
+			cout<<a<<" "<<b+8<<" "<<c<<" "<<d<<endl;
 		}
 	}
 	return 0; 
