@@ -27,7 +27,7 @@ struct MsicTime{
 }msic[1145][33];
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI",SC[10]={"F","C","B","A","S","V","AP"};
-string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude"};
+string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~"};
 string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ",
                   "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true};
@@ -468,6 +468,10 @@ int Play(int Chs){
 	}
 	if(Chs==10){
 		in.open("10.txt");
+		if(Music);
+	}
+	if(Chs==11){
+		in.open("11.txt");
 		if(Music);
 	}
 	if(Music){
@@ -1045,7 +1049,7 @@ int main(){
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
 		stop_flag=false;
-		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]){
+		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]&&!(i>=9&&i<=11)){
 			thread kill{[]{
 				while(true){
 					if(stop_flag) break;
@@ -1231,6 +1235,12 @@ int main(){
 			caidan.clear();
 			MessageBox(GetConsoleWindow(),"准备好报废你的手指了吗！！！","提示",MB_OK);
 			while(Play(10));
+			Main_List_Print(Chs);
+			Print_Move(Chs,Chs,true);
+		}
+		if(caidan.find("uadbuadb")!=string::npos){
+			caidan.clear();
+			while(Play(11));
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
