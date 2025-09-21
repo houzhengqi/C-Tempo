@@ -1231,6 +1231,8 @@ int main(){
 			caidan.clear();
 			MessageBox(GetConsoleWindow(),"准备好报废你的手指了吗！！！","提示",MB_OK);
 			while(Play(10));
+			Main_List_Print(Chs);
+			Print_Move(Chs,Chs,true);
 		}
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
 		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
