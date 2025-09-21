@@ -494,13 +494,14 @@ int Play(int Chs){
 			in>>msic[x][i].drc>>msic[x][i].pl>>msic[x][i].cl>>msic[x][i].len;
 			msic[x][i].can=1-(msic[x][i].cl!=2);
 			msic[x][i].gt=0;
-			if(msic[x][i].cl==3)
+			if(msic[x][i].cl==3){
 				for(int j=1;j<=msic[x][i].len;j++){
 					msic[x+j][++MTsum[x+j]]=msic[x][i];
 					msic[x+j][MTsum[x+j]].can=1;
 					msic[x+j][MTsum[x+j]].cl=-j;
 					msic[x+j][MTsum[x+j]].len=i;
 				}
+			}
 		}
 	}
     system("cls");
@@ -658,7 +659,7 @@ int Play(int Chs){
 		int j=1;
 		while(msic[int(t-1)][j].drc!=2) j++;
 		color(12,0);
-		if(autoplay)
+		if(autoplay){
 			for(int j=1;j<=MTsum[int(t-1)];j++){
 				if(msic[int(t-1)][j].drc!=2) continue;
 				int i=msic[int(t-1)][j].pl-8;
@@ -670,6 +671,7 @@ int Play(int Chs){
 					combo=0;
 				}
 			}
+		}
 		move(3,2);
     	color(15,0);
 		if(flsh) cout<<"---------------";
@@ -818,7 +820,7 @@ int Play(int Chs){
 					cout<<'v';
 				}
 			}
-			else {
+			else{
 				msic[int(t)][j].can=1;
 				if(!msic[int(t-1)][j].gt||msic[int(t-1)][j].gt==-1){
 					color(4,0);
@@ -833,7 +835,7 @@ int Play(int Chs){
 		move(3,11);
 		if(flsh) cout<<"               ";
 		color(12,0);
-		if(!autoplay)
+		if(!autoplay){
 			for(int j=1;j<=MTsum[int(t-1)];j++){
 				if(msic[int(t-1)][j].drc!=1) continue;
 				int i=msic[int(t-1)][j].pl;
@@ -845,13 +847,15 @@ int Play(int Chs){
 					combo=0;
 				}
 			}
-		else
+		}
+		else{
 			for(int j=1;j<=MTsum[int(t)];j++){
 				if(!msic[int(t)][j].gt){
 					pfct++;
 					msic[int(t)][j].gt=1;
 				}
 			}
+		}
 		mxcmb=max(mxcmb,combo);
 		color(15,0);
 		move(2,12);
@@ -1071,7 +1075,12 @@ int main(){
 				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			}
 			stop_flag=true;
-			while(kill.joinable()) if(kill.joinable()) kill.join();
+			while(true){
+				if(kill.joinable()){
+					kill.join();
+					break;
+				}
+			}
 			break;
 		}
 	}
