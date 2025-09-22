@@ -1238,7 +1238,7 @@ int main(){
 					}
 				}
 				else clor2=c2+'0';
-				char cmd[1145];
+				char cmd[114];
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),rand()%256);
 				//color(rand()%256,rand()%256);
 				//sprintf(cmd,"color %c%c",clor1,clor2);
