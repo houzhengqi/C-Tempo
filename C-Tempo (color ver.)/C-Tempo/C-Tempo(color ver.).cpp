@@ -543,6 +543,7 @@ int Play(int Chs){
         auto offset=duration_cast<nanoseconds>(now-next_cycle).count();
         next_cycle+=cycle_duration;
         auto remaining=next_cycle-clock::now();
+		//混合休眠策略，降低性能开销（防止你的电脑爆炸）
         if(remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
         while(clock::now()<next_cycle);
         clock::time_point pause_start;
