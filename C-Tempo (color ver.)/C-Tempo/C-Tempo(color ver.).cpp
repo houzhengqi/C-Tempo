@@ -27,13 +27,13 @@ struct MsicTime{
 }msic[1145][33];
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI",SC[10]={"F","C","B","A","S","V","AP"};
-string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~"};
+string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~","114514"};
 string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ",
                   "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
-bool lk[114]={false,true,true,false,false,true,true,true,true};
+bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 int spd[114];
 //{0,12700,7421,0,0,13700,13000,8850,10700,12700,0}
-int Lv[114]={0,2,1,0,0,4,15,15,20};
+int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
 int pre[114];
 //{0,2600,5300,0,0,400,7900,1300,4300,0,0}
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
@@ -184,7 +184,10 @@ void Main_List_Print(int Chs){
 		cout<<Name[i];
 		for(int j=1;j<=20-Name[i].size();j++) cout<<' ';
 		cout<<(!lk[i]?"\blocked":"Lv.");
-		if(lk[i]) printf("%.2d ",Lv[i]);
+		if(lk[i]){
+			if(Lv[i]>=0) printf("%.2d ",Lv[i]);
+			else printf("%d ",Lv[i]);
+		}
 		cout<<endl<<"-------------------------"<<endl;
 	}
 	move(0,Chs*2);
@@ -202,14 +205,20 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<"-------------------------                   \n"<<Name[Chs2];
     for(int j=1;j<=20-Name[Chs2].size();j++) cout<<" ";
     cout<<(!lk[Chs2]?"\blocked ":"Lv.");
-    if(lk[Chs2]) printf("%.2d    ",Lv[Chs2]);
+    if(lk[Chs2]){
+		if(Lv[Chs2]>=0) printf("%.2d ",Lv[Chs2]);
+		else printf("%d ",Lv[Chs2]);
+	}
     cout<<"\n-------------------------                  ";
     move(0,2*Chs);
     color(14,0);
     cout<<"-------------------------                      \n"<<Name[Chs]<<'<';
     for(int j=1;j<=19-Name[Chs].size();j++) cout<<' ';
     cout<<(!lk[Chs]?"locked ":" Lv.");
-    if(lk[Chs]) printf("%.2d    ",Lv[Chs]);
+    if(lk[Chs]){
+		if(Lv[Chs]>=0) printf("%.2d ",Lv[Chs]);
+		else printf("%d ",Lv[Chs]);
+	}
     cout<<"\n-------------------------                   ";
     for(int i=0;i<=25;i++){
         move(26,ls+i);
@@ -465,14 +474,17 @@ int Play(int Chs){
 		//新手教程（实验）
 		in.open("9.txt");
 		if(Music);
+		autoplay=false;
 	}
 	if(Chs==10){
 		in.open("10.txt");
 		if(Music);
+		autoplay=false;
 	}
 	if(Chs==11){
 		in.open("11.txt");
 		if(Music);
+		autoplay=false;
 	}
 	if(Music){
 		mciSendString("play music",NULL,0,NULL);
@@ -1150,6 +1162,7 @@ int main(){
 				while(K(' ')||K(VK_RETURN));
 				kick(999,12,true);
 				Vol_UI();
+				while(K(' ')||K(VK_RETURN));
 				kick(999,12,true);
 				//定义一个double的speed
 				//这里有BUG
