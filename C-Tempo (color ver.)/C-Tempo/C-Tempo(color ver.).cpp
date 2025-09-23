@@ -486,15 +486,17 @@ int Play(int Chs){
 		if(Music);
 		autoplay=false;
 	}
-	if(Music){
-		mciSendString("play music",NULL,0,NULL);
-		//setSpeed(speed);
-		setvol(vol*20);
-		Sleep(pre[Chs]);
-	}
-	int Sum=0,x=0,y=0,TOT=0;
 	in>>spd[Chs];
 	in>>pre[Chs];
+	if(Music){
+		char cmd[114];
+		sprintf(cmd,"play music from %d",pre[Chs]);
+		mciSendString(cmd,NULL,0,NULL);
+		//setSpeed(speed);
+		setvol(vol*20);
+		//Sleep(pre[Chs]);
+	}
+	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
 	while(true){
 		in>>x;
@@ -1018,6 +1020,15 @@ bool RestartAsAdministrator(){
     else exit(0);
     return true;
 }
+LPCWSTR wide(const char* str){
+    if(str==nullptr) return L"";
+    int len=MultiByteToWideChar(CP_ACP,0,str,-1,nullptr,0);
+    if(len==0) return L"";
+    wstring wide_str(len,L'\0');
+    MultiByteToWideChar(CP_ACP,0,str,-1,&wide_str[0],len);
+    wide_str.resize(len-1);
+    return wide_str.c_str();
+}
 int main(){
 	SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE),GetWindowLongPtr(GetConsoleWindow(),GWL_STYLE)|ENABLE_EXTENDED_FLAGS);
     SetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE,GetWindowLongPtrA(GetConsoleWindow(),GWL_STYLE)&~WS_SIZEBOX&~WS_MAXIMIZEBOX&~WS_MINIMIZEBOX);
@@ -1169,7 +1180,10 @@ int main(){
 				//’‚¿Ô”–BUG
 				//spd[Chs]=spd[Chs]/speed;
 				//pre[Chs]=pre[Chs]/speed;
+				string title="C-Tempo - "+Name[Chs];
+				//SetWindowTextW(GetConsoleWindow(),wide(title.c_str()));
 				while(Play(Chs));
+				//SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
 				Main_List_Print(Chs);
 				Print_Move(Chs,Chs,true);
 			}
