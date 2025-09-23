@@ -32,10 +32,8 @@ string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh    
                   "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 int spd[114];
-//{0,12700,7421,0,0,13700,13000,8850,10700,12700,0}
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
 int pre[114];
-//{0,2600,5300,0,0,400,7900,1300,4300,0,0}
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 atomic<bool> stop_flag;
@@ -88,15 +86,9 @@ void Start(){
 	mciSendString("resume music",NULL,0,NULL);
 	return;
 }
-void setSpeed(double speed){
-	char cmd[114];
-	sprintf(cmd,"set music speed %d",(int)(speed*1000));
-	mciSendString(cmd,NULL,0,NULL);
-	return;
-}
 void color(int ForgC,int BackC){
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F)
-	//|COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE //测试文字宽度
+	//|COMMON_LVB_GRID_HORIZONTAL|COMMON_LVB_GRID_LVERTICAL|COMMON_LVB_GRID_RVERTICAL|COMMON_LVB_UNDERSCORE
 	);
 	return;
 }
@@ -420,8 +412,6 @@ void getSystemName(){
 	NTPROC proc=(NTPROC)GetProcAddress(hinst,"RtlGetNtVersionNumbers");
 	proc(&dwMajor,&dwMinor,&dwBuildNumber);
 	auto sharedUserData=(BYTE*)0x7FFE0000;
-	//判断win11的，看自己电脑情况加。
-	//如果游戏界面旁边闪的话，就加上.
     //if((int)*(ULONG*)(sharedUserData+0x260)>=22000) return;
 	if(dwMajor==10&&dwMinor==0) refresh=true;
 	return;
@@ -471,7 +461,6 @@ int Play(int Chs){
 		if(Music) mciSendString("open ..\\music\\8.mp3 alias music",NULL,0,NULL);
 	}
 	if(Chs==9){
-		//新手教程（实验）
 		in.open("9.txt");
 		if(Music);
 		autoplay=false;
@@ -492,9 +481,7 @@ int Play(int Chs){
 		char cmd[114];
 		sprintf(cmd,"play music from %d",pre[Chs]);
 		mciSendString(cmd,NULL,0,NULL);
-		//setSpeed(speed);
 		setvol(vol*20);
-		//Sleep(pre[Chs]);
 	}
 	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
@@ -545,7 +532,6 @@ int Play(int Chs){
         auto offset=duration_cast<nanoseconds>(now-next_cycle).count();
         next_cycle+=cycle_duration;
         auto remaining=next_cycle-clock::now();
-		//混合休眠策略，降低性能开销（防止你的电脑爆炸）
         if(remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
         while(clock::now()<next_cycle);
         clock::time_point pause_start;
@@ -1176,10 +1162,6 @@ int main(){
 				Vol_UI();
 				while(K(' ')||K(VK_RETURN));
 				kick(999,12,true);
-				//定义一个double的speed
-				//这里有BUG
-				//spd[Chs]=spd[Chs]/speed;
-				//pre[Chs]=pre[Chs]/speed;
 				string title;
 				if(Name[Chs].size()<=13) title="C-Tempo - "+Name[Chs];
 				else title="C-Tempo - "+Name[Chs].substr(0,13);
