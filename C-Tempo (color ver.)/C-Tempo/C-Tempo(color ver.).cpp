@@ -419,8 +419,6 @@ void getSystemName(){
 int Play(int Chs){
     if(!border) setsize(23,17);
     else setsize_(20,14);
-	color(15,0);
-	cout<<"Ç°×à...";
 	memset(msic,0,sizeof msic);
 	memset(MTsum,0,sizeof MTsum);
 	ifstream in;
