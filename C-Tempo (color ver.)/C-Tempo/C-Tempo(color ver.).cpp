@@ -1180,10 +1180,12 @@ int main(){
 				//’‚¿Ô”–BUG
 				//spd[Chs]=spd[Chs]/speed;
 				//pre[Chs]=pre[Chs]/speed;
-				string title="C-Tempo - "+Name[Chs];
-				//SetWindowTextW(GetConsoleWindow(),wide(title.c_str()));
+				string title;
+				if(Name[Chs].size()<=13) title="C-Tempo - "+Name[Chs];
+				else title="C-Tempo - "+Name[Chs].substr(0,13);
+				SetWindowTextW(GetConsoleWindow(),wide(title.c_str()));
 				while(Play(Chs));
-				//SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
+				SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
 				Main_List_Print(Chs);
 				Print_Move(Chs,Chs,true);
 			}
