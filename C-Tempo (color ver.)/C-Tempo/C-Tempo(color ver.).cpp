@@ -1271,8 +1271,8 @@ int main(){
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
+		do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 		while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT));
-		FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	}
 	return 0;
 }
