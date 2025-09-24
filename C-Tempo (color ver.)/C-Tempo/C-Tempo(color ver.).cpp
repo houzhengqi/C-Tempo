@@ -1161,8 +1161,9 @@ int main(){
 				while(K(' ')||K(VK_RETURN));
 				kick(999,12,true);
 				string title;
-				if(Name[Chs].size()<=13) title="C-Tempo - "+Name[Chs];
-				else title="C-Tempo - "+Name[Chs].substr(0,13);
+				//if(Name[Chs].size()<=13) title="C-Tempo - "+Name[Chs];
+				//else title="C-Tempo - "+Name[Chs].substr(0,13);
+				title="C-Tempo - "+Name[Chs];
 				SetWindowTextW(GetConsoleWindow(),wide(title.c_str()));
 				while(Play(Chs));
 				SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
