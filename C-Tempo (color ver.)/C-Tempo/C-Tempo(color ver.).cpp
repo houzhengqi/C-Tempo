@@ -43,11 +43,18 @@ string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####
 				   "#  #","   #","####","####","#  #","####","####","   #","####","####",
 				   "#  #","   #","#   ","   #","####","   #","#  #","   #","#  #","   #",
 				   "####","   #","####","####","   #","####","####","   #","####","####"};
+string grd[5][7]={"####"," ###","### "," ## "," ###","#  #","  ###",
+				  "#   ","#   ","#  #","#  #","#   ","#  #","# # #",
+				  "####","#   ","### ","####"," ## ","#  #","#####",
+				  "#   ","#   ","#  #","#  #","   #","#  #","  #  ",
+				  "#   "," ###","### ","#  #","### "," ## ","  #  "};
+/*
 string grd[5][7]={"FFFF"," CCC","BBB "," AA "," SSS","V  V","  PAP",
 				  "F   ","C   ","B  B","A  A","S   ","V  V","A A A",
 				  "FFFF","C   ","BBB ","AAAA"," SS ","V  V","PAPAP",
 				  "F   ","C   ","B  B","A  A","   S","V  V","  A  ",
 				  "F   "," CCC","BBB ","A  A","SSS "," VV ","  P  "};
+*/
 void clrscr(){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
@@ -422,65 +429,20 @@ int Play(int Chs){
 	memset(msic,0,sizeof msic);
 	memset(MTsum,0,sizeof MTsum);
 	ifstream in;
-	if(Chs==0){
-		in.open("0.txt");
-		if(Music) mciSendString("open ..\\music\\0.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==1){
-		in.open("1.txt");
-		if(Music) mciSendString("open ..\\music\\1.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==2){
-		in.open("2.txt");
-		if(Music) mciSendString("open ..\\music\\2.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==3){
-		in.open("3.txt");
-		if(Music) mciSendString("open ..\\music\\3.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==4){
-		in.open("4.txt");
-		if(Music) mciSendString("open ..\\music\\4.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==5){
-		in.open("5.txt");
-		if(Music) mciSendString("open ..\\music\\5.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==6){
-		in.open("6.txt");
-		if(Music) mciSendString("open ..\\music\\6.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==7){
-		in.open("7.txt");
-		if(Music) mciSendString("open ..\\music\\7.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==8){
-		in.open("8.txt");
-		if(Music) mciSendString("open ..\\music\\8.mp3 alias music",NULL,0,NULL);
-	}
-	if(Chs==9){
-		in.open("9.txt");
-		if(Music);
-		autoplay=false;
-	}
-	if(Chs==10){
-		in.open("10.txt");
-		if(Music);
-		autoplay=false;
-	}
-	if(Chs==11){
-		in.open("11.txt");
-		if(Music);
-		autoplay=false;
-	}
-	in>>spd[Chs];
-	in>>pre[Chs];
-	if(Music){
-		char cmd[114];
-		sprintf(cmd,"play music from %d",pre[Chs]);
-		mciSendString(cmd,NULL,0,NULL);
-		setvol(vol*20);
-	}
+    string filename=to_string(Chs)+".txt";
+    in.open(filename);
+    if(Music&&Chs<=8){
+        char cmd[114];
+        sprintf(cmd,"open ..\\music\\%d.mp3 alias music",Chs);
+        mciSendString(cmd,NULL,0,NULL);
+    }
+    in>>spd[Chs]>>pre[Chs];
+    if(Music){
+        char cmd[114];
+        sprintf(cmd,"play music from %d",pre[Chs]);
+        mciSendString(cmd,NULL,0,NULL);
+        setvol(vol*20);
+    }
 	int Sum=0,x=0,y=0,TOT=0;
 	in>>Sum;
 	while(true){
@@ -516,7 +478,10 @@ int Play(int Chs){
 	cout<<"  |                |\n";
 	cout<<"  |                |\n";
 	cout<<"  ------------------\n";
-	cout<<"\n   A S D F G H J K\n\n\n空格/回车 暂停\nESC 退出";
+	cout<<"\n   A S D F G H J K  ";
+	cout<<"\n\n\n";
+	cout<<"空格/回车 暂停\n";
+	cout<<"ESC 退出";
     combo=0;
     int flsh=0;
     using namespace std::chrono;
@@ -640,7 +605,10 @@ int Play(int Chs){
 			cout<<"  |                |\n";
 			cout<<"  |                |\n";
 			cout<<"  ------------------\n";
-			cout<<"\n   A S D F G H J K\n\n\n空格/回车 暂停\nESC 退出";
+			cout<<"\n   A S D F G H J K  ";
+			cout<<"\n\n\n";
+			cout<<"空格/回车 暂停\n";
+			cout<<"ESC 退出";
 		}
 		color(15,0);
 		move(2,0);
