@@ -1060,8 +1060,8 @@ int main(){
 	Main_List_Print(Chs);
 	Print_Move(Chs,Chs,true);
 	for(int i=0;i<MusicSum;i++){
-		stop_flag=false;
 		if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]&&!(i>=9&&i<=11)){
+			stop_flag=false;
 			thread kill{[]{
 				while(true){
 					if(stop_flag) break;
@@ -1181,6 +1181,7 @@ int main(){
 		else caidan.clear();
 		if(caidan.find("uuddlrlrbaba")!=string::npos){
 			caidan.clear();
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo - 彩蛋"));
 			while(true){
 				if(K(VK_ESCAPE)) break;
 				char clor1='A',clor2='A';
@@ -1249,19 +1250,24 @@ int main(){
 				Sleep(100);
 			}
 			color(15,0);
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo"));
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
 		if(caidan.find("ududbaba")!=string::npos){
 			caidan.clear();
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo - 彩蛋"));
 			MessageBox(GetConsoleWindow(),"准备好报废你的手指了吗！！！","提示",MB_OK);
 			while(Play(10));
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo"));
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
 		if(caidan.find("uadbuadb")!=string::npos){
 			caidan.clear();
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo - 彩蛋"));
 			while(Play(11));
+			SetWindowTextW(GetConsoleWindow(),wide("C-Tempo"));
 			Main_List_Print(Chs);
 			Print_Move(Chs,Chs,true);
 		}
