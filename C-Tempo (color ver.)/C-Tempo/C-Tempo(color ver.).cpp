@@ -1040,17 +1040,11 @@ int main(){
 				}
 			}};
 	    	MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
-	    	if(MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1)==IDOK){
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow()," 操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
-			}
-			else{
-				MessageBox(GetConsoleWindow(),"  你不要也得给我要！！！"," 清空存档",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
-				memset(&Dt,0,sizeof Dt);
-				saveData(&Dt,"data.dat");
-				MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
-			}
+	    	MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1);
+	    	MessageBox(GetConsoleWindow(),"  清空存档中..."," 清除存档",MB_ICONWARNING|MB_OK);
+			memset(&Dt,0,sizeof Dt);
+			saveData(&Dt,"data.dat");
+			MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
 			stop_flag=true;
 			while(true){
 				if(kill.joinable()){
