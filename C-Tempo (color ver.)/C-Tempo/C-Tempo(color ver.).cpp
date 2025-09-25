@@ -116,7 +116,7 @@ void Vol(bool V){
 	move(55,2);
 	cout<<vol*2<<"%  ";
 	move(60,2);
-	cout<<"ÒôÁ¿";
+	cout<<"volume";
 	return;
 }
 void showcursor(bool visible){
@@ -381,10 +381,11 @@ void Vol_UI(){
 	move(52,2);
 	cout<<"]  "<<vol*2<<'%';
 	move(60,2);
-	cout<<"ÒôÁ¿\n  ";
+	cout<<"volume\n  ";
 	for(int i=0;i<50;i++) cout<<'-';
 	int key=0;
 	while(true){
+		key=0;
 		while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
 		if(K('A')||K(VK_LEFT)&&vol>0) Vol(false);
 		else if(K('D')||K(VK_RIGHT)&&vol<50) Vol(true);
@@ -394,7 +395,6 @@ void Vol_UI(){
 			if(key>=11451){
 				if((K('A')||K(VK_LEFT))&&vol>0) Vol(false);
 				else if((K('D')||K(VK_RIGHT))&&vol<50) Vol(true);
-				else key=0;
 				Sleep(30);
 			}
 		}
