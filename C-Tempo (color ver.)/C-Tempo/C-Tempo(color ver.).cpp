@@ -417,9 +417,11 @@ void getSystemName(){
 	HINSTANCE hinst=LoadLibrary("ntdll.dll");
 	DWORD dwMajor,dwMinor,dwBuildNumber;
 	NTPROC proc=(NTPROC)GetProcAddress(hinst,"RtlGetNtVersionNumbers");
+	if(!proc) exit(0);
 	proc(&dwMajor,&dwMinor,&dwBuildNumber);
     //if((int)*(ULONG*)((BYTE*)0x7FFE0000+0x260)>=22000) return;
 	if(dwMajor==10&&dwMinor==0) refresh=true;
+	FreeLibrary(hinst);
 	return;
 }
 int Play(int Chs){
