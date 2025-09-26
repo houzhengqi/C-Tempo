@@ -889,10 +889,7 @@ int Play(int Chs){
     skip=1;
     int u=score;
     int prtscore[8];
-    for(int i=6;i>=0;i--){
-    	prtscore[i]=u%10;
-    	u/=10;
-	}
+    for(int i=6;i>=0;i--) prtscore[i]=u%10,u/=10;
 	string mxcb="MaxCombo "+to_string(mxcmb);
 	string pf="Perfect "+to_string(pfct);
 	string miss="Miss "+to_string(TOT-pfct);
