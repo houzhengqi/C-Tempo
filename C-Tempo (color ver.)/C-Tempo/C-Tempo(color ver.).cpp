@@ -566,12 +566,12 @@ void PrintBig(int n,int m){
 }
 void resetAchievements(){
     for(int i=0;i<achievementCount;i++){
-        achievements[i].unlocked = false;
-        achievements[i].progress = 0;
-        Dt.achievements[i] = false;
-        Dt.achievementProgress[i] = 0;
+        achievements[i].unlocked=false;
+        achievements[i].progress=0;
+        Dt.achievements[i]=false;
+        Dt.achievementProgress[i]=0;
     }
-    unlockedAchievements = 0;
+    unlockedAchievements=0;
     saveAchievements();
     initAchievements();
     return;
