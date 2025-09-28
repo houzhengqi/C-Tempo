@@ -684,7 +684,8 @@ void getSystemName(){
     if(dwMajor==10&&dwMinor==0) refresh=true;
     FreeLibrary(hinst);
     return;
-}int Play(int Chs){
+}
+int Play(int Chs){
     if(!border) setsize(22,16);
     else setsize_(19,13);
     memset(msic,0,sizeof msic);
@@ -887,15 +888,13 @@ void getSystemName(){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&(int)t-t>0.5)) ky[i+8]=1;
-                    if(!msic[int(t)][j].gt){
-                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
-                            combo++;
-                            pfct++;
+                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
+                        if(msic[int(t)][j].cl<0){
+                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
+                            combo+=p;
+                            pfct+=p;
                         }
-                        else if(msic[int(t)][j].cl==3){
-                            combo++;
-                            pfct++;
-                        }
+                        else if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3) combo++,pfct++;
                     }
                     msic[int(t)][j].gt=1;
                 }
@@ -1003,15 +1002,13 @@ void getSystemName(){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&t-(int)t>0.7)) ky[i]=1;
-                    if(!msic[int(t)][j].gt){
-                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
-                            combo++;
-                            pfct++;
+                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
+                        if(msic[int(t)][j].cl<0){
+                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
+                            combo+=p;
+                            pfct+=p;
                         }
-                        else if(msic[int(t)][j].cl==3){
-                            combo++;
-                            pfct++;
-                        }
+                        else if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3) combo++,pfct++;
                     }
                     msic[int(t)][j].gt=1;
                 }
