@@ -30,10 +30,10 @@ struct MsicTime{
     int drc,pl,cl,len,can,gt;
 }msic[1145][33];
 double r[114],w[114];
-string btm=" ASDFGHJKQWERTYUI",SC[10]={"F","C","B","A","S","V","AP"};
+string btm=" ASDFGHJKQWERTYUI";
+string SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~","114514"};
-string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ",
-                  "祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
+string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ","祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 int spd[114];
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
@@ -81,6 +81,24 @@ time_t totalPlayTime=0;
 time_t gameStartTime=0;
 int consecutivePlays=0;
 int lastPlayedSong=-1;
+void color(int ForgC,int BackC){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F));
+    return;
+}
+void setsize(int col,int row){
+    char cmd[114];
+    sprintf(cmd,"mode %d,%d",col,row);
+    system(cmd);
+    return;
+}
+void setsize_(int col,int row){
+    color(15,0);
+    system("cls");
+    HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
+    SMALL_RECT windowSize={0,0,(SHORT)(col+2),(SHORT)(row+2)};
+    SetConsoleWindowInfo(hConsole,TRUE,&windowSize);
+    return;
+}
 void kick(double t,int n,bool ui){
     static int t_=0;
     if(t_==(int)(t)||!Music) return;
@@ -111,6 +129,47 @@ bool isConsoleFocused(){
 bool K(int VK){
     return isConsoleFocused()?GetAsyncKeyState(VK)&0x8000:false;
 }
+void drawmap(){
+	system("cls");
+	cout<<"  ";
+	for(int i=9;i<=16;i++) cout<<' '<<btm[i];
+	cout<<"\n\n";
+    cout<<"  ------------------\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  |                |\n";
+    cout<<"  ------------------\n";
+    cout<<"\n  ";
+    for(int i=1;i<=8;i++) cout<<' '<<btm[i];
+    cout<<"\n\n\n";
+    cout<<"空格/回车 暂停";
+	return;
+}
+void showcursor(bool visible){
+    CONSOLE_CURSOR_INFO cursor={20,visible};
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&cursor);
+    return;
+}
+void setkey(){
+	if(!border) setsize(22,16);
+    else setsize_(19,13);
+	showcursor(true);
+	btm.clear();
+	btm[0]=' ';
+	cout<<"\r入想要的键位(上方):\n";
+	for(int i=1;i<=8;i++) cin>>btm[i];
+	system("cls");
+	cout<<"\r输入想要的键位(下方):\n";
+	for(int i=9;i<=16;i++) cin>>btm[i];
+	showcursor(false);
+    if(!border) setsize(70,21);
+    else setsize_(68,18);
+	return;
+}
 void move(int x,int y){
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){(SHORT)x,(SHORT)y});
     return;
@@ -127,24 +186,6 @@ void Stop(){
 }
 void Start(){
     mciSendString("resume music",NULL,0,NULL);
-    return;
-}
-void color(int ForgC,int BackC){
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F));
-    return;
-}
-void setsize(int col,int row){
-    char cmd[1145];
-    sprintf(cmd,"mode %d,%d",col,row);
-    system(cmd);
-    return;
-}
-void setsize_(int col,int row){
-    color(15,0);
-    system("cls");
-    HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
-    SMALL_RECT windowSize={0,0,(SHORT)(col+2),(SHORT)(row+2)};
-    SetConsoleWindowInfo(hConsole,TRUE,&windowSize);
     return;
 }
 double Rks(){
@@ -198,9 +239,9 @@ void Print_Move(int Chs,int Chs2,bool lock){
         else printf("%d ",Lv[Chs]);
     }
     cout<<"\n-------------------------                   ";
-    for(int i=0;i<=30;i++){
+    for(int i=0;i<=26;i++){
         move(26,ls+i);
-        cout<<"                      ";
+        cout<<"                          ";
     }
     if(border) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
     else ls=2*max(0,Chs-6);
@@ -236,13 +277,11 @@ void Print_Move(int Chs,int Chs2,bool lock){
     move(26,ls+12);
     cout<<"  E 开启/关闭自动保存";
     move(26,ls+13);
-    cout<<"  F 关闭边框(不可调回)";
-    move(26,ls+19);
-    cout<<"  C 清除存档";
-    move(26,ls+20);
     cout<<"  P 查看成就系统";
-	move(26,ls+21);
+    move(26,ls+14);
 	cout<<"  ("<<unlockedAchievements<<"/"<<achievementCount<<")";
+    move(26,ls+15);
+    cout<<"  C 清除存档";
     move(26,ls+14);
     int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
@@ -275,7 +314,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     else{
         cout<<"  0000000 null";
         move(26,ls+15);
-        cout<<"  ACC null ";
+        cout<<"  ACC null  ";
         color(15,0);
         move(26,ls+16);
         printf("  RKS %.2lf ",Rks());
@@ -320,11 +359,6 @@ void Vol(bool V){
     cout<<vol*2<<"%  ";
     move(60,2);
     cout<<"volume";
-    return;
-}
-void showcursor(bool visible){
-    CONSOLE_CURSOR_INFO cursor={20,visible};
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&cursor);
     return;
 }
 void saveData(GameData* data,const char* filename){
@@ -650,10 +684,9 @@ void getSystemName(){
     if(dwMajor==10&&dwMinor==0) refresh=true;
     FreeLibrary(hinst);
     return;
-}
-int Play(int Chs){
-    if(!border) setsize(23,17);
-    else setsize_(20,14);
+}int Play(int Chs){
+    if(!border) setsize(22,16);
+    else setsize_(19,13);
     memset(msic,0,sizeof msic);
     memset(MTsum,0,sizeof MTsum);
     ifstream in;
@@ -693,22 +726,7 @@ int Play(int Chs){
             }
         }
     }
-    system("cls");
-    color(15,0);
-    cout<<"   Q W E R T Y U I\n\n";
-    cout<<"  ------------------\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  |                |\n";
-    cout<<"  ------------------\n";
-    cout<<"\n   A S D F G H J K  ";
-    cout<<"\n\n\n";
-    cout<<"空格/回车 暂停\n";
-    cout<<"ESC 退出";
+    drawmap();
     combo=0;
     int flsh=0;
     using namespace std::chrono;
@@ -819,22 +837,7 @@ int Play(int Chs){
             next_cycle+=duration_cast<microseconds>(pause_end-pause_start);
             is_paused=false;
             Start();
-            system("cls");
-            color(15,0);
-            cout<<"   Q W E R T Y U I\n\n";
-            cout<<"  ------------------\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  |                |\n";
-            cout<<"  ------------------\n";
-            cout<<"\n   A S D F G H J K  ";
-            cout<<"\n\n\n";
-            cout<<"空格/回车 暂停\n";
-            cout<<"ESC 退出";
+            drawmap();
         }
         color(15,0);
         move(2,0);
@@ -884,13 +887,15 @@ int Play(int Chs){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&(int)t-t>0.5)) ky[i+8]=1;
-                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
-                        if(msic[int(t)][j].cl<0){
-                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
-                            combo+=p;
-                            pfct+=p;
+                    if(!msic[int(t)][j].gt){
+                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
+                            combo++;
+                            pfct++;
                         }
-                        else combo++,pfct++;
+                        else if(msic[int(t)][j].cl==3){
+                            combo++;
+                            pfct++;
+                        }
                     }
                     msic[int(t)][j].gt=1;
                 }
@@ -998,13 +1003,15 @@ int Play(int Chs){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&t-(int)t>0.7)) ky[i]=1;
-                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
-                        if(msic[int(t)][j].cl<0){
-                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
-                            combo+=p;
-                            pfct+=p;
+                    if(!msic[int(t)][j].gt){
+                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
+                            combo++;
+                            pfct++;
                         }
-                        else combo++,pfct++;
+                        else if(msic[int(t)][j].cl==3){
+                            combo++;
+                            pfct++;
+                        }
                     }
                     msic[int(t)][j].gt=1;
                 }
@@ -1276,7 +1283,8 @@ int main(int argc,char* argv[]){
     }
     while(true){
         int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
-        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('F')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P'));
+        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')
+		&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T'));
         if(K('S')||K(VK_DOWN)){
             kick(999,5,true);
             Print_Move(nxt,Chs,false);
@@ -1323,18 +1331,6 @@ int main(int argc,char* argv[]){
             Main_List_Print(Chs);
             Print_Move(Chs,Chs,true);
         }
-        if(K('F')){
-            if(!border){
-                MessageBox(GetConsoleWindow(),"已经没有边框了~","提示",MB_OK);
-                continue;
-            }
-            border=false;
-            MusicSum=12;
-            ls=0;
-            Chs=min(11,Chs);
-            Main_List_Print(Chs);
-            Print_Move(Chs,Chs,true);
-        }
         if(K('P')){
         	while(K('P'));
             kick(999,5,true);
@@ -1358,7 +1354,17 @@ int main(int argc,char* argv[]){
                 Print_Move(Chs,Chs,true);
             }
         }
-        if(K('R')) saveData(&Dt,"data.dat");
+        if(K('R')){
+        	saveData(&Dt,"data.dat");
+        	Print_Move(Chs,Chs,true);
+		}
+        if(K('T')){
+        	while(K('T'));
+        	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+        	setkey();
+        	Main_List_Print(Chs);
+        	Print_Move(Chs,Chs,true);
+		}
         if(K('B')) caidan.push_back('b');
         else if(K('A')) caidan.push_back('a');
         else if(K(VK_LEFT)) caidan.push_back('l');
@@ -1375,25 +1381,51 @@ int main(int argc,char* argv[]){
                 int c1=rand()%16,c2=rand()%16;
                 if(c1>9){
                     switch(c1){
-                        case 10:clor1='A';break;
-                        case 11:clor1='B';break;
-                        case 12:clor1='C';break;
-                        case 13:clor1='D';break;
-                        case 14:clor1='E';break;
-                        case 15:clor1='F';break;
-                        default:break;
+                        case 10:
+							clor1='A';
+							break;
+                        case 11:
+							clor1='B';
+							break;
+                        case 12:
+							clor1='C';
+							break;
+                        case 13:
+							clor1='D';
+							break;
+                        case 14:
+							clor1='E';
+							break;
+                        case 15:
+							clor1='F';
+							break;
+                        default:
+							break;
                     }
                 }
                 else clor1=c1+'0';
                 if(c2>9){
                     switch(c2){
-                        case 10:clor2='A';break;
-                        case 11:clor2='B';break;
-                        case 12:clor2='C';break;
-                        case 13:clor2='D';break;
-                        case 14:clor2='E';break;
-                        case 15:clor2='F';break;
-                        default:break;
+                        case 10:
+							clor2='A';
+							break;
+                        case 11:
+							clor2='B';
+							break;
+                        case 12:
+							clor2='C';
+							break;
+                        case 13:
+							clor2='D';
+							break;
+                        case 14:
+							clor2='E';
+							break;
+                        case 15:
+							clor2='F';
+							break;
+                        default:
+							break;
                     }
                 }
                 else clor2=c2+'0';
@@ -1428,7 +1460,8 @@ int main(int argc,char* argv[]){
             Print_Move(Chs,Chs,true);
         }
         do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('F')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P'));
+        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')
+		||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T'));
     }
     return 0;
 }
