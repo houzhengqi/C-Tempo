@@ -282,7 +282,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
 	cout<<"  ("<<unlockedAchievements<<"/"<<achievementCount<<")";
     move(26,ls+15);
     cout<<"  C Çå³ý´æµµ";
-    move(26,ls+14);
+    move(26,ls+16);
     int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
     else if(sc<820000) sc=1;
@@ -296,32 +296,20 @@ void Print_Move(int Chs,int Chs2,bool lock){
         if(!save[Chs]&&New[Chs]) color(6,0);
     }
     else if(!save[Chs]&&New[Chs]) color(8,0);
-    if(lk[Chs]!=0){
-        printf("  %.07d ",(int)round(Dt.sc[Chs]));
-        cout<<" "<<(Dt.f[Chs]?SC[sc]:"new")<<"   ";
-        move(26,ls+15);
-        string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
-        if(acc=="  ACC 0%") acc="  ACC 000%";
-        acc.insert(acc.size()-3,".");
-        cout<<acc<<"    ";
-        color(15,0);
-        move(26,ls+16);
-        printf("  RKS %.2lf ",Rks());
-        move(26,ls+17);
-        color(8,0);
-        cout<<"  tips:"<<tips[rand()%10];
-    }
-    else{
-        cout<<"  0000000 null";
-        move(26,ls+15);
-        cout<<"  ACC null  ";
-        color(15,0);
-        move(26,ls+16);
-        printf("  RKS %.2lf ",Rks());
-        move(26,ls+17);
-        color(8,0);
-        cout<<"  tips:"<<tips[rand()%10];
-    }
+    printf("  %.07d ",(int)round(Dt.sc[Chs]));
+    cout<<" "<<(lk[Chs]?(Dt.f[Chs]?"\b"+SC[sc]:"\bnew"):"\bnull")<<"   ";
+    move(26,ls+17);
+    string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
+    if(acc=="  ACC 0%") acc="  ACC 000%";
+    acc.insert(acc.size()-3,".");
+    acc=acc+"    ";
+    cout<<(lk[Chs]?acc:"  ACC null ");
+    color(15,0);
+    move(26,ls+18);
+    printf("  RKS %.2lf ",Rks());
+    move(26,ls+19);
+    color(8,0);
+    cout<<"  tips:"<<tips[rand()%10];
     move(0,2*min(MusicSum,Chs+6));
     return;
 }
@@ -888,13 +876,15 @@ int Play(int Chs){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&(int)t-t>0.5)) ky[i+8]=1;
-                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
-                        if(msic[int(t)][j].cl<0){
-                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
-                            combo+=p;
-                            pfct+=p;
+                    if(!msic[int(t)][j].gt){
+                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
+                            combo++;
+                            pfct++;
                         }
-                        else if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3) combo++,pfct++;
+                        else if(msic[int(t)][j].cl==3){
+                            combo++;
+                            pfct++;
+                        }
                     }
                     msic[int(t)][j].gt=1;
                 }
@@ -1002,13 +992,15 @@ int Play(int Chs){
                     flsh=2;
                     ot=1;
                     if(!((msic[int(t)][j].cl==1)&&t-(int)t>0.7)) ky[i]=1;
-                    if(!msic[int(t)][j].gt&&(msic[int(t)][j].cl!=3)){
-                        if(msic[int(t)][j].cl<0){
-                            int p=(msic[int(t)][j].cl==-msic[int(t)+msic[int(t)][j].cl][msic[int(t)][j].len].len);
-                            combo+=p;
-                            pfct+=p;
+                    if(!msic[int(t)][j].gt){
+                        if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3){
+                            combo++;
+                            pfct++;
                         }
-                        else if(msic[int(t)][j].cl>=0&&msic[int(t)][j].cl!=3) combo++,pfct++;
+                        else if(msic[int(t)][j].cl==3){
+                            combo++;
+                            pfct++;
+                        }
                     }
                     msic[int(t)][j].gt=1;
                 }
