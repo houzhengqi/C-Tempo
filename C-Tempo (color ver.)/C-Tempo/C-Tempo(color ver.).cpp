@@ -564,7 +564,7 @@ void onSongComplete(int songId,double score,double acc,int maxCombo,int totalNot
     if(consecutivePlays>=5) achievements[6].progress=1;
     if(perfectCount==totalNotes) achievements[13].progress=1;
     if(songId==9||songId==10||songId==11) achievements[5].progress=1;
-    time_t now = time(NULL);
+    time_t now=time(NULL);
     tm* timeinfo=localtime(&now);
     if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) achievements[11].progress=1;
     if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) achievements[12].progress=1;
