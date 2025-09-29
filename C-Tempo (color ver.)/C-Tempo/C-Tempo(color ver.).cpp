@@ -35,13 +35,13 @@ string SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~","114514"};
 string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ","祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
-int spd[114];
+time_t totalPlayTime,gameStartTime;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
 int pre[114];
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
 long long scoresum;
 atomic<bool> stop_flag;
-int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20;
+int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastPlayedSong=-1,consecutivePlays,unlockedAchievements,achievementCount=14,spd[114];
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
                    "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
                    "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -75,12 +75,6 @@ Achievement achievements[15]={
     {"周末战士","在周末完成游戏",false,0,1},
     {"完美连击","单局无Miss完成",false,0,1}
 };
-int achievementCount=14;
-int unlockedAchievements=0;
-time_t totalPlayTime=0;
-time_t gameStartTime=0;
-int consecutivePlays=0;
-int lastPlayedSong=-1;
 void color(int ForgC,int BackC){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F));
     return;
@@ -570,6 +564,10 @@ void onSongComplete(int songId,double score,double acc,int maxCombo,int totalNot
     if(consecutivePlays>=5) achievements[6].progress=1;
     if(perfectCount==totalNotes) achievements[13].progress=1;
     if(songId==9||songId==10||songId==11) achievements[5].progress=1;
+    time_t now = time(NULL);
+    tm* timeinfo=localtime(&now);
+    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) achievements[11].progress=1;
+    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) achievements[12].progress=1;
     for(int i=0;i<achievementCount;i++) checkAchievement(i);
     saveAchievements();
     return;
