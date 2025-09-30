@@ -29,6 +29,13 @@ struct GameData{
 struct MsicTime{
     int drc,pl,cl,len,can,gt;
 }msic[1145][33];
+struct Achievement{
+    string name;
+    string description;
+    bool unlocked;
+    int progress;
+    int target;
+}achievements[15]={{"初出茅庐","完成任意一首歌曲",false,0,1},{"完美主义者","任意歌曲ACC达到100%",false,0,1},{"全连大师","任意歌曲达成Full Combo",false,0,1},{"节奏达人","总游戏时长超过10分钟",false,0,600},{"收藏家","解锁所有可玩歌曲",false,0,1},{"彩蛋猎人","发现彩蛋歌曲",false,0,1},{"坚持不懈","连续游玩5首歌曲",false,0,5},{"精准打击","单局游戏ACC超过95%",false,0,1},{"百万分数","单局得分超过1,000,000",false,0,1},{"连击之王","达成200连击",false,0,200},{"全难度制霸","所有难度歌曲都完成",false,0,1},{"夜猫子","在深夜时段玩游戏",false,0,1},{"周末战士","在周末完成游戏",false,0,1},{"完美连击","单局无Miss完成",false,0,1}};
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI";
 string SC[10]={"F","C","B","A","S","V","AP"};
@@ -52,29 +59,6 @@ string grd[5][7]={"####"," ###","### "," ## "," ###","#  #","  ###",
                   "####","#   ","### ","####"," ## ","#  #","#####",
                   "#   ","#   ","#  #","#  #","   #","#  #","  #  ",
                   "#   "," ###","### ","#  #","### "," ## ","  #  "};
-struct Achievement {
-    string name;
-    string description;
-    bool unlocked;
-    int progress;
-    int target;
-};
-Achievement achievements[15]={
-    {"初出茅庐","完成任意一首歌曲",false,0,1},
-    {"完美主义者","任意歌曲ACC达到100%",false,0,1},
-    {"全连大师","任意歌曲达成Full Combo",false,0,1},
-    {"节奏达人","总游戏时长超过10分钟",false,0,600},
-    {"收藏家","解锁所有可玩歌曲",false,0,1},
-    {"彩蛋猎人","发现彩蛋歌曲",false,0,1},
-    {"坚持不懈","连续游玩5首歌曲",false,0,5},
-    {"精准打击","单局游戏ACC超过95%",false,0,1},
-    {"百万分数","单局得分超过1,000,000",false,0,1},
-    {"连击之王","达成200连击",false,0,200},
-    {"全难度制霸","所有难度歌曲都完成",false,0,1},
-    {"夜猫子","在深夜时段玩游戏",false,0,1},
-    {"周末战士","在周末完成游戏",false,0,1},
-    {"完美连击","单局无Miss完成",false,0,1}
-};
 void color(int ForgC,int BackC){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),((BackC&0x0F)<<4)+(ForgC&0x0F));
     return;
@@ -1270,8 +1254,7 @@ int main(int argc,char* argv[]){
     }
     while(true){
         int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
-        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')
-		&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T'));
+        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T'));
         if(K('S')||K(VK_DOWN)){
             kick(999,5,true);
             Print_Move(nxt,Chs,false);
@@ -1447,8 +1430,7 @@ int main(int argc,char* argv[]){
             Print_Move(Chs,Chs,true);
         }
         do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')
-		||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T'));
+        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T'));
     }
     return 0;
 }
