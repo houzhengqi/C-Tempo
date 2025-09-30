@@ -44,11 +44,9 @@ string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh    
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 time_t totalPlayTime,gameStartTime;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
-int pre[114];
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
-long long scoresum;
 atomic<bool> stop_flag;
-int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastPlayedSong=-1,consecutivePlays,unlockedAchievements,achievementCount=14,spd[114];
+int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastPlayedSong=-1,consecutivePlays,unlockedAchievements,achievementCount=14,spd[114],scoresum,pre[114];
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
                    "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
                    "#  #","   #","####","####","#  #","####","####","   #","####","####",
