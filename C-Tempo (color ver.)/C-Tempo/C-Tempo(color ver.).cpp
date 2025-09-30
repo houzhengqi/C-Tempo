@@ -148,12 +148,6 @@ void showcursor(bool visible){
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&cursor);
     return;
 }
-void clearinput(){
-	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-	cin.clear();
-    cin.ignore(numeric_limits<std::streamsize>::max(),'\n');
-	return;
-}
 void setkey(){
 	if(!border) setsize(22,16);
     else setsize_(19,13);
@@ -162,7 +156,8 @@ void setkey(){
 	btm[0]=' ';
 	cout<<"\r入想要的键位(上方):\n";
 	for(int i=1;i<=8;i++) cin>>btm[i];
-	clearinput();
+	cin.clear();
+    cin.ignore(numeric_limits<std::streamsize>::max(),'\n');
 	system("cls");
 	cout<<"\r输入想要的键位(下方):\n";
 	for(int i=9;i<=16;i++) cin>>btm[i];
@@ -404,7 +399,7 @@ void ShowUnlockMessage(int index){
     system("cls");
     move(10,1);
     color(14,0);
-    cout<<"★ 成就解锁 ★";
+    cout<<"★ 成就解锁 ★\n";
     move(8,2);
     color(15,0);
     cout<<achievements[index].name;
@@ -1352,7 +1347,7 @@ int main(int argc,char* argv[]){
 		}
         if(K('T')){
         	while(K('T'));
-        	clearinput();
+        	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
         	setkey();
         	Main_List_Print(Chs);
         	Print_Move(Chs,Chs,true);
@@ -1451,7 +1446,7 @@ int main(int argc,char* argv[]){
             Main_List_Print(Chs);
             Print_Move(Chs,Chs,true);
         }
-        do clearinput();
+        do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
         while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')
 		||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T'));
     }
