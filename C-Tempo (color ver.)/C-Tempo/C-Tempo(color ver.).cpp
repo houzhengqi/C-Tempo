@@ -40,7 +40,7 @@ double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI";
 string SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~","114514"};
-string tips[114]={"太带派了！     ","小红书 @xErufy ","小红书 @偷妈头 ","hhh            ","感谢游玩       ","祝你早日打出AP ","试试改修改开关","在不在？       ","打歌容易上瘾   ","不要当播放器使!"};
+string tips[114]={"太带派了！","小红书 @xErufy","小红书 @偷妈头","hhh","感谢游玩","祝你早日打出AP ","试试改修改开关","在不在？","打歌容易上瘾 ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 time_t totalPlayTime,gameStartTime;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
@@ -1088,7 +1088,6 @@ int Play(int Chs){
     else setsize_(57,17);
     move(37,0);
     cout<<"Click to Skip";
-    skip=1;
     int u=score;
     int prtscore[8];
     for(int i=6;i>=0;i--) prtscore[i]=u%10,u/=10;
