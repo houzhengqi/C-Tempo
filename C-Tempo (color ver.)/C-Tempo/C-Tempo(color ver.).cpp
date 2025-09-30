@@ -723,28 +723,26 @@ int Play(int Chs){
     drawmap();
     combo=0;
     int flsh=0;
-    using namespace std::chrono;
-    using clock=steady_clock;
-    auto cycle_duration=microseconds(spd[Chs]);
-    auto next_cycle=clock::now()+cycle_duration;
+    auto cycle_duration=chrono::microseconds(spd[Chs]);
+    auto next_cycle=chrono::steady_clock::now()+cycle_duration;
     double score=0;
     int mxcmb=0,pfct=0,ot=0;
     onSongStart(Chs);
     for(double t=1;t<=Sum;t+=0.1){
-        auto now=clock::now();
-        auto offset=duration_cast<nanoseconds>(now-next_cycle).count();
+        auto now=chrono::steady_clock::steady_clock::now();
+        auto offset=chrono::duration_cast<chrono::nanoseconds>(now-next_cycle).count();
         next_cycle+=cycle_duration;
-        auto remaining=next_cycle-clock::now();
-        if(remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
-        while(clock::now()<next_cycle);
-        clock::time_point pause_start;
-        microseconds total_pause_duration=microseconds(0);
+        auto remaining=next_cycle-chrono::steady_clock::now();
+        if(remaining>chrono::microseconds(500)) this_thread::sleep_for(remaining-chrono::microseconds(400));
+        while(chrono::steady_clock::now()<next_cycle);
+        chrono::steady_clock::time_point pause_start;
+        chrono::microseconds total_pause_duration=chrono::microseconds(0);
         bool is_paused=false;
         if(is_paused){
-            auto now=clock::now();
+            auto now=chrono::steady_clock::now();
             auto remaining=next_cycle-now;
-            if(remaining>microseconds(500)) this_thread::sleep_for(remaining-microseconds(400));
-            while(clock::now()<next_cycle);
+            if(remaining>chrono::microseconds(500)) this_thread::sleep_for(remaining-chrono::microseconds(400));
+            while(chrono::steady_clock::now()<next_cycle);
             next_cycle+=cycle_duration;
             continue;
         }
@@ -753,7 +751,7 @@ int Play(int Chs){
             Stop();
             kick(999,11,true);
             is_paused=true;
-            pause_start=clock::now();
+            pause_start=chrono::steady_clock::now();
             system("cls");
             Stop();
             color(15,0);
@@ -770,7 +768,7 @@ int Play(int Chs){
             int D=2;
             while(K(' ')||K(VK_RETURN)||K(VK_ESCAPE));
             while(true){
-                auto now=clock::now();
+                auto now=chrono::steady_clock::now();
                 auto remaining=next_cycle-now;
                 next_cycle+=cycle_duration;
                 color(15,0);
@@ -826,9 +824,9 @@ int Play(int Chs){
                 cout<<"ÒôÁ¿";
                 while(K('W')||K(VK_UP)||K('S')||K(VK_DOWN)||K('A')||K('D')||K(VK_LEFT)||K(VK_RIGHT));
             }
-            auto pause_end=clock::now();
-            total_pause_duration+=duration_cast<microseconds>(pause_end-pause_start);
-            next_cycle+=duration_cast<microseconds>(pause_end-pause_start);
+            auto pause_end=chrono::steady_clock::now();
+            total_pause_duration+=chrono::duration_cast<chrono::microseconds>(pause_end-pause_start);
+            next_cycle+=chrono::duration_cast<chrono::microseconds>(pause_end-pause_start);
             is_paused=false;
             Start();
             drawmap();
