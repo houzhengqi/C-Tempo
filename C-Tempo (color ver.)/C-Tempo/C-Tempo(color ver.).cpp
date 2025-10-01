@@ -507,7 +507,7 @@ void ShowAchievements(){
     }
     move(20,26);
     color(15,0);
-    cout<<"按任意键返回...";
+    cout<<"Click to continue";
     while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON));
 	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
     if(!border) setsize(48,26);
