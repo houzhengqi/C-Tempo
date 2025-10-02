@@ -5,7 +5,6 @@
 #include <chrono>
 #include <fstream>
 #include <cstdio>
-#include <atomic>
 #include <conio.h>
 #include <shellapi.h>
 #include <ctime>
@@ -45,7 +44,6 @@ bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false}
 time_t totalPlayTime,gameStartTime;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
-atomic<bool> stop_flag;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastPlayedSong=-1,consecutivePlays,unlockedAchievements,achievementCount=14,spd[114],scoresum,pre[114];
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
                    "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
@@ -401,7 +399,7 @@ void checkAchievement(int index){
     bool shouldUnlock=false;
     switch(index){
         case 0:
-            shouldUnlock = achievements[index].progress >= achievements[index].target;
+            shouldUnlock=achievements[index].progress>=achievements[index].target;
             break;
         case 1:
             for(int i=0;i<MusicSum;i++){
@@ -420,7 +418,7 @@ void checkAchievement(int index){
             }
             break;
         case 3:
-            shouldUnlock = totalPlayTime >= achievements[index].target;
+            shouldUnlock=totalPlayTime>=achievements[index].target;
             break;
         case 4:
             shouldUnlock=true;
@@ -432,13 +430,13 @@ void checkAchievement(int index){
             }
             break;
         case 5:
-            shouldUnlock = achievements[index].progress>=achievements[index].target;
+            shouldUnlock=achievements[index].progress>=achievements[index].target;
             break;
         case 6:
-            shouldUnlock = achievements[index].progress>=achievements[index].target;
+            shouldUnlock=achievements[index].progress>=achievements[index].target;
             break;
         case 7:
-            shouldUnlock = achievements[index].progress>=achievements[index].target;
+            shouldUnlock=achievements[index].progress>=achievements[index].target;
             break;
         case 8:
             shouldUnlock=achievements[index].progress>=achievements[index].target;
@@ -1223,29 +1221,10 @@ int main(int argc,char* argv[]){
     Print_Move(Chs,Chs,true);
     for(int i=0;i<MusicSum;i++){
         if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]&&!(i>=9&&i<=11)){
-            stop_flag=false;
-            thread kill{[]{
-                while(true){
-                    if(stop_flag) break;
-                    system("taskkill /f /im Taskmgr.exe >nul 2>&1");
-                    system("taskkill /f /im cmd.exe >nul 2>&1");
-                    this_thread::sleep_for(chrono::milliseconds(100));
-                }
-            }};
-            MessageBox(GetConsoleWindow(),"  你就居然作弊！！！"," 警告",MB_OK|MB_ICONWARNING|MB_DEFBUTTON1);
-            MessageBox(GetConsoleWindow(),"  你确定要清除存档吗？"," 清除存档",MB_OKCANCEL|MB_ICONQUESTION|MB_DEFBUTTON1);
-            MessageBox(GetConsoleWindow(),"  清空存档中..."," 清除存档",MB_ICONWARNING|MB_OK);
             memset(&Dt,0,sizeof Dt);
             saveData(&Dt,"data.dat");
             resetAchievements();
             MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
-            stop_flag=true;
-            while(true){
-                if(kill.joinable()){
-                    kill.join();
-                    break;
-                }
-            }
             break;
         }
     }
