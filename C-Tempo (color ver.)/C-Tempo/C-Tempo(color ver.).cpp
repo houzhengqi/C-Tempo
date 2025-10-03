@@ -20,31 +20,31 @@ struct GameData{
     bool f[114];
     double sc[114];
     double acc[114];
-    bool achievements[20];
-    int achievementProgress[20];
-    time_t totalPlayTime;
-    int consecutivePlays;
+    bool ach[20];
+    int achProg[20];
+    time_t totalTime;
+    int consecPlays;
 }Dt;
 struct MsicTime{
     int drc,pl,cl,len,can,gt;
 }msic[1145][33];
 struct Achievement{
     string name;
-    string description;
+    string desc;
     bool unlocked;
-    int progress;
+    int prog;
     int target;
-}achievements[15]={{"初出茅庐","完成任意一首歌曲",false,0,1},{"完美主义者","任意歌曲ACC达到100%",false,0,1},{"全连大师","任意歌曲达成Full Combo",false,0,1},{"节奏达人","总游戏时长超过10分钟",false,0,600},{"收藏家","解锁所有可玩歌曲",false,0,1},{"彩蛋猎人","发现彩蛋歌曲",false,0,1},{"坚持不懈","连续游玩5首歌曲",false,0,5},{"精准打击","单局游戏ACC超过95%",false,0,1},{"百万分数","单局得分超过1,000,000",false,0,1},{"连击之王","达成200连击",false,0,200},{"全难度制霸","所有难度歌曲都完成",false,0,1},{"夜猫子","在深夜时段玩游戏",false,0,1},{"周末战士","在周末完成游戏",false,0,1},{"完美连击","单局无Miss完成",false,0,1}};
+}ach[15]={{"初出茅庐","完成任意一首歌曲",false,0,1},{"完美主义者","任意歌曲ACC达到100%",false,0,1},{"全连大师","任意歌曲达成Full Combo",false,0,1},{"节奏达人","总游戏时长超过10分钟",false,0,600},{"收藏家","解锁所有可玩歌曲",false,0,1},{"彩蛋猎人","发现彩蛋歌曲",false,0,1},{"坚持不懈","连续游玩5首歌曲",false,0,5},{"精准打击","单局游戏ACC超过95%",false,0,1},{"百万分数","单局得分超过1,000,000",false,0,1},{"连击之王","达成200连击",false,0,200},{"全难度制霸","所有难度歌曲都完成",false,0,1},{"夜猫子","在深夜时段玩游戏",false,0,1},{"周末战士","在周末完成游戏",false,0,1},{"完美连击","单局无Miss完成",false,0,1}};
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI";
 string SC[10]={"F","C","B","A","S","V","AP"};
 string Name[114]={"Rrhar'il","Igallta","Spasmodic","Distorted Fate","DESTRUCTION 3,2,1","LingGanGU","Cure For Me","Tetoris","Bounded Quietude","caidan~","caidanPlus~","114514"};
 string tips[114]={"太带派了！","小红书 @xErufy","小红书 @偷妈头","hhh","感谢游玩","祝你早日打出AP ","试试改修改开关","在不在？","打歌容易上瘾 ","不要当播放器使!"};
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
-time_t totalPlayTime,gameStartTime;
+time_t totalTime,gameStart;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
 bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
-int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastPlayedSong=-1,consecutivePlays,unlockedAchievements,achievementCount=14,spd[114],scoresum,pre[114];
+int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastSong=-1,consecPlays,unlockedAch,achCount=14,spd[114],scoresum,pre[114];
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
                    "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
                    "#  #","   #","####","####","#  #","####","####","   #","####","####",
@@ -255,7 +255,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     move(26,ls+13);
     cout<<"  P 查看成就系统";
     move(26,ls+14);
-	cout<<"  ("<<unlockedAchievements<<"/"<<achievementCount<<")";
+	cout<<"  ("<<unlockedAch<<"/"<<achCount<<")";
     move(26,ls+15);
     cout<<"  C 清除存档";
     move(26,ls+16);
@@ -353,27 +353,27 @@ void end(){
     mciSendString("close music",NULL,0,NULL);
     return;
 }
-void initAchievements(){
-    for(int i=0;i<achievementCount;i++){
-        achievements[i].unlocked=Dt.achievements[i];
-        achievements[i].progress=Dt.achievementProgress[i];
-        if(achievements[i].unlocked) unlockedAchievements++;
+void initAch(){
+    for(int i=0;i<achCount;i++){
+        ach[i].unlocked=Dt.ach[i];
+        ach[i].prog=Dt.achProg[i];
+        if(ach[i].unlocked) unlockedAch++;
     }
-    totalPlayTime=Dt.totalPlayTime;
-    consecutivePlays=Dt.consecutivePlays;
+    totalTime=Dt.totalTime;
+    consecPlays=Dt.consecPlays;
     return;
 }
-void saveAchievements(){
-    for(int i=0;i<achievementCount;i++){
-        Dt.achievements[i]=achievements[i].unlocked;
-        Dt.achievementProgress[i]=achievements[i].progress;
+void saveAch(){
+    for(int i=0;i<achCount;i++){
+        Dt.ach[i]=ach[i].unlocked;
+        Dt.achProg[i]=ach[i].prog;
     }
-    Dt.totalPlayTime=totalPlayTime;
-    Dt.consecutivePlays=consecutivePlays;
+    Dt.totalTime=totalTime;
+    Dt.consecPlays=consecPlays;
     saveData(&Dt,"Data.dat");
     return;
 }
-void ShowUnlockMessage(int index){
+void ShowUnlockMsg(int idx){
     if(!border) setsize(50,5);
     else setsize_(47,5);
     system("cls");
@@ -382,10 +382,10 @@ void ShowUnlockMessage(int index){
     cout<<"★ 成就解锁 ★\n";
     move(8,2);
     color(15,0);
-    cout<<achievements[index].name;
+    cout<<ach[idx].name;
     move(8,3);
     color(8,0);
-    cout<<achievements[index].description;
+    cout<<ach[idx].desc;
     if(Music) kick(999,8,true);
     Sleep(2000);
     if(!border) setsize(48,26);
@@ -394,12 +394,12 @@ void ShowUnlockMessage(int index){
     Print_Move(0,0,true);
     return;
 }
-void checkAchievement(int index){
-    if(achievements[index].unlocked) return;
+void checkAch(int idx){
+    if(ach[idx].unlocked) return;
     bool shouldUnlock=false;
-    switch(index){
+    switch(idx){
         case 0:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 1:
             for(int i=0;i<MusicSum;i++){
@@ -418,7 +418,7 @@ void checkAchievement(int index){
             }
             break;
         case 3:
-            shouldUnlock=totalPlayTime>=achievements[index].target;
+            shouldUnlock=totalTime>=ach[idx].target;
             break;
         case 4:
             shouldUnlock=true;
@@ -430,19 +430,19 @@ void checkAchievement(int index){
             }
             break;
         case 5:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 6:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 7:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 8:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 9:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 10:
             shouldUnlock=true;
@@ -454,24 +454,23 @@ void checkAchievement(int index){
             }
             break;
         case 11:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
-
         case 12:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
         case 13:
-            shouldUnlock=achievements[index].progress>=achievements[index].target;
+            shouldUnlock=ach[idx].prog>=ach[idx].target;
             break;
     }
-    if(shouldUnlock&&!achievements[index].unlocked){
-        achievements[index].unlocked=true;
-        unlockedAchievements++;
-        ShowUnlockMessage(index);
+    if(shouldUnlock&&!ach[idx].unlocked){
+        ach[idx].unlocked=true;
+        unlockedAch++;
+        ShowUnlockMsg(idx);
     }
     return;
 }
-void ShowAchievements(){
+void ShowAch(){
     if(!border) setsize(60,28);
     else setsize_(57,25);
     system("cls");
@@ -479,24 +478,24 @@ void ShowAchievements(){
     move(20,1);
     cout<<"★ 成 就 系 统 ★";
     move(18,2);
-    cout<<"已解锁: "<<unlockedAchievements<<"/"<<achievementCount;
+    cout<<"已解锁: "<<unlockedAch<<"/"<<achCount;
     int y=4;
-    for(int i=0;i<achievementCount;i++){
+    for(int i=0;i<achCount;i++){
         move(2,y);
-        if(achievements[i].unlocked){
+        if(ach[i].unlocked){
             color(10,0);
             cout<<"[ok] ";
             color(14,0);
-            cout<<achievements[i].name;
+            cout<<ach[i].name;
             move(30,y);
             color(8,0);
-            cout<<achievements[i].description;
+            cout<<ach[i].desc;
         }
         else{
             color(8,0);
             cout<<"[  ] ";
             color(7,0);
-            cout<<achievements[i].name;
+            cout<<ach[i].name;
             move(30,y);
             cout<<"???";
         }
@@ -513,38 +512,39 @@ void ShowAchievements(){
     return;
 }
 void onSongStart(int songId){
-    gameStartTime=time(NULL);
-    if(lastPlayedSong!=-1&&lastPlayedSong!=songId){
-        consecutivePlays++;
-        Dt.consecutivePlays=consecutivePlays;
+    gameStart=time(NULL);
+    if(lastSong!=-1&&lastSong!=songId){
+        consecPlays++;
+        Dt.consecPlays=consecPlays;
 	}
-    lastPlayedSong=songId;
+    lastSong=songId;
     time_t now=time(NULL);
     struct tm* timeinfo=localtime(&now);
-    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) achievements[11].progress=1;
-    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) achievements[12].progress=1;
+    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) ach[11].prog=1;
+    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) ach[12].prog=1;
     return;
 }
-void onSongComplete(int songId,double score,double acc,int maxCombo,int totalNotes,int perfectCount){
+
+void onSongComplete(int songId,double sc,double acc,int maxCombo,int totalNotes,int perfectCount){
 	if(autoplay) return;
     time_t endTime=time(NULL);
-    totalPlayTime+=(endTime-gameStartTime);
-    Dt.totalPlayTime=totalPlayTime;
-    achievements[0].progress=1;
-    if(acc>=0.9999) achievements[1].progress=1;
-    if(score>=999999) achievements[2].progress=1;
-    if(acc>=0.95) achievements[7].progress=1;
-    if(score>=1000000) achievements[8].progress=1;
-    if(maxCombo>=200) achievements[9].progress=1;
-    if(consecutivePlays>=5) achievements[6].progress=1;
-    if(perfectCount==totalNotes) achievements[13].progress=1;
-    if(songId==9||songId==10||songId==11) achievements[5].progress=1;
+    totalTime+=(endTime-gameStart);
+    Dt.totalTime=totalTime;
+    ach[0].prog=1;
+    if(acc>=0.9999) ach[1].prog=1;
+    if(sc>=999999) ach[2].prog=1;
+    if(acc>=0.95) ach[7].prog=1;
+    if(sc>=1000000) ach[8].prog=1;
+    if(maxCombo>=200) ach[9].prog=1;
+    if(consecPlays>=5) ach[6].prog=1;
+    if(perfectCount==totalNotes) ach[13].prog=1;
+    if(songId==9||songId==10||songId==11) ach[5].prog=1;
     time_t now=time(NULL);
     tm* timeinfo=localtime(&now);
-    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) achievements[11].progress=1;
-    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) achievements[12].progress=1;
-    for(int i=0;i<achievementCount;i++) checkAchievement(i);
-    saveAchievements();
+    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) ach[11].prog=1;
+    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) ach[12].prog=1;
+    for(int i=0;i<achCount;i++) checkAch(i);
+    saveAch();
     return;
 }
 void PrintBig(int n,int m){
@@ -566,16 +566,16 @@ void PrintBig(int n,int m){
     }
     return;
 }
-void resetAchievements(){
-    for(int i=0;i<achievementCount;i++){
-        achievements[i].unlocked=false;
-        achievements[i].progress=0;
-        Dt.achievements[i]=false;
-        Dt.achievementProgress[i]=0;
+void resetAch(){
+    for(int i=0;i<achCount;i++){
+        ach[i].unlocked=false;
+        ach[i].prog=0;
+        Dt.ach[i]=false;
+        Dt.achProg[i]=0;
     }
-    unlockedAchievements=0;
-    saveAchievements();
-    initAchievements();
+    unlockedAch=0;
+    saveAch();
+    initAch();
     return;
 }
 void PrintGrd(int sc){
@@ -1200,7 +1200,7 @@ int main(int argc,char* argv[]){
     cout<<"\n\n\n\n\n\n\n\n";
     cout<<"                             Click to Play";
     loadData(&Dt,"data.dat");
-    initAchievements();
+    initAch();
     color(8,0);
     move(59,20);
     cout<<"  MUSIC : ON";
@@ -1223,7 +1223,7 @@ int main(int argc,char* argv[]){
         if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]&&!(i>=9&&i<=11)){
             memset(&Dt,0,sizeof Dt);
             saveData(&Dt,"data.dat");
-            resetAchievements();
+            resetAch();
             MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
             break;
         }
@@ -1267,8 +1267,8 @@ int main(int argc,char* argv[]){
                 if(key){
                     memset(&Dt,0,sizeof Dt);
                     saveData(&Dt,"data.dat");
-                    resetAchievements();
-                    initAchievements();
+                    resetAch();
+                    initAch();
                     break;
                 }
                 if(K('N')) break;
@@ -1280,7 +1280,7 @@ int main(int argc,char* argv[]){
         if(K('P')){
         	while(K('P'));
             kick(999,5,true);
-            ShowAchievements();
+            ShowAch();
             Main_List_Print(Chs);
     		Print_Move(Chs,Chs,true);
         }
