@@ -43,7 +43,7 @@ string tips[114]={"太带派了！","小红书 @xErufy","小红书 @偷妈头","hhh","感谢游玩
 bool lk[114]={false,true,true,false,false,true,true,true,true,false,false,false};
 time_t totalTime,gameStart;
 int Lv[114]={0,2,1,0,0,4,15,15,20,-1,-1,-1};
-bool autoplay,ky[20],SAVE=true,Music=true,border=true,save[114],New[114],refresh;
+bool autoplay,ky[20],SAVE=true,Music=true,save[114],New[114],refresh;
 int vol=30,skip=1,ls=1,combo,MTsum[1145],MusicSum=20,lastSong=-1,consecPlays,unlockedAch,achCount=14,spd[114],scoresum,pre[114];
 string Big[5][10]={"####","  ##","####","####","#  #","####","####","####","####","####",
                    "#  #","   #","   #","   #","#  #","#   ","#   ","   #","#  #","#  #",
@@ -69,7 +69,7 @@ void setsize_(int col,int row){
     color(15,0);
     system("cls");
     HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
-    SMALL_RECT windowSize={0,0,(SHORT)(col+2),(SHORT)(row+2)};
+    SMALL_RECT windowSize={0,0,(SHORT)col,(SHORT)row};
     SetConsoleWindowInfo(hConsole,TRUE,&windowSize);
     return;
 }
@@ -129,8 +129,8 @@ void showcursor(bool visible){
     return;
 }
 void setkey(){
-	if(!border) setsize(22,16);
-    else setsize_(19,13);
+	//setsize(22,16);
+    setsize_(22,16);
 	showcursor(true);
 	btm.clear();
 	btm[0]=' ';
@@ -142,8 +142,8 @@ void setkey(){
 	cout<<"\r输入想要的键位(下方):\n";
 	for(int i=9;i<=16;i++) cin>>btm[i];
 	showcursor(false);
-    if(!border) setsize(70,21);
-    else setsize_(68,18);
+    //setsize(70,21);
+    setsize_(70,21);
 	return;
 }
 void move(int x,int y){
@@ -171,8 +171,8 @@ double Rks(){
     return ans/MusicSum;
 }
 void Main_List_Print(int Chs){
-    if(!border) setsize(48,26);
-    else setsize_(45,26);
+    //setsize(48,26);
+    setsize_(48,26);
     color(15,0);
     cout<<"-------------------------"<<endl;
     for(int i=0;i<MusicSum;i++){
@@ -219,12 +219,12 @@ void Print_Move(int Chs,int Chs2,bool lock){
         move(26,ls+i);
         cout<<"                          ";
     }
-    if(border) ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
-    else ls=2*max(0,Chs-6);
+    ls=2*max(0,Chs-6)-(Chs>=7?(Chs==7?2:4):0);
+    ///ls=2*max(0,Chs-6);
     if(Chs+6>MusicSum){
         move(26,2*MusicSum-25);
-        if(border) ls=2*MusicSum-28;
-        else ls=0;
+        ls=2*MusicSum-28;
+        //ls=0;
     }
     move(26,2*max(0,Chs-6));
     color(15,0);
@@ -234,8 +234,8 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<"  MUSIC : "<<(Music?"ON":"OFF");
     move(26,ls+2);
     cout<<"  SAVE : "<<(SAVE?"ON":"OFF");
-    move(26,ls+3);
-    cout<<"  BORDER : "<<(border?"ON":"OFF");
+    //move(26,ls+3);
+    //cout<<"  BORDER : "<<(border?"ON":"OFF");
     move(26,ls+5);
     cout<<"  R 保存缓存(搭配SAVE)";
     move(26,ls+6);
@@ -374,8 +374,8 @@ void saveAch(){
     return;
 }
 void ShowUnlockMsg(int idx){
-    if(!border) setsize(50,5);
-    else setsize_(47,5);
+    //setsize(50,5);
+    setsize_(50,5);
     system("cls");
     move(10,1);
     color(14,0);
@@ -388,8 +388,8 @@ void ShowUnlockMsg(int idx){
     cout<<ach[idx].desc;
     if(Music) kick(999,8,true);
     Sleep(2000);
-    if(!border) setsize(48,26);
-    else setsize_(45,26);
+    //setsize(48,26);
+    setsize_(48,26);
     Main_List_Print(0);
     Print_Move(0,0,true);
     return;
@@ -471,8 +471,8 @@ void checkAch(int idx){
     return;
 }
 void ShowAch(){
-    if(!border) setsize(60,28);
-    else setsize_(57,25);
+    //setsize(60,28);
+	setsize_(60,28);
     system("cls");
     color(14,0);
     move(20,1);
@@ -507,8 +507,8 @@ void ShowAch(){
     cout<<"Click to continue";
     while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON));
 	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
-    if(!border) setsize(48,26);
-    else setsize_(45,26);
+    //setsize(48,26);
+    setsize_(48,26);
     return;
 }
 void onSongStart(int songId){
@@ -610,8 +610,8 @@ void PrintGrd(int sc){
 }
 void Vol_UI(){
     color(15,0);
-    if(!border) setsize(66,5);
-    else setsize_(66,2);
+    //setsize(66,5);
+    setsize_(66,4);
     move(2,1);
     for(int i=0;i<50;i++) cout<<'-';
     cout<<"\n [";
@@ -626,11 +626,11 @@ void Vol_UI(){
     int key=0;
     while(true){
         key=0;
-        while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(VK_SPACE)&&!K(VK_LEFT)&&!K(VK_RIGHT));
+        while(!K('D')&&!K('A')&&!K(VK_RETURN)&&!K(' ')&&!K(VK_LEFT)&&!K(VK_RIGHT));
         if(K('A')||K(VK_LEFT)&&vol>0) Vol(false);
         else if(K('D')||K(VK_RIGHT)&&vol<50) Vol(true);
-        else if(K(VK_RETURN)||K(VK_SPACE)) break;
-        while(K('D')||K('A')||K(VK_RETURN)||K(VK_SPACE)||K(VK_LEFT)||K(VK_RIGHT)){
+        else if(K(VK_RETURN)||K(' ')) break;
+        while(K('D')||K('A')||K(VK_RETURN)||K(' ')||K(VK_LEFT)||K(VK_RIGHT)){
             if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(key<11451) key++;
             if(key>=11451){
                 if((K('A')||K(VK_LEFT))&&vol>0) Vol(false);
@@ -654,8 +654,8 @@ void getSystemName(){
     return;
 }
 int Play(int Chs){
-    if(!border) setsize(22,16);
-    else setsize_(19,13);
+    //setsize(22,15);
+    setsize_(22,15);
     memset(msic,0,sizeof msic);
     memset(MTsum,0,sizeof MTsum);
     ifstream in;
@@ -776,8 +776,8 @@ int Play(int Chs){
                         kick(999,1,true);
                         Vol_UI();
                         kick(999,12,true);
-                        if(!border) setsize(23,17);
-                        else setsize_(20,14);
+                        //setsize(23,17);
+                        setsize_(23,17);
                         break;
                     }
                 }
@@ -1082,8 +1082,8 @@ int Play(int Chs){
     if(autoplay) mxcmb=0,pfct=0,score=0;
     onSongComplete(Chs,score,pfct*1.0/TOT,mxcmb,TOT,pfct);
     color(15,0);
-    if(!border) setsize(60,20);
-    else setsize_(57,17);
+    //setsize(60,20);
+    setsize_(60,15);
     move(37,0);
     cout<<"Click to Skip";
     int u=score;
@@ -1186,8 +1186,8 @@ int main(int argc,char* argv[]){
     getSystemName();
     if(!IsRunAsAdmin()) RestartAsAdministrator();
     SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
-    if(!border) setsize(70,21);
-    else setsize_(68,18);
+    //setsize(70,21);
+    setsize_(70,20);
     showcursor(false);
     color(15,0);
     system("cls");
@@ -1202,13 +1202,13 @@ int main(int argc,char* argv[]){
     loadData(&Dt,"data.dat");
     initAch();
     color(8,0);
-    move(59,20);
+    move(58,20);
     cout<<"  MUSIC : ON";
     while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
         if(K('Q')){
             Music^=1;
             if(Music) kick(999,5,true);
-            move(59,20);
+            move(58,20);
             cout<<"  MUSIC : "<<(Music?"ON ":"OFF");
             while(K('Q'));
         }
@@ -1288,8 +1288,10 @@ int main(int argc,char* argv[]){
             if(lk[Chs]==0) Print_Move(Chs,Chs,false);
             else{
                 while(K(' ')||K(VK_RETURN));
-                kick(999,12,true);
-                Vol_UI();
+                if(Music){
+                	kick(999,12,true);
+                	Vol_UI();
+				}
                 while(K(' ')||K(VK_RETURN));
                 kick(999,12,true);
                 string title="C-Tempo - "+Name[Chs];
