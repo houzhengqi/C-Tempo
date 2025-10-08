@@ -34,7 +34,22 @@ struct Achievement{
     bool unlocked;
     int prog;
     int target;
-}ach[15]={{"初出茅庐","完成任意一首歌曲",false,0,1},{"完美主义者","任意歌曲ACC达到100%",false,0,1},{"全连大师","任意歌曲达成Full Combo",false,0,1},{"节奏达人","总游戏时长超过10分钟",false,0,600},{"收藏家","解锁所有可玩歌曲",false,0,1},{"彩蛋猎人","发现彩蛋歌曲",false,0,1},{"坚持不懈","连续游玩5首歌曲",false,0,5},{"精准打击","单局游戏ACC超过95%",false,0,1},{"百万分数","单局得分超过1,000,000",false,0,1},{"连击之王","达成200连击",false,0,200},{"全难度制霸","所有难度歌曲都完成",false,0,1},{"夜猫子","在深夜时段玩游戏",false,0,1},{"周末战士","在周末完成游戏",false,0,1},{"完美连击","单局无Miss完成",false,0,1}};
+}ach[15]={
+	{"初出茅庐",  "完成任意一首歌曲",      false,0,1},
+	{"完美主义者","任意歌曲ACC达到100%",   false,0,1},
+	{"全连大师",  "任意歌曲达成Full Combo",false,0,1},
+	{"节奏达人",  "总游戏时长超过10分钟",  false,0,600},
+	{"收藏家",    "解锁所有可玩歌曲",      false,0,1},
+	{"彩蛋猎人",  "发现彩蛋歌曲",          false,0,1},
+	{"坚持不懈",  "连续游玩5首歌曲",       false,0,5},
+	{"精准打击",  "单局游戏ACC超过95%",    false,0,1},
+	{"百万分数",  "单局得分超过1,000,000", false,0,1},
+	{"连击之王",  "达成200连击",           false,0,200},
+	{"全难度制霸","所有难度歌曲都完成",    false,0,1},
+	{"夜猫子",    "在深夜时段玩游戏",      false,0,1},
+	{"周末战士",  "在周末完成游戏",        false,0,1},
+	{"完美连击",  "单局无Miss完成",        false,0,1}
+};
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI";
 string SC[10]={"F","C","B","A","S","V","AP"};
@@ -236,29 +251,29 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<"  SAVE : "<<(SAVE?"ON":"OFF");
     //move(26,ls+3);
     //cout<<"  BORDER : "<<(border?"ON":"OFF");
-    move(26,ls+5);
+    move(26,ls+4);
     cout<<"  R 保存缓存(搭配SAVE)";
-    move(26,ls+6);
+    move(26,ls+5);
     cout<<"  W,S,A,D 控制方向";
-    move(26,ls+7);
+    move(26,ls+6);
     cout<<"  上下左右键 控制方向";
-    move(26,ls+8);
+    move(26,ls+7);
     cout<<"  空格/回车 选择";
-    move(26,ls+9);
+    move(26,ls+8);
     cout<<"  M 切换演示/练习";
-    move(26,ls+10);
+    move(26,ls+9);
     cout<<"  ESC退出";
-    move(26,ls+11);
+    move(26,ls+10);
     cout<<"  Q 开启/关闭音效";
-    move(26,ls+12);
+    move(26,ls+11);
     cout<<"  E 开启/关闭自动保存";
-    move(26,ls+13);
+    move(26,ls+12);
     cout<<"  P 查看成就系统";
-    move(26,ls+14);
+    move(26,ls+13);
 	cout<<"  ("<<unlockedAch<<"/"<<achCount<<")";
-    move(26,ls+15);
+    move(26,ls+14);
     cout<<"  C 清除存档";
-    move(26,ls+16);
+    move(26,ls+15);
     int sc=round(Dt.sc[Chs]);
     if(sc<720000) sc=0;
     else if(sc<820000) sc=1;
@@ -281,9 +296,9 @@ void Print_Move(int Chs,int Chs2,bool lock){
     acc=acc+"    ";
     cout<<(lk[Chs]?acc:"  ACC null ");
     color(15,0);
-    move(26,ls+18);
+    move(26,ls+17);
     printf("  RKS %.2lf ",Rks());
-    move(26,ls+19);
+    move(26,ls+18);
     color(8,0);
     cout<<"  tips:"<<tips[rand()%10];
     move(0,2*min(MusicSum,Chs+6));
@@ -1073,19 +1088,20 @@ int Play(int Chs){
         save[Chs]=true;
         New[Chs]=false;
     }
-    else if(!SAVE){
+    if(!SAVE){
         Dt.sc[Chs]=max(score,Dt.sc[Chs]);
         Dt.acc[Chs]=max(pfct*1.0/TOT,Dt.acc[Chs]);
         Dt.f[Chs]=1;
         New[Chs]=true;
     }
-    if(autoplay) mxcmb=0,pfct=0,score=0;
     onSongComplete(Chs,score,pfct*1.0/TOT,mxcmb,TOT,pfct);
     color(15,0);
     //setsize(60,20);
     setsize_(60,15);
     move(37,0);
     cout<<"Click to Skip";
+    move(52,14);
+    cout<<"AUTOPLAY";
     int u=score;
     int prtscore[8];
     for(int i=6;i>=0;i--) prtscore[i]=u%10,u/=10;
@@ -1144,31 +1160,6 @@ int Play(int Chs){
     }
     return -1;
 }
-bool IsRunAsAdmin(){
-    BOOL isAdmin=FALSE;
-    PSID adminGroupSid=nullptr;
-    SID_IDENTIFIER_AUTHORITY ntAuthority=SECURITY_NT_AUTHORITY;
-    if(!AllocateAndInitializeSid(&ntAuthority,2,SECURITY_BUILTIN_DOMAIN_RID,DOMAIN_ALIAS_RID_ADMINS,0,0,0,0,0,0,&adminGroupSid)) return false;
-    if(!CheckTokenMembership(nullptr,adminGroupSid,&isAdmin)) isAdmin=FALSE;
-    FreeSid(adminGroupSid);
-    return isAdmin!=FALSE;
-}
-bool RestartAsAdministrator(){
-    wchar_t szPath[MAX_PATH];
-    if(GetModuleFileNameW(nullptr,szPath,ARRAYSIZE(szPath))==0) return false;
-    SHELLEXECUTEINFOW sei={sizeof(sei)};
-    sei.lpVerb=L"runas";
-    sei.lpFile=szPath;
-    sei.hwnd=nullptr;
-    sei.nShow=SW_NORMAL;
-    if(!ShellExecuteExW(&sei)){
-        DWORD dwError=GetLastError();
-        if(dwError==ERROR_CANCELLED) RestartAsAdministrator();
-        return false;
-    }
-    else exit(0);
-    return true;
-}
 LPCWSTR wide(const char* str){
     if(str==nullptr) return L"";
     int len=MultiByteToWideChar(CP_ACP,0,str,-1,nullptr,0);
@@ -1184,7 +1175,6 @@ int main(int argc,char* argv[]){
     SetWindowPos(GetConsoleWindow(),NULL,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOZORDER|SWP_FRAMECHANGED);
     srand(time(NULL));
     getSystemName();
-    if(!IsRunAsAdmin()) RestartAsAdministrator();
     SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
     //setsize(70,21);
     setsize_(70,20);
@@ -1288,6 +1278,7 @@ int main(int argc,char* argv[]){
             if(lk[Chs]==0) Print_Move(Chs,Chs,false);
             else{
                 while(K(' ')||K(VK_RETURN));
+                if(autoplay) MessageBox(GetConsoleWindow(),"  本次游玩不计入成绩"," 提示",MB_OK);
                 if(Music){
                 	kick(999,12,true);
                 	Vol_UI();
@@ -1391,18 +1382,26 @@ int main(int argc,char* argv[]){
             Print_Move(Chs,Chs,true);
         }
         if(caidan.find("ududbaba")!=string::npos){
+        	bool cautoplay=autoplay;
+        	autoplay=false;
             caidan.clear();
             SetWindowTextW(GetConsoleWindow(),wide("C-Tempo - 彩蛋"));
             MessageBox(GetConsoleWindow(),"准备好报废你的手指了吗！！！","提示",MB_OK);
             while(Play(10));
+            autoplay=cautoplay;
+            delete &cautoplay;
             SetWindowTextW(GetConsoleWindow(),wide("C-Tempo"));
             Main_List_Print(Chs);
             Print_Move(Chs,Chs,true);
         }
         if(caidan.find("uadbuadb")!=string::npos){
             caidan.clear();
+            bool cautoplay=autoplay;
+			autoplay=false;
             SetWindowTextW(GetConsoleWindow(),wide("C-Tempo - 彩蛋"));
             while(Play(11));
+            autoplay=cautoplay;
+            delete &cautoplay;
             SetWindowTextW(GetConsoleWindow(),wide("C-Tempo"));
             Main_List_Print(Chs);
             Print_Move(Chs,Chs,true);
