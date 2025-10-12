@@ -1221,7 +1221,7 @@ int main(int argc,char* argv[]){
     }
     while(true){
         int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
-        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T'));
+        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T')&&!K(VK_ESCAPE));
         if(K('S')||K(VK_DOWN)){
             kick(999,5,true);
             Print_Move(nxt,Chs,false);
@@ -1305,6 +1305,7 @@ int main(int argc,char* argv[]){
         	Main_List_Print(Chs);
         	Print_Move(Chs,Chs,true);
 		}
+		if(K(VK_ESCAPE)) break;
         if(K('B')) caidan.push_back('b');
         else if(K('A')) caidan.push_back('a');
         else if(K(VK_LEFT)) caidan.push_back('l');
@@ -1408,7 +1409,7 @@ int main(int argc,char* argv[]){
             Print_Move(Chs,Chs,true);
         }
         do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T'));
+        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T')||K(VK_ESCAPE));
     }
     return 0;
 }
