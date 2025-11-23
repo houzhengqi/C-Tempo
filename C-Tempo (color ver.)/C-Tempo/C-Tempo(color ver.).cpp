@@ -624,8 +624,8 @@ void PrintGrd(int sc){
     }
     return;
 }
-void Vol_UI(){
-    color(15,0);
+void draw(){
+	color(15,0);
     //setsize(66,5);
     setsize_(66,4);
     move(2,1);
@@ -639,6 +639,10 @@ void Vol_UI(){
     move(60,2);
     cout<<"volume\n  ";
     for(int i=0;i<50;i++) cout<<'-';
+    return;
+}
+void Vol_UI(){
+    color(15,0);
     int key=0;
     while(true){
         key=0;
@@ -790,6 +794,7 @@ int Play(int Chs){
                     }
                     else if(D==4){
                         kick(999,1,true);
+                        draw();
                         Vol_UI();
                         kick(999,12,true);
                         //setsize(23,17);
@@ -1282,6 +1287,7 @@ int main(int argc,char* argv[]){
                 if(autoplay) MessageBox(GetConsoleWindow(),"  本次游玩不计入成绩"," 提示",MB_OK);
                 if(Music){
                 	kick(999,12,true);
+                	draw();
                 	Vol_UI();
 				}
                 while(K(' ')||K(VK_RETURN));
