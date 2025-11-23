@@ -651,8 +651,8 @@ void Vol_UI(){
         else if(K('D')||K(VK_RIGHT)&&vol<50) Vol(true);
         else if(K(VK_RETURN)||K(' ')) break;
         while(K('D')||K('A')||K(VK_RETURN)||K(' ')||K(VK_LEFT)||K(VK_RIGHT)){
-            if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(key<11451) key++;
-            if(key>=11451){
+            if(K(VK_LEFT)||K(VK_RIGHT)||K('D')||K('A')) if(key<6500) key++;
+            if(key==6500){
                 if((K('A')||K(VK_LEFT))&&vol>0) Vol(false);
                 else if((K('D')||K(VK_RIGHT))&&vol<50) Vol(true);
                 Sleep(30);
@@ -1183,29 +1183,29 @@ int main(int argc,char* argv[]){
     getSystemName();
     SetWindowTextW(GetConsoleWindow(),L"C-Tempo");
     //setsize(70,21);
-    setsize_(70,20);
+    setsize_(65,18);
     showcursor(false);
     color(15,0);
     system("cls");
     cout<<"\n\n\n";
-    cout<<"             CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
-    cout<<"            C               T   E      M M M  P   P  O   O\n";
-    cout<<"            C      -----    T   EEEEE  M M M  PPPP   O   O\n";
-    cout<<"            C               T   E      M   M  P      O   O\n";
-    cout<<"             CCCC           T   EEEEE  M   M  P       OOO \n";
-    cout<<"\n\n\n\n\n\n\n\n";
-    cout<<"                             Click to Play";
+    cout<<"           CCCC         TTTTT EEEEE  M   M  PPPP    OOO \n";
+    cout<<"          C               T   E      M M M  P   P  O   O\n";
+    cout<<"          C      -----    T   EEEEE  M M M  PPPP   O   O\n";
+    cout<<"          C               T   E      M   M  P      O   O\n";
+    cout<<"           CCCC           T   EEEEE  M   M  P       OOO \n";
+    cout<<"\n\n\n\n\n\n";
+    cout<<"                          Click to Play";
     loadData(&Dt,"data.dat");
     initAch();
     color(8,0);
-    move(58,20);
-    cout<<"  MUSIC : ON";
+    move(54,18);
+    cout<<"  MUSIC: ON";
     while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON)){
         if(K('Q')){
             Music^=1;
             if(Music) kick(999,5,true);
-            move(58,20);
-            cout<<"  MUSIC : "<<(Music?"ON ":"OFF");
+            move(54,18);
+            cout<<"  MUSIC: "<<(Music?"ON ":"OFF");
             while(K('Q'));
         }
     }
