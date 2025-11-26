@@ -1,4 +1,3 @@
-//ANSI
 #include <iostream>
 #include <cmath>
 #include <thread>
@@ -29,28 +28,6 @@ struct GameData{
 struct MsicTime{
     int drc,pl,cl,len,can,gt;
 }msic[1145][33];
-struct Achievement{
-    string name;
-    string desc;
-    bool unlocked;
-    int prog;
-    int target;
-}ach[15]={
-	{"初出茅庐",  "完成任意一首歌曲",      false,0,1},
-	{"完美主义者","任意歌曲ACC达到100%",   false,0,1},
-	{"全连大师",  "任意歌曲达成Full Combo",false,0,1},
-	{"节奏达人",  "总游戏时长超过10分钟",  false,0,600},
-	{"收藏家",    "解锁所有可玩歌曲",      false,0,1},
-	{"彩蛋猎人",  "发现彩蛋歌曲",          false,0,1},
-	{"坚持不懈",  "连续游玩5首歌曲",       false,0,5},
-	{"精准打击",  "单局游戏ACC超过95%",    false,0,1},
-	{"百万分数",  "单局得分超过1,000,000", false,0,1},
-	{"连击之王",  "达成200连击",           false,0,200},
-	{"全难度制霸","所有难度歌曲都完成",    false,0,1},
-	{"夜猫子",    "在深夜时段玩游戏",      false,0,1},
-	{"周末战士",  "在周末完成游戏",        false,0,1},
-	{"完美连击",  "单局无Miss完成",        false,0,1}
-};
 double r[114],w[114];
 string btm=" ASDFGHJKQWERTYUI";
 string SC[10]={"F","C","B","A","S","V","AP"};
@@ -298,7 +275,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<(lk[Chs]?acc:"  ACC null ");
     color(15,0);
     move(26,ls+17);
-    printf("  RKS %.2lf ",Rks());
+    printf("  RKS  ",Rks());
     move(26,ls+18);
     color(8,0);
     cout<<"  tips:"<<tips[rand()%10];
@@ -369,200 +346,6 @@ void end(){
     mciSendString("close music",NULL,0,NULL);
     return;
 }
-void initAch(){
-    for(int i=0;i<achCount;i++){
-        ach[i].unlocked=Dt.ach[i];
-        ach[i].prog=Dt.achProg[i];
-        if(ach[i].unlocked) unlockedAch++;
-    }
-    totalTime=Dt.totalTime;
-    consecPlays=Dt.consecPlays;
-    return;
-}
-void saveAch(){
-    for(int i=0;i<achCount;i++){
-        Dt.ach[i]=ach[i].unlocked;
-        Dt.achProg[i]=ach[i].prog;
-    }
-    Dt.totalTime=totalTime;
-    Dt.consecPlays=consecPlays;
-    saveData(&Dt,"Data.dat");
-    return;
-}
-void ShowUnlockMsg(int idx){
-    //setsize(50,5);
-    setsize_(50,5);
-    system("cls");
-    move(10,1);
-    color(14,0);
-    cout<<"★ 成就解锁 ★\n";
-    move(8,2);
-    color(15,0);
-    cout<<ach[idx].name;
-    move(8,3);
-    color(8,0);
-    cout<<ach[idx].desc;
-    if(Music) kick(999,8,true);
-    Sleep(2000);
-    //setsize(48,26);
-    setsize_(48,26);
-    Main_List_Print(0);
-    Print_Move(0,0,true);
-    return;
-}
-void checkAch(int idx){
-    if(ach[idx].unlocked) return;
-    bool shouldUnlock=false;
-    switch(idx){
-        case 0:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 1:
-            for(int i=0;i<MusicSum;i++){
-                if(Dt.acc[i]>=0.9999){
-                    shouldUnlock=true;
-                    break;
-                }
-            }
-            break;
-        case 2:
-            for(int i=0;i<MusicSum;i++){
-                if(Dt.sc[i]>=999999){
-                    shouldUnlock=true;
-                    break;
-                }
-            }
-            break;
-        case 3:
-            shouldUnlock=totalTime>=ach[idx].target;
-            break;
-        case 4:
-            shouldUnlock=true;
-            for(int i=0;i<MusicSum;i++){
-                if(lk[i]&&!Dt.f[i]){
-                    shouldUnlock=false;
-                    break;
-                }
-            }
-            break;
-        case 5:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 6:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 7:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 8:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 9:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 10:
-            shouldUnlock=true;
-            for(int i=0;i<MusicSum;i++){
-                if(Lv[i]>0&&!Dt.f[i]){
-                    shouldUnlock=false;
-                    break;
-                }
-            }
-            break;
-        case 11:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 12:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-        case 13:
-            shouldUnlock=ach[idx].prog>=ach[idx].target;
-            break;
-    }
-    if(shouldUnlock&&!ach[idx].unlocked){
-        ach[idx].unlocked=true;
-        unlockedAch++;
-        ShowUnlockMsg(idx);
-    }
-    return;
-}
-void ShowAch(){
-    //setsize(60,28);
-	setsize_(60,28);
-    system("cls");
-    color(14,0);
-    move(20,1);
-    cout<<"★ 成 就 系 统 ★";
-    move(18,2);
-    cout<<"已解锁: "<<unlockedAch<<"/"<<achCount;
-    int y=4;
-    for(int i=0;i<achCount;i++){
-        move(2,y);
-        if(ach[i].unlocked){
-            color(10,0);
-            cout<<"[ok] ";
-            color(14,0);
-            cout<<ach[i].name;
-            move(30,y);
-            color(8,0);
-            cout<<ach[i].desc;
-        }
-        else{
-            color(8,0);
-            cout<<"[  ] ";
-            color(7,0);
-            cout<<ach[i].name;
-            move(30,y);
-            cout<<"???";
-        }
-        y++;
-        if(y>24) break;
-    }
-    move(20,26);
-    color(15,0);
-    cout<<"Click to continue";
-    while(!K(' ')&&!K(VK_RETURN)&&!K(VK_RBUTTON)&&!K(VK_LBUTTON));
-	while(K(' ')||K(VK_RETURN)||K(VK_RBUTTON)||K(VK_LBUTTON));
-    //setsize(48,26);
-    setsize_(48,26);
-    return;
-}
-void onSongStart(int songId){
-    gameStart=time(NULL);
-    if(lastSong!=-1&&lastSong!=songId){
-        consecPlays++;
-        Dt.consecPlays=consecPlays;
-	}
-    lastSong=songId;
-    time_t now=time(NULL);
-    struct tm* timeinfo=localtime(&now);
-    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) ach[11].prog=1;
-    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) ach[12].prog=1;
-    return;
-}
-
-void onSongComplete(int songId,double sc,double acc,int maxCombo,int totalNotes,int perfectCount){
-	if(autoplay) return;
-    time_t endTime=time(NULL);
-    totalTime+=(endTime-gameStart);
-    Dt.totalTime=totalTime;
-    ach[0].prog=1;
-    if(acc>=0.9999) ach[1].prog=1;
-    if(sc>=999999) ach[2].prog=1;
-    if(acc>=0.95) ach[7].prog=1;
-    if(sc>=1000000) ach[8].prog=1;
-    if(maxCombo>=200) ach[9].prog=1;
-    if(consecPlays>=5) ach[6].prog=1;
-    if(perfectCount==totalNotes) ach[13].prog=1;
-    if(songId==9||songId==10||songId==11) ach[5].prog=1;
-    time_t now=time(NULL);
-    tm* timeinfo=localtime(&now);
-    if(timeinfo->tm_hour>=23||timeinfo->tm_hour<5) ach[11].prog=1;
-    if(timeinfo->tm_wday==0||timeinfo->tm_wday==6) ach[12].prog=1;
-    for(int i=0;i<achCount;i++) checkAch(i);
-    saveAch();
-    return;
-}
 void PrintBig(int n,int m){
     srand(time(0));
     color(8,0);
@@ -580,18 +363,6 @@ void PrintBig(int n,int m){
         move(5*m,j);
         cout<<Big[j-1][n];
     }
-    return;
-}
-void resetAch(){
-    for(int i=0;i<achCount;i++){
-        ach[i].unlocked=false;
-        ach[i].prog=0;
-        Dt.ach[i]=false;
-        Dt.achProg[i]=0;
-    }
-    unlockedAch=0;
-    saveAch();
-    initAch();
     return;
 }
 void PrintGrd(int sc){
@@ -722,7 +493,6 @@ int Play(int Chs){
     auto next_cycle=chrono::steady_clock::now()+cycle_duration;
     double score=0;
     int mxcmb=0,pfct=0,ot=0;
-    onSongStart(Chs);
     for(double t=1;t<=Sum;t+=0.1){
         auto now=chrono::steady_clock::steady_clock::now();
         auto offset=chrono::duration_cast<chrono::nanoseconds>(now-next_cycle).count();
@@ -1100,7 +870,6 @@ int Play(int Chs){
         Dt.f[Chs]=1;
         New[Chs]=true;
     }
-    onSongComplete(Chs,score,pfct*1.0/TOT,mxcmb,TOT,pfct);
     color(15,0);
     //setsize(60,20);
     setsize_(60,15);
@@ -1196,7 +965,6 @@ int main(int argc,char* argv[]){
     cout<<"\n\n\n\n\n\n";
     cout<<"                          Click to Play";
     loadData(&Dt,"data.dat");
-    initAch();
     color(8,0);
     move(54,18);
     cout<<"  MUSIC: ON";
@@ -1219,14 +987,13 @@ int main(int argc,char* argv[]){
         if((Dt.sc[i]!=0||Dt.sc[i]!=0||Dt.f[i]!=0)&&!lk[i]&&!(i>=9&&i<=11)){
             memset(&Dt,0,sizeof Dt);
             saveData(&Dt,"data.dat");
-            resetAch();
             MessageBox(GetConsoleWindow(),"  操作成功完成！"," 清空存档",MB_OK|MB_ICONINFORMATION|MB_DEFBUTTON1);
             break;
         }
     }
     while(true){
         int lst=(Chs+MusicSum-1)%MusicSum,nxt=(Chs+1)%MusicSum;
-        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('P')&&!K('T')&&!K(VK_ESCAPE));
+        while(!K('S')&&!K(VK_DOWN)&&!K('W')&&!K(VK_UP)&&!K(' ')&&!K(VK_RETURN)&&!K('M')&&!K('Q')&&!K('E')&&!K('C')&&!K('R')&&!K('B')&&!K('A')&&!K(VK_LEFT)&&!K(VK_RIGHT)&&!K('T')&&!K(VK_ESCAPE));
         if(K('S')||K(VK_DOWN)){
             kick(999,5,true);
             Print_Move(nxt,Chs,false);
@@ -1263,8 +1030,6 @@ int main(int argc,char* argv[]){
                 if(key){
                     memset(&Dt,0,sizeof Dt);
                     saveData(&Dt,"data.dat");
-                    resetAch();
-                    initAch();
                     break;
                 }
                 if(K('N')) break;
@@ -1272,13 +1037,6 @@ int main(int argc,char* argv[]){
             kick(999,11,true);
             Main_List_Print(Chs);
             Print_Move(Chs,Chs,true);
-        }
-        if(K('P')){
-        	while(K('P'));
-            kick(999,5,true);
-            ShowAch();
-            Main_List_Print(Chs);
-    		Print_Move(Chs,Chs,true);
         }
         if(K(' ')||K(VK_RETURN)){
             if(lk[Chs]==0) Print_Move(Chs,Chs,false);
@@ -1415,7 +1173,7 @@ int main(int argc,char* argv[]){
             Print_Move(Chs,Chs,true);
         }
         do FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('P')||K('T')||K(VK_ESCAPE));
+        while(K('S')||K(VK_DOWN)||K('W')||K(VK_UP)||K(' ')||K(VK_RETURN)||K('M')||K('Q')||K('E')||K('C')||K('R')||K('B')||K('A')||K(VK_LEFT)||K(VK_RIGHT)||K('T')||K(VK_ESCAPE));
     }
     return 0;
 }
