@@ -267,7 +267,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     else if(!save[Chs]&&New[Chs]) color(8,0);
     printf("  %.07d ",(int)round(Dt.sc[Chs]));
     cout<<" "<<(lk[Chs]?(Dt.f[Chs]?"\b"+SC[sc]:"\bnew"):"\bnull")<<"   ";
-    move(26,ls+17);
+    move(26,ls+16);
     string acc="  ACC "+to_string((int)(Dt.acc[Chs]*10000))+"%";
     if(acc=="  ACC 0%") acc="  ACC 000%";
     acc.insert(acc.size()-3,".");
@@ -275,7 +275,7 @@ void Print_Move(int Chs,int Chs2,bool lock){
     cout<<(lk[Chs]?acc:"  ACC null ");
     color(15,0);
     move(26,ls+17);
-    printf("  RKS  ",Rks());
+    printf("  RKS %.2lf",Rks());
     move(26,ls+18);
     color(8,0);
     cout<<"  tips:"<<tips[rand()%10];
