@@ -335,7 +335,6 @@ void loadData(GameData* data,const char* filename){
     FILE* file=fopen(filename,"rb");
     if(file==NULL){
         system("fsutil file createnew data.dat 0 >nul 2>&1");
-        loadData(data,filename);
         return;
     }
     fread(data,sizeof(GameData),1,file);
